@@ -6,6 +6,8 @@ import {
   ListMusicIcon,
   MusicIcon,
   SparklesIcon,
+  TagIcon,
+  TicketPercentIcon,
   UsersIcon,
   type LucideIcon,
 } from "lucide-react";
@@ -25,5 +27,7 @@ export const NAV_ITEMS: NavItem[] = [
   { title: "Prompt Templates", href: "/admin/prompts", icon: FileTextIcon },
   { title: "Sampel Landing", href: "/admin/samples", icon: SparklesIcon },
   { title: "Master Data", href: "/admin/master-data", icon: MusicIcon },
+  { title: "Harga", href: "/admin/pricing", icon: TagIcon },
+  { title: "Voucher", href: "/admin/vouchers", icon: TicketPercentIcon },
   { title: "Users", href: "/admin/users", icon: UsersIcon },
 ];
