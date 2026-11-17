@@ -19,7 +19,11 @@ type Values = Record<Field, string>;
 
 const FIELDS: { name: Field; label: string; help: string }[] = [
   { name: "normal_price", label: "Harga normal", help: "Tampil dicoret di halaman lagu." },
-  { name: "sale_price", label: "Harga setelah diskon", help: "Yang dibayar customer tanpa voucher." },
+  {
+    name: "sale_price",
+    label: "Harga setelah diskon",
+    help: "Yang dibayar customer tanpa voucher.",
+  },
   {
     name: "min_payable",
     label: "Minimum bayar",
@@ -117,8 +121,8 @@ export function PricingView() {
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold">Harga</h1>
         <p className="text-sm text-muted-foreground">
-          Harga full lagu. Berlaku untuk checkout baru; order yang sedang menunggu pembayaran
-          dibuat ulang dengan harga baru.
+          Harga full lagu. Berlaku untuk checkout baru; order yang sedang menunggu pembayaran dibuat
+          ulang dengan harga baru.
         </p>
       </div>
 

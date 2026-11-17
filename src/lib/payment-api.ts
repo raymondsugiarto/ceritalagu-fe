@@ -5,10 +5,25 @@ import { api, unwrap } from "@/lib/api";
 export type OrderStatus = "pending" | "paid" | "failed" | "expired";
 
 export interface PricingOutput {
+  /** Same as sale_price (kept for older code). */
   unlock_price: number;
+  /** Shown struck through; equal to sale_price when there is no promo. */
+  normal_price: number;
+  /** What is charged without a voucher. */
+  sale_price: number;
   currency: string;
   /** false until DOKU is configured on the server. */
   enabled: boolean;
+}
+
+/** POST /songs/:id/voucher-check: what a checkout would charge. */
+export interface QuoteOutput {
+  normal_price: number;
+  sale_price: number;
+  voucher_code?: string;
+  voucher_discount: number;
+  total: number;
+  currency: string;
 }
 
 export interface CheckoutOutput {
@@ -16,6 +31,7 @@ export interface CheckoutOutput {
   invoice_number: string;
   amount: number;
   currency: string;
+  voucher_code?: string;
   /** DOKU Checkout page; send the browser there. */
   payment_url: string;
   expires_at: string | null;
@@ -41,8 +57,22 @@ export const paymentApi = {
     return unwrap(await api.get<PricingOutput>("/payments/pricing", { signal }));
   },
 
-  async checkout(songId: string): Promise<CheckoutOutput> {
-    return unwrap(await api.post<CheckoutOutput>(`/songs/${encodeURIComponent(songId)}/checkout`));
+  /** Checks a voucher code against the song's price; no order is created. */
+  async quote(songId: string, voucherCode: string): Promise<QuoteOutput> {
+    return unwrap(
+      await api.post<QuoteOutput>(`/songs/${encodeURIComponent(songId)}/voucher-check`, {
+        voucher_code: voucherCode,
+      }),
+    );
+  },
+
+  async checkout(songId: string, voucherCode?: string): Promise<CheckoutOutput> {
+    return unwrap(
+      await api.post<CheckoutOutput>(
+        `/songs/${encodeURIComponent(songId)}/checkout`,
+        voucherCode ? { voucher_code: voucherCode } : undefined,
+      ),
+    );
   },
 
   async getOrder(id: string, signal?: AbortSignal): Promise<OrderOutput> {

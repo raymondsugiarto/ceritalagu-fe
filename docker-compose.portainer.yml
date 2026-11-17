@@ -1,8 +1,9 @@
+version: "3.7"
 services:
   music-web:
     image: ghcr.io/${IMAGE_OWNER:-raymondsugiarto}/music-web:latest
     ports:
-      - "6020:3000"
+      - "8020:3000"
     restart: unless-stopped
     networks:
       - platform

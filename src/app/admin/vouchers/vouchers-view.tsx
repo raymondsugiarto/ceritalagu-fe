@@ -37,9 +37,7 @@ import {
 import { VoucherFormDialog } from "./voucher-form-dialog";
 
 type ListState =
-  | { kind: "loading" }
-  | { kind: "ok"; items: VoucherOutput[] }
-  | { kind: "error"; message: string };
+  { kind: "loading" } | { kind: "ok"; items: VoucherOutput[] } | { kind: "error"; message: string };
 
 const STATUS: Record<VoucherStatus, { label: string; className: string }> = {
   active: { label: "Aktif", className: "bg-primary/10 text-primary" },

@@ -11,7 +11,6 @@ import {
   PencilIcon,
   PlusIcon,
   RotateCcwIcon,
-  SparklesIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -21,7 +20,8 @@ import { errorMessage } from "@/lib/api";
 import { NEW_SONG_HREF, VOICES, labelOf } from "@/lib/questionnaire";
 import { useQuestionnaireOptions } from "@/hooks/use-questionnaire-options";
 import { loadErrorText, songApi, type SongOutput } from "@/lib/song-api";
-import { formatIDR, paymentApi, type OrderOutput, type PricingOutput } from "@/lib/payment-api";
+import { paymentApi, type OrderOutput, type PricingOutput } from "@/lib/payment-api";
+import { UnlockPanel } from "./unlock-panel";
 
 /** After DOKU sends the buyer back, poll the order until DOKU confirms (≈1 minute). */
 const ORDER_POLL_MS = 3000;
@@ -52,7 +52,6 @@ export function SongView({ songId, orderId }: SongViewProps) {
   /** "Buat Ulang" left for this song (null until the job is loaded). */
   const [regeneratesLeft, setRegeneratesLeft] = React.useState<number | null>(null);
   const [pricing, setPricing] = React.useState<PricingOutput | null>(null);
-  const [checkingOut, setCheckingOut] = React.useState(false);
   const [payment, setPayment] = React.useState<PaymentState>(
     orderId ? { kind: "checking" } : { kind: "idle" },
   );
@@ -130,17 +129,6 @@ export function SongView({ songId, orderId }: SongViewProps) {
       window.clearTimeout(timer);
     };
   }, [orderId, songId, router, pollKey]);
-
-  async function unlock() {
-    setCheckingOut(true);
-    try {
-      const out = await paymentApi.checkout(songId);
-      window.location.assign(out.payment_url);
-    } catch (err) {
-      toast.error(errorMessage(err, "Halaman pembayaran tidak bisa dibuka."));
-      setCheckingOut(false);
-    }
-  }
 
   async function regenerate(jobId: string) {
     setRegenerating(true);
@@ -295,26 +283,7 @@ export function SongView({ songId, orderId }: SongViewProps) {
       )}
 
       {!song.is_unlocked && payment.kind !== "checking" && (
-        <div className="space-y-2">
-          <Button
-            size="lg"
-            className="w-full"
-            onClick={unlock}
-            disabled={checkingOut || pricing?.enabled === false}
-          >
-            {checkingOut ? (
-              <Loader2Icon className="animate-spin" aria-hidden />
-            ) : (
-              <SparklesIcon aria-hidden />
-            )}
-            Dapatkan Full Lagu{pricing ? ` · ${formatIDR(pricing.unlock_price)}` : ""}
-          </Button>
-          <p className="text-center text-xs text-muted-foreground">
-            {pricing?.enabled === false
-              ? "Pembayaran belum tersedia saat ini."
-              : "Bayar aman lewat DOKU: QRIS, e-wallet, virtual account, atau kartu."}
-          </p>
-        </div>
+        <UnlockPanel songId={songId} pricing={pricing} />
       )}
 
       <div className="space-y-2">
