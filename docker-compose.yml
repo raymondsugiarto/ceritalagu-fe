@@ -1,0 +1,16 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        API_PROXY_TARGET: http://api:8080
+    ports:
+      - "127.0.0.1:3001:3000"
+    restart: unless-stopped
+    networks:
+      - music-dev
+
+networks:
+  music-dev:
+    name: music-dev
+    external: true

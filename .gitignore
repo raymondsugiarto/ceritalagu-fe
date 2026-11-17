@@ -1,0 +1,16 @@
+/node_modules
+/.next/
+/.next-alt/
+/out/
+/build
+/coverage
+.DS_Store
+*.pem
+npm-debug.log*
+.pnpm-debug.log*
+.env*
+!.env.example
+*.tsbuildinfo
+next-env.d.ts
+.idea/
+.vscode/

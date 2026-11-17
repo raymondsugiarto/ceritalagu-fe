@@ -1,0 +1,12 @@
+services:
+  web:
+    image: ghcr.io/${IMAGE_OWNER:-raymondsugiarto}/music-web:latest
+    ports:
+      - "6020:3000"
+    restart: unless-stopped
+    networks:
+      - platform
+
+networks:
+  platform:
+    external: true

@@ -1,0 +1,150 @@
+name: Publish Music Web
+
+on:
+  push:
+    branches: [main, master]
+    tags: ["v*.*.*"]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: web-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-push:
+    name: Build and publish image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/music-web
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix=sha-
+          labels: |
+            org.opencontainers.image.title=music-web
+            org.opencontainers.image.description=Personalized song generator web app
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          load: ${{ github.event_name == 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### music-web image"
+            echo "- Event: \`${{ github.event_name }}\`"
+            echo "- Image: \`ghcr.io/${{ github.repository_owner }}/music-web\`"
+            echo "- Tags: \`${{ steps.meta.outputs.tags || '(PR build only)' }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: Redeploy Portainer stack
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
+      PORTAINER_USERNAME: ${{ secrets.PORTAINER_USERNAME }}
+      PORTAINER_PASSWORD: ${{ secrets.PORTAINER_PASSWORD }}
+      PORTAINER_STACK_ID: ${{ secrets.PORTAINER_STACK_ID }}
+      PORTAINER_ENDPOINT_ID: ${{ secrets.PORTAINER_ENDPOINT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for name in PORTAINER_URL PORTAINER_USERNAME PORTAINER_PASSWORD PORTAINER_STACK_ID PORTAINER_ENDPOINT_ID; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Required Actions secret '$name' is not set"
+              exit 1
+            fi
+          done
+          test -f docker-compose.portainer.yml || {
+            echo "::error::docker-compose.portainer.yml is missing"
+            exit 1
+          }
+
+          auth_file="$RUNNER_TEMP/portainer-auth.json"
+          env_file="$RUNNER_TEMP/portainer-env.json"
+          request_file="$RUNNER_TEMP/portainer-update.json"
+          trap 'rm -f "$auth_file" "$env_file" "$request_file"' EXIT
+
+          jq -n --arg username "$PORTAINER_USERNAME" --arg password "$PORTAINER_PASSWORD" \
+            '{username: $username, password: $password}' > "$auth_file"
+          auth_response=$(curl -skS -w '\n%{http_code}' \
+            -X POST -H "Content-Type: application/json" \
+            --data-binary @"$auth_file" "${PORTAINER_URL%/}/api/auth")
+          auth_code=$(printf '%s\n' "$auth_response" | tail -n 1)
+          token=$(printf '%s\n' "$auth_response" | sed '$d' | jq -r '.jwt // empty')
+          if [ "$auth_code" != "200" ] || [ -z "$token" ]; then
+            echo "::error::Portainer authentication failed (HTTP $auth_code)"
+            exit 1
+          fi
+
+          stack_response=$(curl -skS -w '\n%{http_code}' \
+            -H "Authorization: Bearer $token" \
+            "${PORTAINER_URL%/}/api/stacks/$PORTAINER_STACK_ID")
+          stack_code=$(printf '%s\n' "$stack_response" | tail -n 1)
+          if [ "$stack_code" != "200" ]; then
+            echo "::error::Could not read Portainer stack (HTTP $stack_code)"
+            exit 1
+          fi
+          printf '%s\n' "$stack_response" | sed '$d' | jq -c '.Env // []' > "$env_file"
+
+          jq -n --rawfile compose docker-compose.portainer.yml --slurpfile envs "$env_file" \
+            '{StackFileContent: $compose, Env: $envs[0], Prune: false, PullImage: true, RepullImageAndRedeploy: true}' \
+            > "$request_file"
+          response=$(curl -skS -w '\n%{http_code}' -X PUT \
+            -H "Authorization: Bearer $token" \
+            -H "Content-Type: application/json" \
+            --data-binary @"$request_file" \
+            "${PORTAINER_URL%/}/api/stacks/$PORTAINER_STACK_ID?endpointId=$PORTAINER_ENDPOINT_ID")
+          code=$(printf '%s\n' "$response" | tail -n 1)
+          if [[ "$code" != 2* ]]; then
+            echo "::error::Portainer redeploy failed (HTTP $code)"
+            exit 1
+          fi
+          echo "Portainer stack redeployed."

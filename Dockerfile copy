@@ -1,0 +1,83 @@
+# syntax=docker/dockerfile:1.7
+# ----------------------------------------------------------------------------
+# receivable-ui container image
+# ----------------------------------------------------------------------------
+# Build pipeline:
+#   deps      -> pnpm fetch of every dependency (cached as a separate layer)
+#   builder   -> Next.js standalone build + Prisma-less static assets
+#   runner    -> minimal Node 22 image that only runs the compiled output
+#
+# Image is published to ghcr.io/<owner>/receivable-ui by
+# .github/workflows/publish.yml. Tags are produced by extract_tag() in
+# that workflow (latest, semver, sha).
+# ----------------------------------------------------------------------------
+
+ARG NODE_VERSION=22-alpine
+
+# --- Stage 1: install all dependencies (incl. devDependencies for build) --
+FROM node:${NODE_VERSION} AS deps
+WORKDIR /app
+
+# pnpm via corepack ships with the official Node image; pin to the version
+# that matches the lockfile so installs stay reproducible.
+# Note: this is a single-package project (no pnpm-workspace.yaml on disk),
+# so only the lockfile and package.json are copied into the deps layer.
+RUN corepack enable && corepack prepare pnpm@10 --activate
+COPY pnpm-lock.yaml package.json ./
+RUN pnpm fetch --frozen-lockfile
+
+# --- Stage 2: build the Next.js production bundle ---------------------------
+FROM node:${NODE_VERSION} AS builder
+WORKDIR /app
+
+RUN corepack enable && corepack prepare pnpm@10 --activate
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Build-time env that Next inlines. Do NOT set NEXT_PUBLIC_API_BASE_URL:
+# without it the UI calls `/api/` on whatever domain it is served from, and
+# nginx forwards that to the API container. That is how every organization
+# domain (white-label login) reaches the API and loads its own branding
+# from a single image.
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    NODE_ENV=production \
+    PORT=3000
+
+RUN pnpm install --offline --frozen-lockfile && pnpm build
+
+# --- Stage 3: runtime image --------------------------------------------------
+FROM node:${NODE_VERSION} AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3000 \
+    HOSTNAME=0.0.0.0
+
+# Run as a non-root user. alpine ships `node` already non-root via the
+# upstream image, but we still drop unnecessary tools.
+RUN addgroup --system --gid 1001 nodejs \
+ && adduser  --system --uid 1001 --ingroup nodejs nextjs
+
+# `next build` with output: "standalone" emits a self-contained server at
+# .next/standalone plus two extra asset directories we copy in.
+COPY --from=builder --chown=nextjs:nodejs /app/public            ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone  ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static      ./.next/static
+
+USER nextjs
+EXPOSE 3000
+
+# Next 16 standalone entry point. PORT/HOSTNAME are read by server.js.
+CMD ["node", "server.js"]
+
+
+# ----------------------------------------------------------------------------
+# OCI image metadata — populated automatically by GitHub Actions when the
+# workflow uses docker/build-push-action@v6, but we set sensible defaults
+# here so the image is self-describing even from a local `docker build`.
+# ----------------------------------------------------------------------------
+LABEL org.opencontainers.image.title="receivable-ui" \
+      org.opencontainers.image.description="B8Flow Receivable — Next.js 16 company & B8Flow admin console" \
+      org.opencontainers.image.source="https://github.com/raymondsugiarto/receivable-ui" \
+      org.opencontainers.image.licenses="Proprietary"

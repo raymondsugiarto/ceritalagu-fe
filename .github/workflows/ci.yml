@@ -1,0 +1,65 @@
+# ----------------------------------------------------------------------------
+# Continuous Integration
+# ----------------------------------------------------------------------------
+# Runs on every push to main/master and on every pull request.
+#
+# Responsibilities:
+#   1. install the lockfile-pinned pnpm and Node 22
+#   2. install dependencies with the frozen lockfile
+#   3. lint, type-check, test, and build the production app
+#
+# The container-image build + publish flow lives in `publish.yml` so this
+# file stays focused on correctness checks.
+# ----------------------------------------------------------------------------
+
+name: Music Web CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+# Allow concurrent runs on different branches; cancel in-flight runs on the
+# same branch when a new commit lands.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-typecheck:
+    name: lint + type-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        # Version comes from "packageManager" in package.json (pnpm 10).
+        # Don't also set `version:` here — the action fails if both are set.
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          # `engines.node` in package.json is ">=20.9.0" but Next.js 16
+          # requires Node 22 — pin to the major that matches `.nvmrc`.
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type-check
+        run: pnpm type-check
+
+      - name: Tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
