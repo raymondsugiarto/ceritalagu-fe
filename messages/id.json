@@ -1,0 +1,795 @@
+{
+  "common": {
+    "appName": "Cerita Lagu",
+    "homeAria": "Cerita Lagu — beranda",
+    "languages": {
+      "id": "Bahasa Indonesia",
+      "en": "English"
+    },
+    "actions": {
+      "next": "Lanjut",
+      "back": "Kembali",
+      "tryAgain": "Coba lagi"
+    },
+    "account": {
+      "signIn": "Masuk",
+      "signOut": "Keluar"
+    },
+    "other": "Lainnya",
+    "voices": {
+      "male": "Pria",
+      "female": "Wanita",
+      "surprise": "Kejutkan Aku"
+    },
+    "voiceTags": {
+      "male": "Suara pria",
+      "female": "Suara wanita",
+      "surprise": "Suara kejutkan aku"
+    },
+    "songLanguages": {
+      "id": "Indonesia",
+      "en": "Inggris"
+    },
+    "loadError": {
+      "notFound": {
+        "title": "Lagu tidak ditemukan",
+        "message": "Lagu ini tidak ada atau dibuat dari perangkat lain."
+      },
+      "failed": {
+        "title": "Terjadi kendala",
+        "message": "Lagumu tidak bisa dimuat sekarang. Coba muat ulang halaman sebentar lagi."
+      }
+    }
+  },
+  "metadata": {
+    "defaultTitle": "Cerita Lagu",
+    "titleTemplate": "%s · Cerita Lagu",
+    "description": "Buat lagu personal untuk orang tersayang dalam hitungan menit.",
+    "create": "Buat Lagu",
+    "job": "Membuat Lagu",
+    "song": "Lagumu",
+    "login": "Masuk",
+    "contact": {
+      "title": "Hubungi Kami",
+      "description": "Kirim pertanyaan, masukan, atau kendala pesanan ke tim Cerita Lagu."
+    },
+    "terms": {
+      "title": "Syarat & Ketentuan",
+      "description": "Syarat dan ketentuan penggunaan layanan Cerita Lagu."
+    },
+    "notFound": "Halaman tidak ditemukan"
+  },
+  "landing": {
+    "header": {
+      "howItWorks": "Cara Kerja",
+      "features": "Fitur",
+      "faq": "FAQ",
+      "contact": "Kontak",
+      "cta": "Buat Lagu"
+    },
+    "hero": {
+      "badge": "Ditulis & dinyanyikan khusus untuk dia",
+      "title": "Ubah ceritamu jadi <highlight>lagu yang tak terlupakan</highlight>",
+      "body": "Jawab 7 pertanyaan tentang orang tersayang. Kami menulis lirik dari kenangan kalian, lalu mengaransemen dan menyanyikannya dalam genre pilihanmu.",
+      "ctaPrimary": "Buat Lagu Sekarang",
+      "ctaSecondary": "Lihat cara kerjanya",
+      "promises": {
+        "freePreview": "Preview gratis sampai reff",
+        "noSignup": "Tanpa daftar",
+        "fast": "Siap dalam hitungan menit"
+      },
+      "mock": {
+        "meta": "Untuk Ibu · Hari Ibu",
+        "title": "Pelita di Rumah Kita",
+        "tags": "Ballad · Suara wanita · Haru",
+        "chorus": "Reff",
+        "line1": "Tanganmu yang dulu menuntun langkahku,",
+        "line2": "kini kugenggam erat, Ibu…",
+        "line3": "setiap doa yang kau bisikkan malam"
+      }
+    },
+    "marquee": {
+      "aria": "Momen yang cocok",
+      "title": "Hadiah sempurna untuk setiap momen",
+      "occasions": {
+        "birthday": "🎂 Ulang Tahun",
+        "anniversary": "💍 Anniversary",
+        "wedding": "💒 Pernikahan",
+        "proposal": "💐 Lamaran",
+        "mothersDay": "👩‍👧 Hari Ibu",
+        "fathersDay": "👨‍👦 Hari Ayah",
+        "graduation": "🎓 Wisuda",
+        "apology": "🙏 Permintaan Maaf",
+        "thankYou": "🤝 Terima Kasih",
+        "farewell": "👋 Perpisahan",
+        "valentine": "❤️ Valentine",
+        "justBecause": "🥰 Hanya Ingin Bilang Sayang"
+      }
+    },
+    "howItWorks": {
+      "eyebrow": "Cara kerja",
+      "title": "Dari cerita jadi lagu dalam 3 langkah",
+      "description": "Tidak perlu bisa bernyanyi atau menulis lirik. Cukup ceritakan apa yang kamu rasakan.",
+      "steps": {
+        "tell": {
+          "title": "Ceritakan tentang dia",
+          "body": "Jawab 7 pertanyaan singkat: siapa dia, momennya, kenangan kalian, dan pesan yang ingin kamu sampaikan."
+        },
+        "create": {
+          "title": "Kami ciptakan lagunya",
+          "body": "Kami menulis lirik dari ceritamu, lalu mengaransemen dan menyanyikannya sesuai genre, suara, dan mood pilihanmu."
+        },
+        "listen": {
+          "title": "Dengarkan & bagikan",
+          "body": "Putar preview gratis sampai reff pertama. Suka hasilnya? Buka lagu versi penuh dan kirim sebagai hadiah."
+        }
+      }
+    },
+    "samples": {
+      "eyebrow": "Contoh lagu",
+      "title": "Dengarkan lagu yang sudah kami buat",
+      "description": "Setiap lagu ditulis dari cerita yang berbeda. Putar dan rasakan sendiri."
+    },
+    "features": {
+      "eyebrow": "Kenapa Cerita Lagu",
+      "title": "Hadiah yang benar-benar personal",
+      "description": "Bukan lagu pasaran. Setiap lagu dibuat dari nol berdasarkan ceritamu.",
+      "more": "dan lainnya…",
+      "items": {
+        "lyrics": {
+          "title": "Lirik dari kenanganmu",
+          "body": "Nama panggilan, momen spesial, dan pesanmu dirangkai jadi lirik yang hanya cocok untuk dia."
+        },
+        "genres": {
+          "title": "Banyak pilihan genre",
+          "body": "Pop, Ballad, Akustik, R&B, Jazz, Dangdut, Keroncong, sampai lagu nina bobo."
+        },
+        "voice": {
+          "title": "Pilih suara penyanyi",
+          "body": "Vokal pria, wanita, atau biarkan kami yang memberi kejutan."
+        },
+        "mood": {
+          "title": "Atur suasananya",
+          "body": "Romantis, ceria, haru, lucu, atau penuh semangat — sesuaikan dengan momennya."
+        },
+        "language": {
+          "title": "Bahasa Indonesia & Inggris",
+          "body": "Tulis lirik dalam bahasa yang paling dekat di hati kalian berdua."
+        },
+        "fast": {
+          "title": "Cepat, tanpa ribet",
+          "body": "Isi kuesioner dalam beberapa menit, langsung dengarkan preview tanpa membuat akun."
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Pertanyaan yang sering ditanyakan",
+      "items": {
+        "account": {
+          "q": "Apakah saya harus daftar akun dulu?",
+          "a": "Tidak. Kamu bisa langsung mengisi kuesioner dan mendengarkan preview tanpa akun. Akun hanya dibutuhkan untuk menyimpan dan membuka lagu versi penuh."
+        },
+        "duration": {
+          "q": "Berapa lama lagunya jadi?",
+          "a": "Biasanya hanya beberapa menit setelah kamu mengirim jawaban. Halaman akan otomatis menampilkan lagu begitu siap."
+        },
+        "dislike": {
+          "q": "Bagaimana kalau saya kurang suka hasilnya?",
+          "a": "Kamu bisa membuat ulang (regenerate) lagu dari jawaban yang sama untuk mendapatkan versi lirik dan aransemen yang berbeda."
+        },
+        "previewVsFull": {
+          "q": "Apa bedanya preview dan lagu penuh?",
+          "a": "Preview berisi awal lagu sampai reff pertama selesai. Lagu penuh berisi seluruh lagu beserta lirik lengkap yang bisa diunduh dan dibagikan."
+        },
+        "languages": {
+          "q": "Bahasa apa saja yang didukung?",
+          "a": "Saat ini lirik bisa dibuat dalam Bahasa Indonesia dan Bahasa Inggris."
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Buat dia tersenyum dengan lagu yang hanya miliknya",
+      "body": "Mulai sekarang — gratis dengarkan preview-nya, tanpa perlu daftar.",
+      "cta": "Buat Lagu Sekarang"
+    },
+    "footer": {
+      "tagline": "Lagu personal dari ceritamu, untuk orang tersayang.",
+      "cta": "Buat Lagu Sekarang",
+      "columns": {
+        "product": "Produk",
+        "help": "Bantuan",
+        "legal": "Legal"
+      },
+      "links": {
+        "create": "Buat Lagu",
+        "howItWorks": "Cara Kerja",
+        "samples": "Contoh Lagu",
+        "features": "Fitur",
+        "faq": "FAQ",
+        "contact": "Hubungi Kami",
+        "signIn": "Masuk",
+        "terms": "Syarat & Ketentuan",
+        "refund": "Kebijakan Pengembalian Dana",
+        "privacy": "Data Pribadi"
+      },
+      "copyright": "© {year} Cerita Lagu. Dibuat dengan ❤️ di Indonesia.",
+      "payment": "Pembayaran aman diproses oleh DOKU"
+    }
+  },
+  "create": {
+    "closeAria": "Tutup dan kembali ke beranda",
+    "progress": {
+      "stepOf": "Langkah {step} dari {total}",
+      "allAnswered": "Semua jawaban terisi",
+      "aria": "Progres pertanyaan"
+    },
+    "question": "Pertanyaan {step}",
+    "last": "Terakhir",
+    "reviewTitle": "Siap membuat lagumu?",
+    "reviewHint": "Kamu masih bisa mengubah jawaban sebelum lagu dibuat.",
+    "showSummary": "Lihat ringkasan",
+    "submit": "Buat Laguku",
+    "autosave": "Jawabanmu tersimpan otomatis di perangkat ini.",
+    "forming": "Lagumu sedang terbentuk",
+    "optionsError": {
+      "title": "Pilihan lagu belum bisa dimuat",
+      "message": "Pilihan lagu belum bisa dimuat."
+    },
+    "submitError": "Maaf, lagumu belum bisa dibuat. Silakan coba lagi.",
+    "submitErrors": {
+      "quota": "Kuota lagu gratis hari ini sudah habis. Coba lagi besok atau daftar untuk melanjutkan.",
+      "busy": "Layanan sedang sibuk. Silakan coba lagi."
+    },
+    "steps": {
+      "recipient": {
+        "title": "Lagu ini untuk siapa?",
+        "hint": "Pilih hubunganmu dengannya."
+      },
+      "name": {
+        "title": "Nama dan panggilannya",
+        "hint": "Nama ini akan dinyanyikan di lagunya."
+      },
+      "occasion": {
+        "title": "Apa momennya?",
+        "hint": "Momen yang ingin kamu rayakan."
+      },
+      "music": {
+        "title": "Pilih genre dan suara",
+        "hint": "Atur nuansa lagunya."
+      },
+      "special": {
+        "title": "Apa yang membuatnya spesial?",
+        "hint": "Sifat, kebiasaan, atau hal kecil yang kamu suka darinya."
+      },
+      "memory": {
+        "title": "Bagikan kenangan favoritmu",
+        "hint": "Momen yang paling kamu ingat bersamanya."
+      },
+      "message": {
+        "title": "Pesan dari hatimu",
+        "hint": "Hal yang ingin kamu sampaikan lewat lagu ini."
+      },
+      "contact": {
+        "title": "Kirim lagunya ke mana?",
+        "hint": "Kami kirim link lagumu ke email dan nomor HP ini."
+      }
+    },
+    "fields": {
+      "fallbackName": "dia",
+      "recipientType": "Lagu ini untuk siapa?",
+      "recipientOther": {
+        "label": "Untuk siapa?",
+        "placeholder": "mis. Guru favoritku"
+      },
+      "recipientName": {
+        "label": "Nama",
+        "placeholder": "mis. Nadia"
+      },
+      "recipientNickname": {
+        "label": "Panggilan sayang (opsional)",
+        "placeholder": "mis. Nad, Sayang, Bunda"
+      },
+      "occasion": "Apa momennya?",
+      "occasionOther": {
+        "label": "Momennya",
+        "placeholder": "mis. Ulang tahun pertama si kecil"
+      },
+      "genre": "Genre",
+      "voice": "Suara penyanyi",
+      "language": "Bahasa lagu",
+      "mood": {
+        "heading": "Mood (opsional)",
+        "label": "Mood"
+      },
+      "special": {
+        "label": "Apa yang membuat {name} spesial?",
+        "placeholder": "mis. Dia selalu tertawa paling keras di film komedi, dan selalu ingat kopi favoritku."
+      },
+      "memory": {
+        "label": "Kenangan favoritmu bersamanya",
+        "placeholder": "mis. Kehujanan di Braga lalu berteduh di toko buku sampai tutup."
+      },
+      "message": {
+        "label": "Pesan untuk {name}",
+        "placeholder": "mis. Terima kasih sudah selalu ada. Aku bangga jadi bagian hidupmu."
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "nama@email.com"
+      },
+      "phone": {
+        "label": "Nomor HP / WhatsApp",
+        "placeholder": "0812 3456 7890"
+      },
+      "privacy": "Kami hanya memakai kontak ini untuk mengirim lagumu. Tanpa spam.",
+      "counterMin": "{length}/{max} · minimal {min}",
+      "counter": "{length}/{max}"
+    },
+    "review": {
+      "for": "Untuk",
+      "name": "Nama",
+      "occasion": "Momen",
+      "music": "Musik",
+      "special": "Yang membuatnya spesial",
+      "memory": "Kenangan favorit",
+      "message": "Pesan dari hati",
+      "contact": "Dikirim ke",
+      "edit": "Ubah {label}"
+    },
+    "preview": {
+      "forWho": "Untuk {who}",
+      "defaultMeta": "Lagu spesial",
+      "songFor": "Lagu untuk {name}",
+      "songForEmpty": "Lagu untuk …",
+      "tagsPlaceholder": "Genre · Suara · Mood",
+      "fromStory": "Dari ceritamu",
+      "quotePlaceholder": "Ceritamu akan kami rangkai menjadi lirik yang hanya cocok untuknya."
+    }
+  },
+  "validation": {
+    "required": "Wajib diisi",
+    "minChars": "Minimal {min} karakter",
+    "maxChars": "Maksimal {max} karakter",
+    "pickOne": "Pilih salah satu",
+    "pickGenre": "Pilih genre",
+    "pickVoice": "Pilih suara",
+    "emailFormat": "Format email belum benar",
+    "emailValid": "Masukkan email yang valid",
+    "phoneFormat": "Nomor HP belum benar (contoh: 0812 3456 7890)",
+    "recipientOther": "Tulis untuk siapa lagu ini",
+    "occasionOther": "Tulis momennya",
+    "passwordRequired": "Password wajib diisi",
+    "passwordMismatch": "Password tidak sama",
+    "nameMin": "Nama minimal {min} huruf",
+    "nameMax": "Nama maksimal {max} huruf",
+    "messageMin": "Pesan minimal {min} karakter",
+    "messageMax": "Pesan maksimal {max} karakter"
+  },
+  "job": {
+    "stages": {
+      "lyrics": {
+        "label": "Menulis lirik",
+        "detail": "Merangkai ceritamu jadi bait dan reff",
+        "tips": [
+          "Memilih kata yang paling pas untuk kenanganmu…",
+          "Menyusun reff yang mudah diingat…",
+          "Menyelipkan nama panggilannya ke dalam lirik…"
+        ]
+      },
+      "music": {
+        "label": "Membuat musik & vokal",
+        "detail": "Mengaransemen musik dan merekam vokal",
+        "tips": [
+          "Menyetel tempo sesuai mood pilihanmu…",
+          "Menyanyikan bait pertama…",
+          "Menambahkan harmoni di bagian reff…",
+          "Ini bagian paling lama — sebentar lagi ya…"
+        ]
+      },
+      "finishing": {
+        "label": "Sentuhan akhir",
+        "detail": "Menyiapkan preview sampai reff pertama untukmu",
+        "tips": ["Merapikan suara…", "Hampir selesai…"]
+      }
+    },
+    "preparingTip": "Menyiapkan studio untuk lagumu…",
+    "status": {
+      "queued": "Menyiapkan lagumu…",
+      "generating_lyrics": "Menulis lirik spesial…",
+      "generating_music": "Mengaransemen musik & merekam vokal…",
+      "processing_audio": "Sentuhan akhir…",
+      "completed": "Lagumu sudah siap!",
+      "failed": "Maaf, terjadi kendala."
+    },
+    "eyebrowDone": "Lagumu sudah jadi",
+    "eyebrowRunning": "Sedang dibuat",
+    "titleFor": "Lagu untuk {name}",
+    "titleDefault": "Lagu spesialmu",
+    "opening": "Membuka lagumu…",
+    "doneTip": "Selesai! 🎉",
+    "progressAria": "Progres pembuatan lagu",
+    "stageDone": "Selesai",
+    "stageRunning": "Sedang berjalan",
+    "stageWaiting": "Menunggu",
+    "saveHint": "Biasanya 1–3 menit. Kamu boleh menutup halaman ini — buka lagi link ini nanti dan lagumu tetap ada.",
+    "signInHint": "Masuk dengan emailmu agar lagu tersimpan di akunmu",
+    "failedTitle": "Maaf, lagumu belum berhasil dibuat",
+    "failure": {
+      "contentFlagged": "Maaf, beberapa jawabanmu tidak bisa kami proses. Coba ubah kata-katanya lalu buat ulang.",
+      "busy": "Server kami sedang sibuk. Silakan coba lagi beberapa saat lagi.",
+      "generic": "Maaf, terjadi kendala saat membuat lagumu. Silakan coba lagi."
+    },
+    "tryAgain": "Coba lagi",
+    "editAnswers": "Ubah jawaban",
+    "newSong": "Buat lagu baru",
+    "answersKept": "Jawabanmu masih tersimpan, kamu tidak perlu mengisi ulang.",
+    "regenerateFailed": "Gagal membuat ulang lagu.",
+    "regenerateErrors": {
+      "limit": "Batas buat ulang untuk lagu ini sudah habis.",
+      "processing": "Lagu ini masih diproses.",
+      "busy": "Layanan sedang sibuk. Silakan coba lagi."
+    }
+  },
+  "song": {
+    "player": {
+      "full": "Lagu lengkap",
+      "preview": "Preview gratis",
+      "noAudio": "Browsermu tidak mendukung pemutar audio.",
+      "seekAria": "Posisi lagu",
+      "seekValue": "{time} dari {duration}",
+      "pause": "Jeda",
+      "replay": "Putar ulang",
+      "play": "Putar",
+      "download": "Unduh MP3",
+      "previewNote": "Preview sampai reff pertama · lagu lengkap ±{minutes} menit"
+    },
+    "lyrics": {
+      "title": "Lirik",
+      "untilChorus": "Sampai reff pertama",
+      "full": "Lirik lengkap",
+      "locked": "Lirik lengkap ada di full lagu",
+      "sections": {
+        "preChorus": "{n, select, none {Pra-Reff} other {Pra-Reff {n}}}",
+        "chorus": "{n, select, none {Reff} other {Reff {n}}}",
+        "verse": "{n, select, none {Bait} other {Bait {n}}}",
+        "bridge": "Bridge",
+        "intro": "Intro",
+        "outro": "Outro",
+        "hook": "Hook"
+      }
+    },
+    "paymentSuccessToast": "Pembayaran berhasil! Lagu lengkapmu sudah terbuka.",
+    "paymentCheckFailed": "Status pembayaran tidak bisa dicek.",
+    "newSong": "Buat lagu baru",
+    "paidBanner": "Pembayaran berhasil. Selamat menikmati lagu lengkapmu!",
+    "waitingDoku": "Menunggu konfirmasi pembayaran dari DOKU…",
+    "unpaid": {
+      "pending": "Pembayaranmu belum terkonfirmasi. Kalau sudah bayar, tunggu sebentar lalu cek lagi.",
+      "expired": "Waktu pembayaran sudah habis. Silakan buat pembayaran baru.",
+      "failed": "Pembayaran gagal. Silakan coba lagi."
+    },
+    "continuePayment": "Lanjutkan pembayaran",
+    "checkAgain": "Cek lagi",
+    "notQuite": "Belum pas di hati?",
+    "regenExhausted": "Jatah buat ulang lagu ini sudah habis. Buat lagu baru dengan jawaban berbeda.",
+    "regenOptions": "Buat ulang dengan jawaban yang sama, ubah ceritamu, atau mulai lagu baru.",
+    "regenerate": "Buat Ulang",
+    "regenerateLeft": "Buat Ulang (sisa {count})",
+    "editAnswers": "Ubah Jawaban",
+    "newSongCta": "Buat Lagu Baru",
+    "unlock": {
+      "heading": "Full lagu + lirik lengkap",
+      "normalPriceAria": "Harga normal {price}",
+      "save": "Hemat {percent}%",
+      "voucher": "Voucher",
+      "removeVoucher": "Hapus voucher",
+      "total": "Total bayar",
+      "voucherPlaceholder": "Kode voucher",
+      "apply": "Pakai",
+      "haveVoucher": "Punya kode voucher?",
+      "cta": "Dapatkan Full Lagu",
+      "ctaWithPrice": "Dapatkan Full Lagu · {price}",
+      "unavailable": "Pembayaran belum tersedia saat ini.",
+      "methods": "Bayar aman lewat: QRIS, e-wallet, virtual account, atau kartu.",
+      "enterVoucher": "Masukkan kode voucher.",
+      "voucherFailed": "Voucher tidak bisa dipakai.",
+      "checkoutFailed": "Halaman pembayaran tidak bisa dibuka.",
+      "errors": {
+        "voucherInvalid": "Kode voucher tidak ditemukan, sudah tidak aktif, atau sudah kedaluwarsa.",
+        "voucherConflict": "Voucher ini sudah kamu pakai atau kuotanya sudah habis.",
+        "paymentUnavailable": "Pembayaran belum tersedia. Silakan coba lagi nanti.",
+        "checkoutConflict": "Lagu ini sudah terbuka penuh, atau email dan nomor HP belum diisi.",
+        "accountDisabled": "Akun ini dinonaktifkan."
+      }
+    }
+  },
+  "auth": {
+    "headings": {
+      "email": {
+        "title": "Masuk ke akunmu",
+        "hint": "Pakai email yang kamu isi saat membuat lagu."
+      },
+      "password": {
+        "title": "Selamat datang kembali",
+        "hint": "Masukkan password akunmu."
+      },
+      "code": {
+        "title": "Cek emailmu",
+        "hint": "Kami mengirim kode 6 digit untuk memastikan ini benar kamu."
+      },
+      "setPassword": {
+        "title": "Buat password",
+        "hint": "Lain kali kamu cukup masuk dengan email dan password ini."
+      },
+      "done": {
+        "title": "Berhasil masuk",
+        "hint": "Mengarahkan…"
+      }
+    },
+    "signedInAs": "Masuk sebagai {email}",
+    "safety": "Kami tidak pernah meminta kode atau passwordmu lewat chat atau telepon.",
+    "email": "Email",
+    "emailPlaceholder": "nama@email.com",
+    "changeEmail": "Ganti email",
+    "password": "Password",
+    "signIn": "Masuk",
+    "continue": "Lanjut",
+    "showPassword": "Tampilkan password",
+    "hidePassword": "Sembunyikan password",
+    "code": {
+      "sentTo": "Dikirim ke <b>{email}</b>",
+      "change": "Ganti",
+      "label": "Kode verifikasi",
+      "verify": "Verifikasi",
+      "noCode": "Tidak menerima kode? Cek folder spam, atau",
+      "resendIn": "kirim ulang dalam {seconds} dtk",
+      "sending": "mengirim…",
+      "resend": "kirim ulang kode",
+      "group": "Kode 6 digit",
+      "digit": "Digit {n}"
+    },
+    "setPassword": {
+      "verified": "Email <b>{email}</b> terverifikasi",
+      "newPassword": "Password baru",
+      "hint": "Minimal {min} karakter. Gabungkan huruf, angka atau simbol.",
+      "confirm": "Ulangi password",
+      "signInAgain": "Masuk lagi",
+      "save": "Simpan & masuk"
+    },
+    "strength": {
+      "weak": "Lemah",
+      "fair": "Cukup",
+      "strong": "Kuat",
+      "veryStrong": "Sangat kuat"
+    },
+    "failed": {
+      "signIn": "Tidak bisa masuk. Coba lagi.",
+      "continue": "Tidak bisa melanjutkan. Coba lagi.",
+      "wrongCode": "Kode salah.",
+      "verify": "Kode belum bisa diperiksa. Coba lagi.",
+      "resend": "Kode belum bisa dikirim ulang. Coba lagi.",
+      "savePassword": "Password belum bisa disimpan. Coba lagi."
+    },
+    "errors": {
+      "notRegistered": "Email ini belum terdaftar. Buat lagu pertamamu dulu — emailmu akan terdaftar di langkah terakhir.",
+      "suspended": "Akun ini sedang dinonaktifkan. Hubungi kami untuk bantuan.",
+      "badLogin": "Email atau password salah.",
+      "tooMany": "Terlalu banyak percobaan. Coba lagi sebentar lagi.",
+      "hasPassword": "Akun ini sudah punya password. Masuk dengan password.",
+      "codeExpired": "Kode sudah tidak berlaku atau terlalu banyak kode salah. Minta kode baru.",
+      "setupExpired": "Sesi verifikasi sudah berakhir. Masuk lagi untuk menerima kode baru.",
+      "sendUnavailable": "Kode belum bisa dikirim. Coba lagi sebentar lagi."
+    }
+  },
+  "contact": {
+    "eyebrow": "Kontak",
+    "title": "Ada yang bisa <highlight>kami bantu?</highlight>",
+    "body": "Pertanyaan soal lagu, pembayaran, atau sekadar ingin memberi masukan? Tulis pesanmu dan kami akan membalas ke email kamu.",
+    "shortcuts": {
+      "email": "Email",
+      "faq": {
+        "title": "FAQ",
+        "body": "Jawaban cepat untuk pertanyaan umum"
+      },
+      "terms": {
+        "title": "Syarat & Ketentuan",
+        "body": "Pembayaran, pengembalian dana, dan hak penggunaan"
+      }
+    },
+    "form": {
+      "title": "Kirim pesan",
+      "allRequired": "Semua kolom wajib diisi.",
+      "name": "Nama",
+      "namePlaceholder": "Nama kamu",
+      "email": "Email",
+      "emailPlaceholder": "nama@email.com",
+      "topic": "Topik",
+      "message": "Pesan",
+      "messagePlaceholder": "Ceritakan apa yang bisa kami bantu. Jika soal pesanan, sertakan link lagu atau email akunmu.",
+      "sending": "Mengirim…",
+      "send": "Kirim Pesan",
+      "sentTitle": "Pesan terkirim!",
+      "sentBody": "Terima kasih sudah menghubungi kami. Balasan akan dikirim ke <b>{email}</b>.",
+      "sendAnother": "Kirim pesan lain",
+      "failed": "Pesan belum terkirim. Coba lagi sebentar lagi.",
+      "tooMany": "Terlalu banyak pesan terkirim. Coba lagi beberapa menit lagi.",
+      "missing": "Nama dan pesan wajib diisi."
+    },
+    "topics": {
+      "general": "Pertanyaan umum",
+      "order": "Pesanan & pembayaran",
+      "refund": "Pengembalian dana",
+      "song": "Masalah lagu",
+      "partner": "Kerja sama",
+      "other": "Lainnya"
+    }
+  },
+  "legal": {
+    "eyebrow": "Legal",
+    "title": "Syarat & Ketentuan",
+    "updated": "Terakhir diperbarui {date}",
+    "prevailing": "Versi Bahasa Indonesia dari ketentuan ini adalah versi yang berlaku.",
+    "toc": "Daftar isi",
+    "sections": {
+      "penerimaan": {
+        "title": "Penerimaan Ketentuan",
+        "body": [
+          "Dengan mengakses atau menggunakan Cerita Lagu (\"Layanan\"), kamu menyetujui Syarat & Ketentuan ini. Jika kamu tidak setuju, mohon untuk tidak menggunakan Layanan.",
+          "Kami dapat memperbarui ketentuan ini sewaktu-waktu. Versi terbaru selalu tersedia di halaman ini, dan penggunaan Layanan setelah perubahan berarti kamu menyetujui versi tersebut."
+        ]
+      },
+      "layanan": {
+        "title": "Tentang Layanan",
+        "body": [
+          "Cerita Lagu membuat lagu personal berdasarkan jawaban kuesioner yang kamu isi. Lirik, aransemen, dan vokal dihasilkan dengan bantuan teknologi kecerdasan buatan (AI).",
+          "Karena dibuat oleh AI, hasil setiap lagu bisa berbeda-beda dan tidak selalu sesuai harapan. Kami tidak menjamin pelafalan nama, ketepatan rima, atau gaya musik akan persis seperti yang kamu bayangkan."
+        ]
+      },
+      "akun": {
+        "title": "Akun & Penggunaan Tanpa Akun",
+        "body": [
+          "Kamu dapat mengisi kuesioner dan mendengarkan preview tanpa membuat akun. Untuk menyimpan lagu dan membuka versi penuh, kamu perlu masuk menggunakan alamat email yang valid.",
+          "Kamu bertanggung jawab menjaga kerahasiaan akses ke akun dan email kamu, serta atas semua aktivitas yang terjadi melalui akun tersebut.",
+          "Lagu yang dibuat tanpa akun tersimpan di perangkat/peramban yang kamu gunakan. Jika tidak diklaim ke akun dalam 30 hari, data dan lagu tersebut dapat dihapus secara otomatis."
+        ]
+      },
+      "konten-pengguna": {
+        "title": "Isi Kuesioner",
+        "body": [
+          "Kamu menjamin bahwa cerita, nama, dan informasi yang kamu masukkan adalah milikmu atau kamu berhak menggunakannya, serta tidak melanggar hak orang lain.",
+          "Kamu dilarang memasukkan konten yang mengandung ujaran kebencian, SARA, pornografi, kekerasan, pencemaran nama baik, pelecehan, atau hal lain yang melanggar hukum Republik Indonesia.",
+          "Kami berhak menolak, menghentikan pembuatan, atau menghapus lagu yang melanggar ketentuan ini, tanpa kewajiban pengembalian dana."
+        ]
+      },
+      "preview": {
+        "title": "Preview & Buat Ulang",
+        "body": [
+          "Setiap lagu menyediakan preview gratis berupa potongan awal lagu. Dengarkan preview terlebih dahulu sebelum membeli lagu versi penuh.",
+          "Kamu dapat membuat ulang lagu dari jawaban yang sama dalam batas kuota yang ditampilkan di halaman lagu. Kuota pembuatan lagu harian juga dapat dibatasi untuk mencegah penyalahgunaan."
+        ]
+      },
+      "harga": {
+        "title": "Harga & Pembayaran",
+        "body": [
+          "Harga lagu versi penuh ditampilkan dalam Rupiah (IDR) sebelum kamu membayar, termasuk potongan dari voucher yang berlaku. Pembayaran dilakukan sekali per lagu.",
+          "Pembayaran diproses oleh mitra payment gateway kami (DOKU). Kami tidak menyimpan data kartu atau rekening kamu.",
+          "Pesanan yang tidak dibayar dalam batas waktu yang ditentukan akan kedaluwarsa secara otomatis. Kamu dapat melakukan checkout ulang kapan saja.",
+          "Voucher hanya berlaku sesuai ketentuan, masa berlaku, dan kuotanya masing-masing, tidak dapat diuangkan, dan dapat dibatalkan jika terindikasi disalahgunakan."
+        ]
+      },
+      "pengiriman": {
+        "title": "Pengiriman Produk Digital",
+        "body": [
+          "Lagu versi penuh adalah produk digital. Setelah pembayaran berhasil dikonfirmasi, lagu langsung terbuka di halaman lagu dan dapat didengarkan serta diunduh melalui akun kamu."
+        ]
+      },
+      "pengembalian-dana": {
+        "title": "Pembatalan & Pengembalian Dana",
+        "body": [
+          "Karena preview tersedia sebelum pembelian dan lagu diserahkan secara instan, pembelian yang sudah berhasil tidak dapat dibatalkan atau dikembalikan dananya karena alasan selera atau perubahan pikiran.",
+          "Pengembalian dana dapat diberikan apabila: (a) kamu terkena tagihan ganda untuk lagu yang sama; (b) pembayaran berhasil tetapi lagu tidak terbuka dan kami tidak dapat memperbaikinya; atau (c) file lagu rusak dan kami tidak dapat menyediakan penggantinya.",
+          "Ajukan permintaan paling lambat 7 hari setelah pembayaran dengan menyertakan email akun dan bukti pembayaran. Dana yang disetujui dikembalikan melalui metode pembayaran awal sesuai waktu proses dari penyedia pembayaran."
+        ]
+      },
+      "hak-penggunaan": {
+        "title": "Hak Penggunaan Lagu",
+        "body": [
+          "Setelah membeli lagu versi penuh, kamu boleh menggunakan lagu tersebut untuk keperluan pribadi dan non-komersial, misalnya diputar di acara keluarga, dijadikan hadiah, atau dibagikan di media sosial pribadimu.",
+          "Penggunaan komersial, seperti menjual ulang lagu, mendaftarkannya ke layanan distribusi musik atau streaming, atau memakainya dalam iklan berbayar, tidak diizinkan tanpa persetujuan tertulis dari kami.",
+          "Kami dapat menggunakan lagu dan lirik secara anonim (tanpa nama dan data pribadi) untuk peningkatan kualitas layanan. Kami tidak akan menampilkan lagumu sebagai contoh publik tanpa izinmu."
+        ]
+      },
+      "larangan": {
+        "title": "Penggunaan yang Dilarang",
+        "body": [
+          "Kamu dilarang mencoba mengakses lagu versi penuh tanpa membayar, mengganggu atau membebani sistem, menggunakan bot atau skrip otomatis, atau menyalahgunakan kuota, voucher, maupun celah keamanan Layanan.",
+          "Pelanggaran dapat mengakibatkan pembatasan akses, penonaktifan akun, dan pembatalan pembelian."
+        ]
+      },
+      "privasi": {
+        "title": "Data Pribadi",
+        "body": [
+          "Kami memproses jawaban kuesioner, alamat email, dan data teknis seperlunya untuk membuat lagu, menjalankan akun, memproses pembayaran, dan mencegah penyalahgunaan. Kami tidak menjual data pribadimu kepada pihak lain.",
+          "Kamu dapat meminta penghapusan akun dan data lagumu dengan menghubungi kami."
+        ]
+      },
+      "tanggung-jawab": {
+        "title": "Batasan Tanggung Jawab",
+        "body": [
+          "Layanan disediakan \"sebagaimana adanya\". Kami berupaya menjaga Layanan tetap tersedia, tetapi tidak menjamin Layanan bebas gangguan atau kesalahan.",
+          "Sejauh diizinkan hukum, tanggung jawab kami atas setiap klaim terkait suatu lagu terbatas pada jumlah yang kamu bayarkan untuk lagu tersebut."
+        ]
+      },
+      "hukum": {
+        "title": "Hukum yang Berlaku",
+        "body": [
+          "Syarat & Ketentuan ini diatur oleh hukum Republik Indonesia. Setiap perselisihan akan diupayakan diselesaikan secara musyawarah terlebih dahulu."
+        ]
+      }
+    },
+    "contact": {
+      "title": "Hubungi Kami",
+      "body": "Punya pertanyaan tentang ketentuan ini, pembayaran, atau pengembalian dana? Kirim pesan lewat <link>halaman kontak</link> atau email ke <mail>{email}</mail>."
+    }
+  },
+  "notFound": {
+    "message": "Halaman ini tidak ada.",
+    "home": "Kembali ke beranda"
+  },
+  "errors": {
+    "BAD_REQUEST": "Permintaan belum bisa diproses. Periksa lagi isiannya.",
+    "VALIDATION_ERROR": "Ada isian yang belum benar.",
+    "UNAUTHORIZED": "Silakan masuk terlebih dahulu.",
+    "FORBIDDEN": "Kamu tidak punya akses untuk ini.",
+    "NOT_FOUND": "Data yang dicari tidak ditemukan.",
+    "CONFLICT": "Permintaan ini tidak bisa diproses sekarang.",
+    "TOO_MANY_REQUESTS": "Terlalu banyak percobaan. Coba lagi sebentar lagi.",
+    "SERVICE_UNAVAILABLE": "Layanan sedang sibuk. Silakan coba lagi.",
+    "INTERNAL_ERROR": "Terjadi kendala di server kami. Silakan coba lagi.",
+    "NETWORK_ERROR": "Tidak bisa terhubung ke server. Periksa koneksi internetmu.",
+    "ABORTED": "Permintaan dibatalkan.",
+    "unknown": "Terjadi kendala. Silakan coba lagi.",
+    "fieldInvalid": "Isian ini belum benar.",
+    "email_not_registered": "Email ini belum terdaftar. Buat lagu pertamamu dulu — emailmu akan terdaftar di langkah terakhir.",
+    "account_suspended": "Akun ini sedang dinonaktifkan. Hubungi kami untuk bantuan.",
+    "invalid_credentials": "Email atau password salah.",
+    "otp_invalid": "Kode salah. Periksa lagi email dari kami.",
+    "otp_expired": "Kode sudah tidak berlaku. Minta kode baru.",
+    "otp_too_many_attempts": "Terlalu banyak kode salah. Minta kode baru.",
+    "otp_send_failed": "Kode belum bisa dikirim. Coba lagi sebentar lagi.",
+    "setup_session_expired": "Sesi verifikasi sudah berakhir. Masuk lagi untuk menerima kode baru.",
+    "password_already_set": "Akun ini sudah punya password. Masuk dengan password.",
+    "password_too_short": "Password terlalu pendek.",
+    "password_too_long": "Password terlalu panjang.",
+    "password_blank": "Password tidak boleh hanya spasi.",
+    "login_required": "Silakan masuk terlebih dahulu.",
+    "too_many_attempts": "Terlalu banyak percobaan. Coba lagi sebentar lagi.",
+    "voucher_required": "Masukkan kode voucher.",
+    "voucher_not_found": "Kode voucher tidak ditemukan.",
+    "voucher_inactive": "Voucher ini sudah tidak aktif.",
+    "voucher_expired": "Voucher ini sudah kedaluwarsa.",
+    "voucher_already_used": "Voucher ini sudah kamu pakai.",
+    "voucher_quota_exhausted": "Kuota voucher ini sudah habis.",
+    "payment_unavailable": "Pembayaran belum tersedia. Silakan coba lagi nanti.",
+    "checkout_unavailable": "Halaman pembayaran tidak bisa dibuka. Coba lagi sebentar lagi.",
+    "song_already_unlocked": "Lagu ini sudah terbuka penuh.",
+    "contact_details_missing": "Isi email dan nomor HP dulu sebelum membeli lagu.",
+    "account_disabled": "Akun ini dinonaktifkan.",
+    "daily_quota_exceeded": "Kuota lagu gratis hari ini sudah habis. Coba lagi besok atau daftar untuk melanjutkan.",
+    "regenerate_limit_reached": "Batas buat ulang untuk lagu ini sudah habis.",
+    "job_in_progress": "Lagu ini masih diproses.",
+    "generation_unavailable": "Layanan sedang sibuk. Silakan coba lagi.",
+    "full_song_locked": "Lagu lengkap tersedia setelah pembayaran.",
+    "required": "Wajib diisi.",
+    "invalid_email": "Format email belum benar.",
+    "below_min": "Isian ini terlalu pendek.",
+    "above_max": "Isian ini terlalu panjang.",
+    "invalid_choice": "Pilihan ini tidak valid.",
+    "invalid_format": "Format isian belum benar.",
+    "option_unavailable": "Pilihan ini sudah tidak tersedia.",
+    "contact_fields_missing": "Nama dan pesan wajib diisi.",
+    "contact_send_failed": "Pesan belum terkirim. Coba lagi sebentar lagi.",
+    "too_many_messages": "Terlalu banyak pesan terkirim. Coba lagi beberapa menit lagi."
+  }
+}

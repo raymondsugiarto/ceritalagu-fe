@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { getTranslations } from "next-intl/server";
 import { LoginView } from "./login-view";
 
-export const metadata: Metadata = { title: "Masuk" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("metadata");
+  return { title: t("login") };
+}
 
 export default function LoginPage() {
   return (

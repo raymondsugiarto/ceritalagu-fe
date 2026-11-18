@@ -56,6 +56,19 @@ export interface MasterDataItemOutput {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+  /** Every non-default locale, e.g. `{ en: { name: "Mom", description: "" } }`; "" = not filled. */
+  translations: Record<string, MasterDataTranslationOutput>;
+}
+
+export interface MasterDataTranslationOutput {
+  name: string;
+  description: string;
+}
+
+/** One locale's text; an omitted field is unchanged, "" clears it (falls back to the base text). */
+export interface MasterDataTranslationInput {
+  name?: string;
+  description?: string;
 }
 
 export interface CreateItemInput {
@@ -66,6 +79,8 @@ export interface CreateItemInput {
   hint?: string;
   sort_order?: number;
   is_active?: boolean;
+  /** Per non-default locale (only `en` today). */
+  translations?: Record<string, MasterDataTranslationInput>;
 }
 
 /** Only set fields change; the code is fixed after creation. */
@@ -74,9 +89,12 @@ export type UpdateItemInput = Partial<Omit<CreateItemInput, "code">>;
 /** A public questionnaire option (no prompt hint). */
 export interface OptionOutput {
   code: string;
+  /** Resolved for the request locale (NEXT_LOCALE cookie → Accept-Language → id). */
   name: string;
   description?: string;
   icon?: string;
+  /** Locale the name came from; "id" when an `en` request fell back to the base text. */
+  locale: "id" | "en";
 }
 
 export interface QuestionnaireOptionsOutput {

@@ -3,24 +3,28 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
+  ArrowRightIcon,
   CheckCircle2Icon,
-  DownloadIcon,
   Loader2Icon,
-  LockIcon,
+  MusicIcon,
   PencilIcon,
   PlusIcon,
   RotateCcwIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CustomerShell } from "@/components/customer/customer-shell";
 import { Skeleton } from "@/components/ui/skeleton";
-import { errorMessage } from "@/lib/api";
-import { NEW_SONG_HREF, VOICES, labelOf } from "@/lib/questionnaire";
+import { useApiError } from "@/hooks/use-api-error";
+import { NEW_SONG_HREF, labelOf } from "@/lib/questionnaire";
 import { useQuestionnaireOptions } from "@/hooks/use-questionnaire-options";
-import { loadErrorText, songApi, type SongOutput } from "@/lib/song-api";
+import { loadErrorKind, songApi, type LoadErrorKind, type SongOutput } from "@/lib/song-api";
 import { paymentApi, type OrderOutput, type PricingOutput } from "@/lib/payment-api";
+import { cn } from "@/lib/utils";
+import { LyricsCard } from "./lyrics-card";
+import { SongPlayer } from "./song-player";
 import { UnlockPanel } from "./unlock-panel";
 
 /** After DOKU sends the buyer back, poll the order until DOKU confirms (≈1 minute). */
@@ -34,9 +38,7 @@ type PaymentState =
   | { kind: "unpaid"; order: OrderOutput };
 
 type SongState =
-  | { kind: "loading" }
-  | { kind: "ok"; song: SongOutput }
-  | { kind: "error"; title: string; message: string };
+  { kind: "loading" } | { kind: "ok"; song: SongOutput } | { kind: "error"; error: LoadErrorKind };
 
 interface SongViewProps {
   songId: string;
@@ -46,6 +48,15 @@ interface SongViewProps {
 
 /** Result page: preview up to the end of the first chorus, lyrics up to the first chorus, unlock CTA (PRD §5.3). */
 export function SongView({ songId, orderId }: SongViewProps) {
+  const t = useTranslations("song");
+  const tc = useTranslations("common");
+  const tJob = useTranslations("job");
+  const { errorText } = useApiError();
+  // Latest texts for the effects below without re-running them on identity changes.
+  const text = React.useRef({ t, errorText });
+  React.useEffect(() => {
+    text.current = { t, errorText };
+  });
   const router = useRouter();
   const [state, setState] = React.useState<SongState>({ kind: "loading" });
   const [regenerating, setRegenerating] = React.useState(false);
@@ -60,6 +71,7 @@ export function SongView({ songId, orderId }: SongViewProps) {
   const { state: options } = useQuestionnaireOptions();
   // Genre name from master data; the code is shown until the options arrive (or if it was archived).
   const genres = options.kind === "ok" ? options.options.genres : [];
+  const moods = options.kind === "ok" ? options.options.moods : [];
 
   React.useEffect(() => {
     const controller = new AbortController();
@@ -68,7 +80,7 @@ export function SongView({ songId, orderId }: SongViewProps) {
       .then((song) => !controller.signal.aborted && setState({ kind: "ok", song }))
       .catch((err: unknown) => {
         if (!controller.signal.aborted) {
-          setState({ kind: "error", ...loadErrorText(err) });
+          setState({ kind: "error", error: loadErrorKind(err) });
         }
       });
     return () => controller.abort();
@@ -105,7 +117,7 @@ export function SongView({ songId, orderId }: SongViewProps) {
         if (order.status === "paid") {
           setPayment({ kind: "paid" });
           setReloadKey((k) => k + 1);
-          toast.success("Pembayaran berhasil! Lagu lengkapmu sudah terbuka.");
+          toast.success(text.current.t("paymentSuccessToast"));
           router.replace(`/songs/${songId}`, { scroll: false });
           return;
         }
@@ -117,7 +129,9 @@ export function SongView({ songId, orderId }: SongViewProps) {
         if (controller.signal.aborted) return;
         if (tries >= ORDER_POLL_TRIES) {
           setPayment({ kind: "idle" });
-          toast.error(errorMessage(err, "Status pembayaran tidak bisa dicek."));
+          toast.error(
+            text.current.errorText(err, { fallback: text.current.t("paymentCheckFailed") }),
+          );
           return;
         }
       }
@@ -136,190 +150,186 @@ export function SongView({ songId, orderId }: SongViewProps) {
       const job = await songApi.regenerate(jobId);
       router.push(`/jobs/${job.id}`);
     } catch (err) {
-      toast.error(errorMessage(err, "Gagal membuat ulang lagu."));
+      toast.error(
+        errorText(err, {
+          overrides: {
+            TOO_MANY_REQUESTS: tJob("regenerateErrors.limit"),
+            CONFLICT: tJob("regenerateErrors.processing"),
+            SERVICE_UNAVAILABLE: tJob("regenerateErrors.busy"),
+          },
+          fallback: tJob("regenerateFailed"),
+        }),
+      );
       setRegenerating(false);
     }
   }
 
   if (state.kind === "loading") {
     return (
-      <main className="mx-auto max-w-xl space-y-4 px-4 py-10">
-        <Skeleton className="h-8 w-2/3" />
-        <Skeleton className="h-14 w-full" />
-        <Skeleton className="h-48 w-full" />
-      </main>
+      <CustomerShell>
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,26rem)_1fr]">
+          <Skeleton className="h-[26rem] w-full rounded-3xl" />
+          <Skeleton className="h-96 w-full rounded-3xl" />
+        </div>
+      </CustomerShell>
     );
   }
 
   if (state.kind === "error") {
     return (
-      <main className="mx-auto max-w-xl px-4 py-10">
-        <Card>
-          <CardHeader>
-            <CardTitle>{state.title}</CardTitle>
-            <CardDescription>{state.message}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Link href={NEW_SONG_HREF} className={buttonVariants()}>
-              Buat lagu baru
-            </Link>
-          </CardContent>
-        </Card>
-      </main>
+      <CustomerShell width="md" centered>
+        <div className="rounded-3xl border bg-card p-8 text-center shadow-xl">
+          <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-linear-to-br from-primary to-highlight text-primary-foreground">
+            <MusicIcon className="size-7" aria-hidden />
+          </span>
+          <h1 className="mt-5 text-xl font-semibold">{tc(`loadError.${state.error}.title`)}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {tc(`loadError.${state.error}.message`)}
+          </p>
+          <Link
+            href={NEW_SONG_HREF}
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "mt-6 h-12 rounded-full px-7 shadow-lg shadow-primary/25",
+            )}
+          >
+            {t("newSong")}
+            <ArrowRightIcon aria-hidden />
+          </Link>
+        </div>
+      </CustomerShell>
     );
   }
 
   const { song } = state;
+  const meta = [
+    labelOf(genres, song.genre),
+    song.vocal_gender === "male" || song.vocal_gender === "female"
+      ? tc(`voiceTags.${song.vocal_gender}`)
+      : null,
+    song.mood ? labelOf(moods, song.mood) : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
   return (
-    <main className="mx-auto max-w-xl space-y-6 px-4 py-8 md:py-12">
-      <header className="space-y-1">
-        <p className="text-sm text-muted-foreground">
-          {labelOf(genres, song.genre)} · {labelOf(VOICES, song.vocal_gender)}
-        </p>
-        <h1 className="text-2xl font-semibold md:text-3xl">{song.title}</h1>
-      </header>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">
-            {song.audio_url ? "Lagu lengkap" : `Preview ${song.preview_duration_sec} detik`}
-          </CardTitle>
-          <CardDescription>
-            {song.audio_url
-              ? `Durasi sekitar ${Math.round(song.duration_sec / 60)} menit.`
-              : `Lagu lengkap berdurasi sekitar ${Math.round(song.duration_sec / 60)} menit.`}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <audio
-            key={song.audio_url ?? song.preview_url}
-            controls
-            preload="metadata"
+    <CustomerShell>
+      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-10">
+        <div className="space-y-6 lg:sticky lg:top-24">
+          <SongPlayer
+            title={song.title}
+            meta={meta}
             src={song.audio_url ?? song.preview_url}
-            className="w-full"
-          >
-            Browsermu tidak mendukung pemutar audio.
-          </audio>
-          {song.audio_url && (
-            <a
-              href={`${song.audio_url}?download=1`}
-              className={buttonVariants({ variant: "outline", size: "sm" })}
-            >
-              <DownloadIcon aria-hidden />
-              Unduh MP3
-            </a>
-          )}
-        </CardContent>
-      </Card>
+            full={!!song.audio_url}
+            durationHint={song.audio_url ? song.duration_sec : song.preview_duration_sec}
+            fullDurationSec={song.duration_sec}
+            downloadUrl={song.audio_url ? `${song.audio_url}?download=1` : undefined}
+          />
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Lirik</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm leading-relaxed whitespace-pre-line">
-            {song.is_unlocked && song.lyrics ? song.lyrics : song.lyrics_preview}
-          </p>
-          {!song.is_unlocked && (
-            <div className="relative overflow-hidden rounded-md border bg-muted/40 p-4">
-              <div aria-hidden className="space-y-2 blur-sm select-none">
-                <div className="h-3 w-4/5 rounded bg-muted-foreground/30" />
-                <div className="h-3 w-3/5 rounded bg-muted-foreground/30" />
-                <div className="h-3 w-2/3 rounded bg-muted-foreground/30" />
-                <div className="h-3 w-1/2 rounded bg-muted-foreground/30" />
-              </div>
-              <p className="absolute inset-0 flex items-center justify-center gap-2 text-sm font-medium">
-                <LockIcon className="size-4" aria-hidden />
-                Lirik lengkap tersedia di full lagu
-              </p>
+          {payment.kind === "paid" && song.is_unlocked && (
+            <div className="flex items-center gap-2 rounded-2xl border border-success/30 bg-success/10 p-4 text-sm text-success">
+              <CheckCircle2Icon className="size-5 shrink-0" aria-hidden />
+              {t("paidBanner")}
             </div>
           )}
-        </CardContent>
-      </Card>
 
-      {payment.kind === "paid" && song.is_unlocked && (
-        <div className="flex items-center gap-2 rounded-md bg-success/10 p-3 text-sm text-success">
-          <CheckCircle2Icon className="size-4" aria-hidden />
-          Pembayaran berhasil. Selamat menikmati lagu lengkapmu!
-        </div>
-      )}
-
-      {!song.is_unlocked && payment.kind === "checking" && (
-        <div className="flex items-center gap-2 rounded-md border p-4 text-sm">
-          <Loader2Icon className="size-4 animate-spin" aria-hidden />
-          Menunggu konfirmasi pembayaran dari DOKU…
-        </div>
-      )}
-
-      {!song.is_unlocked && payment.kind === "unpaid" && (
-        <div className="space-y-3 rounded-md border p-4 text-sm">
-          <p>
-            {payment.order.status === "pending"
-              ? "Pembayaranmu belum terkonfirmasi. Kalau sudah bayar, tunggu sebentar lalu cek lagi."
-              : payment.order.status === "expired"
-                ? "Waktu pembayaran sudah habis. Silakan buat pembayaran baru."
-                : "Pembayaran gagal. Silakan coba lagi."}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {payment.order.status === "pending" && payment.order.payment_url && (
-              <a href={payment.order.payment_url} className={buttonVariants({ size: "sm" })}>
-                Lanjutkan pembayaran
-              </a>
-            )}
-            {payment.order.status === "pending" && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => {
-                  setPayment({ kind: "checking" });
-                  setPollKey((k) => k + 1);
-                }}
-              >
-                Cek lagi
-              </Button>
-            )}
-          </div>
-        </div>
-      )}
-
-      {!song.is_unlocked && payment.kind !== "checking" && (
-        <UnlockPanel songId={songId} pricing={pricing} />
-      )}
-
-      <div className="space-y-2">
-        <div className="flex flex-wrap gap-3">
-          {regeneratesLeft !== 0 && (
-            <Button
-              variant="outline"
-              onClick={() => regenerate(song.job_id)}
-              disabled={regenerating}
-            >
-              {regenerating ? (
-                <Loader2Icon className="animate-spin" aria-hidden />
-              ) : (
-                <RotateCcwIcon aria-hidden />
-              )}
-              Buat Ulang{regeneratesLeft !== null ? ` (sisa ${regeneratesLeft})` : ""}
-            </Button>
+          {!song.is_unlocked && payment.kind === "checking" && (
+            <div className="flex items-center gap-3 rounded-2xl border bg-card p-4 text-sm shadow-sm">
+              <Loader2Icon className="size-5 shrink-0 animate-spin text-primary" aria-hidden />
+              {t("waitingDoku")}
+            </div>
           )}
-          <Link href="/create" className={buttonVariants({ variant: "outline" })}>
-            <PencilIcon aria-hidden />
-            Ubah Jawaban
-          </Link>
-          <Link
-            href={NEW_SONG_HREF}
-            className={buttonVariants({ variant: regeneratesLeft === 0 ? "default" : "outline" })}
-          >
-            <PlusIcon aria-hidden />
-            Buat Lagu Baru
-          </Link>
+
+          {!song.is_unlocked && payment.kind === "unpaid" && (
+            <div className="space-y-3 rounded-2xl border border-warning/30 bg-warning/10 p-4 text-sm">
+              <p>
+                {payment.order.status === "pending"
+                  ? t("unpaid.pending")
+                  : payment.order.status === "expired"
+                    ? t("unpaid.expired")
+                    : t("unpaid.failed")}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {payment.order.status === "pending" && payment.order.payment_url && (
+                  <a
+                    href={payment.order.payment_url}
+                    className={cn(buttonVariants({ size: "sm" }), "rounded-full")}
+                  >
+                    {t("continuePayment")}
+                  </a>
+                )}
+                {payment.order.status === "pending" && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="rounded-full"
+                    onClick={() => {
+                      setPayment({ kind: "checking" });
+                      setPollKey((k) => k + 1);
+                    }}
+                  >
+                    {t("checkAgain")}
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {!song.is_unlocked && payment.kind !== "checking" && (
+            <UnlockPanel songId={songId} pricing={pricing} />
+          )}
         </div>
-        {regeneratesLeft === 0 && (
-          <p className="text-xs text-muted-foreground">
-            Jatah buat ulang lagu ini sudah habis. Buat lagu baru dengan jawaban berbeda.
-          </p>
-        )}
+
+        <div className="space-y-6">
+          <LyricsCard
+            lyrics={song.is_unlocked && song.lyrics ? song.lyrics : song.lyrics_preview}
+            locked={!song.is_unlocked}
+          />
+
+          <section className="rounded-3xl border bg-card/80 p-6 shadow-sm backdrop-blur-sm">
+            <h2 className="font-semibold">{t("notQuite")}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {regeneratesLeft === 0 ? t("regenExhausted") : t("regenOptions")}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {regeneratesLeft !== 0 && (
+                <Button
+                  variant="outline"
+                  className="rounded-full"
+                  onClick={() => regenerate(song.job_id)}
+                  disabled={regenerating}
+                >
+                  {regenerating ? (
+                    <Loader2Icon className="animate-spin" aria-hidden />
+                  ) : (
+                    <RotateCcwIcon aria-hidden />
+                  )}
+                  {regeneratesLeft !== null
+                    ? t("regenerateLeft", { count: regeneratesLeft })
+                    : t("regenerate")}
+                </Button>
+              )}
+              <Link
+                href="/create"
+                className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}
+              >
+                <PencilIcon aria-hidden />
+                {t("editAnswers")}
+              </Link>
+              <Link
+                href={NEW_SONG_HREF}
+                className={cn(
+                  buttonVariants({ variant: regeneratesLeft === 0 ? "default" : "outline" }),
+                  "rounded-full",
+                )}
+              >
+                <PlusIcon aria-hidden />
+                {t("newSongCta")}
+              </Link>
+            </div>
+          </section>
+        </div>
       </div>
-    </main>
+    </CustomerShell>
   );
 }

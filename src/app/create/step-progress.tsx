@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 interface StepProgressProps {
@@ -11,6 +12,7 @@ interface StepProgressProps {
  * gradient show through, the rest are covered with the muted colour.
  */
 export function StepProgress({ current, total }: StepProgressProps) {
+  const t = useTranslations("create.progress");
   const done = Math.min(current, total);
   return (
     <div
@@ -18,7 +20,7 @@ export function StepProgress({ current, total }: StepProgressProps) {
       aria-valuemin={1}
       aria-valuemax={total}
       aria-valuenow={done}
-      aria-label="Progres pertanyaan"
+      aria-label={t("aria")}
       className="relative h-2 overflow-hidden rounded-full bg-linear-to-r from-primary to-highlight"
     >
       <div className="absolute inset-0 flex">

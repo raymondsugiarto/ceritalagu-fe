@@ -1,16 +1,23 @@
+import { createTranslator } from "next-intl";
 import { describe, expect, it } from "vitest";
+import en from "../../messages/en.json";
+import id from "../../messages/id.json";
 import {
   EMPTY_VALUES,
   OTHER,
   QUESTIONNAIRE_STEPS,
   TOTAL_STEPS,
-  questionnaireSchema,
+  createQuestionnaireSchema,
   staleChoices,
   stepOfField,
   toChoiceOptions,
   toCreateInput,
   type QuestionnaireValues,
 } from "./questionnaire";
+
+const questionnaireSchema = createQuestionnaireSchema(
+  createTranslator({ locale: "id", messages: id, namespace: "validation" }),
+);
 
 const valid: QuestionnaireValues = {
   ...EMPTY_VALUES,
@@ -27,7 +34,10 @@ const valid: QuestionnaireValues = {
 };
 
 describe("QUESTIONNAIRE_STEPS", () => {
-  it("has 8 steps numbered 1..8 in order, contact last", () => {
+  it("has 8 steps numbered 1..8 in order, contact last, each with a message key", () => {
+    expect(QUESTIONNAIRE_STEPS.every((s) => id.create.steps[s.id] && en.create.steps[s.id])).toBe(
+      true,
+    );
     expect(TOTAL_STEPS).toBe(8);
     expect(QUESTIONNAIRE_STEPS.map((s) => s.step)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
     expect(QUESTIONNAIRE_STEPS.at(-1)?.fields).toEqual(["email", "phone"]);
@@ -62,6 +72,17 @@ describe("questionnaireSchema", () => {
     expect(res.success).toBe(false);
     expect(res.error?.issues[0]?.path).toEqual(["recipient_other"]);
   });
+
+  it("localizes messages through the translator", () => {
+    const enSchema = createQuestionnaireSchema(
+      createTranslator({ locale: "en", messages: en, namespace: "validation" }),
+    );
+    const bad = { ...valid, special: "baik", email: "nadia" };
+    const idMessages = questionnaireSchema.safeParse(bad).error?.issues.map((i) => i.message);
+    const enMessages = enSchema.safeParse(bad).error?.issues.map((i) => i.message);
+    expect(idMessages).toEqual(["Minimal 10 karakter", "Format email belum benar"]);
+    expect(enMessages).toEqual(["At least 10 characters", "That email doesn’t look right"]);
+  });
 });
 
 describe("toCreateInput", () => {
@@ -81,12 +102,15 @@ describe("toCreateInput", () => {
 });
 
 describe("toChoiceOptions / staleChoices", () => {
-  const options = toChoiceOptions({
-    recipient_types: [{ code: "partner", name: "Pasangan" }],
-    occasions: [{ code: "birthday", name: "Ulang Tahun" }],
-    genres: [{ code: "pop", name: "Pop" }],
-    moods: [{ code: "warm", name: "Hangat" }],
-  });
+  const options = toChoiceOptions(
+    {
+      recipient_types: [{ code: "partner", name: "Pasangan", locale: "id" }],
+      occasions: [{ code: "birthday", name: "Ulang Tahun", locale: "id" }],
+      genres: [{ code: "pop", name: "Pop", locale: "id" }],
+      moods: [{ code: "warm", name: "Hangat", locale: "id" }],
+    },
+    "Lainnya",
+  );
 
   it("adds Lainnya to recipient and occasion only", () => {
     expect(options.recipientTypes.map((o) => o.code)).toEqual(["partner", OTHER]);

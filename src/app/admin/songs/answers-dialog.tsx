@@ -4,7 +4,19 @@ import * as React from "react";
 import { errorMessage } from "@/lib/api";
 import { formatDateTime } from "@/lib/format";
 import { adminSongApi, type AdminSongAnswersOutput } from "@/lib/admin-song-api";
-import { QUESTIONNAIRE_STEPS } from "@/lib/questionnaire";
+import { QUESTIONNAIRE_STEPS, type QuestionnaireStepId } from "@/lib/questionnaire";
+
+/** Step titles for the admin panel, which stays in Bahasa Indonesia (i18n plan §9.2). */
+const STEP_TITLES: Record<QuestionnaireStepId, string> = {
+  recipient: "Lagu ini untuk siapa?",
+  name: "Nama dan panggilannya",
+  occasion: "Apa momennya?",
+  music: "Pilih genre dan suara",
+  special: "Apa yang membuatnya spesial?",
+  memory: "Bagikan kenangan favoritmu",
+  message: "Pesan dari hatimu",
+  contact: "Kirim lagunya ke mana?",
+};
 import {
   Dialog,
   DialogContent,
@@ -119,7 +131,7 @@ function AnswerSteps({ a }: { a: AdminSongAnswersOutput }) {
             <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs text-primary">
               {s.step}
             </span>
-            {s.title}
+            {STEP_TITLES[s.id]}
           </p>
           <dl className="grid grid-cols-[6rem_1fr] gap-x-3 gap-y-1">
             {(rows[s.step] ?? []).map(([k, v]) => (

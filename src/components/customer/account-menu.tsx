@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { LogInIcon, LogOutIcon, UserRoundIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { useCustomer } from "@/hooks/use-customer";
@@ -9,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 /** Header slot: "Masuk" when signed out; the customer's email and "Keluar" when signed in. */
 export function AccountMenu({ className }: { className?: string }) {
+  const t = useTranslations("common.account");
   const pathname = usePathname();
   const { state, signOut } = useCustomer();
 
@@ -23,7 +25,7 @@ export function AccountMenu({ className }: { className?: string }) {
         className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "rounded-full", className)}
       >
         <LogInIcon aria-hidden />
-        Masuk
+        {t("signIn")}
       </Link>
     );
   }
@@ -40,7 +42,7 @@ export function AccountMenu({ className }: { className?: string }) {
         className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "rounded-full")}
       >
         <LogOutIcon aria-hidden />
-        Keluar
+        {t("signOut")}
       </button>
     </div>
   );

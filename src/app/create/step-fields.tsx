@@ -2,15 +2,16 @@
 
 import * as React from "react";
 import { Controller, type UseFormReturn } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { LockIcon } from "lucide-react";
 import { FieldError } from "@/components/ui/field-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  LANGUAGES,
   OTHER,
-  VOICES,
+  SONG_LANGUAGE_CODES,
+  VOICE_CODES,
   type ChoiceOptions,
   type Option,
   type QuestionnaireField,
@@ -18,6 +19,9 @@ import {
 } from "@/lib/questionnaire";
 import { cn } from "@/lib/utils";
 import { ChoiceGroup } from "./choice-group";
+
+/** Story fields need at least this many characters (mirrors the schema). */
+const MIN_STORY = 10;
 
 interface StepFieldsProps {
   step: number;
@@ -28,8 +32,15 @@ interface StepFieldsProps {
 
 /** The inputs of one questionnaire step. */
 export function StepFields({ step, form, options }: StepFieldsProps) {
+  const t = useTranslations("create.fields");
+  const tc = useTranslations("common");
   const { watch } = form;
-  const name = watch("recipient_nickname") || watch("recipient_name") || "dia";
+  const name = watch("recipient_nickname") || watch("recipient_name") || t("fallbackName");
+  const voices: Option[] = VOICE_CODES.map((code) => ({ code, label: tc(`voices.${code}`) }));
+  const languages: Option[] = SONG_LANGUAGE_CODES.map((code) => ({
+    code,
+    label: tc(`songLanguages.${code}`),
+  }));
 
   switch (step) {
     case 1:
@@ -38,15 +49,15 @@ export function StepFields({ step, form, options }: StepFieldsProps) {
           <Choice
             form={form}
             field="recipient_type"
-            label="Lagu ini untuk siapa?"
+            label={t("recipientType")}
             options={options.recipientTypes}
           />
           {watch("recipient_type") === OTHER && (
             <TextField
               form={form}
               field="recipient_other"
-              label="Untuk siapa?"
-              placeholder="mis. Guru favoritku"
+              label={t("recipientOther.label")}
+              placeholder={t("recipientOther.placeholder")}
             />
           )}
         </div>
@@ -57,15 +68,15 @@ export function StepFields({ step, form, options }: StepFieldsProps) {
           <TextField
             form={form}
             field="recipient_name"
-            label="Nama"
-            placeholder="mis. Nadia"
+            label={t("recipientName.label")}
+            placeholder={t("recipientName.placeholder")}
             autoFocus
           />
           <TextField
             form={form}
             field="recipient_nickname"
-            label="Panggilan sayang (opsional)"
-            placeholder="mis. Nad, Sayang, Bunda"
+            label={t("recipientNickname.label")}
+            placeholder={t("recipientNickname.placeholder")}
           />
         </div>
       );
@@ -75,7 +86,7 @@ export function StepFields({ step, form, options }: StepFieldsProps) {
           <Choice
             form={form}
             field="occasion"
-            label="Apa momennya?"
+            label={t("occasion")}
             options={options.occasions}
             columns={2}
           />
@@ -83,8 +94,8 @@ export function StepFields({ step, form, options }: StepFieldsProps) {
             <TextField
               form={form}
               field="occasion_other"
-              label="Momennya"
-              placeholder="mis. Ulang tahun pertama si kecil"
+              label={t("occasionOther.label")}
+              placeholder={t("occasionOther.placeholder")}
             />
           )}
         </div>
@@ -93,20 +104,32 @@ export function StepFields({ step, form, options }: StepFieldsProps) {
       return (
         <div className="space-y-6">
           <section className="space-y-2.5">
-            <h3 className="text-sm font-semibold">Genre</h3>
-            <Choice form={form} field="genre" label="Genre" options={options.genres} columns={3} />
+            <h3 className="text-sm font-semibold">{t("genre")}</h3>
+            <Choice
+              form={form}
+              field="genre"
+              label={t("genre")}
+              options={options.genres}
+              columns={3}
+            />
           </section>
           <section className="space-y-2.5">
-            <h3 className="text-sm font-semibold">Suara penyanyi</h3>
-            <Choice form={form} field="voice" label="Suara penyanyi" options={VOICES} columns={3} />
+            <h3 className="text-sm font-semibold">{t("voice")}</h3>
+            <Choice form={form} field="voice" label={t("voice")} options={voices} columns={3} />
           </section>
           <section className="space-y-2.5">
-            <h3 className="text-sm font-semibold">Bahasa lagu</h3>
-            <Choice form={form} field="language" label="Bahasa lagu" options={LANGUAGES} />
+            <h3 className="text-sm font-semibold">{t("language")}</h3>
+            <Choice form={form} field="language" label={t("language")} options={languages} />
           </section>
           <section className="space-y-2.5">
-            <h3 className="text-sm font-semibold">Mood (opsional)</h3>
-            <Choice form={form} field="mood" label="Mood" options={options.moods} columns={3} />
+            <h3 className="text-sm font-semibold">{t("mood.heading")}</h3>
+            <Choice
+              form={form}
+              field="mood"
+              label={t("mood.label")}
+              options={options.moods}
+              columns={3}
+            />
           </section>
         </div>
       );
@@ -116,8 +139,8 @@ export function StepFields({ step, form, options }: StepFieldsProps) {
           form={form}
           field="special"
           max={500}
-          label={`Apa yang membuat ${name} spesial?`}
-          placeholder="mis. Dia selalu tertawa paling keras di film komedi, dan selalu ingat kopi favoritku."
+          label={t("special.label", { name })}
+          placeholder={t("special.placeholder")}
         />
       );
     case 6:
@@ -126,8 +149,8 @@ export function StepFields({ step, form, options }: StepFieldsProps) {
           form={form}
           field="memory"
           max={800}
-          label="Kenangan favoritmu bersamanya"
-          placeholder="mis. Kehujanan di Braga lalu berteduh di toko buku sampai tutup."
+          label={t("memory.label")}
+          placeholder={t("memory.placeholder")}
         />
       );
     case 7:
@@ -136,8 +159,8 @@ export function StepFields({ step, form, options }: StepFieldsProps) {
           form={form}
           field="message"
           max={500}
-          label={`Pesan untuk ${name}`}
-          placeholder="mis. Terima kasih sudah selalu ada. Aku bangga jadi bagian hidupmu."
+          label={t("message.label", { name })}
+          placeholder={t("message.placeholder")}
         />
       );
     case 8:
@@ -146,8 +169,8 @@ export function StepFields({ step, form, options }: StepFieldsProps) {
           <TextField
             form={form}
             field="email"
-            label="Email"
-            placeholder="nama@email.com"
+            label={t("email.label")}
+            placeholder={t("email.placeholder")}
             type="email"
             inputMode="email"
             autoComplete="email"
@@ -156,15 +179,15 @@ export function StepFields({ step, form, options }: StepFieldsProps) {
           <TextField
             form={form}
             field="phone"
-            label="Nomor HP / WhatsApp"
-            placeholder="0812 3456 7890"
+            label={t("phone.label")}
+            placeholder={t("phone.placeholder")}
             type="tel"
             inputMode="tel"
             autoComplete="tel"
           />
           <p className="flex items-start gap-2 rounded-xl bg-muted/60 p-3 text-xs text-muted-foreground">
             <LockIcon className="mt-0.5 size-3.5 shrink-0" aria-hidden />
-            Kami hanya memakai kontak ini untuk mengirim lagumu. Tanpa spam.
+            {t("privacy")}
           </p>
         </div>
       );
@@ -257,6 +280,7 @@ function StoryField({
   placeholder,
   max,
 }: FieldProps & { placeholder: string; max: number }) {
+  const t = useTranslations("create.fields");
   const error = form.formState.errors[field]?.message;
   const errorId = `${field}-error`;
   const length = String(form.watch(field) ?? "").trim().length;
@@ -282,10 +306,12 @@ function StoryField({
           id={`${field}-count`}
           className={cn(
             "ml-auto text-xs tabular-nums",
-            length >= 10 ? "text-success" : "text-muted-foreground",
+            length >= MIN_STORY ? "text-success" : "text-muted-foreground",
           )}
         >
-          {length < 10 ? `${length}/${max} · minimal 10` : `${length}/${max}`}
+          {length < MIN_STORY
+            ? t("counterMin", { length, max, min: MIN_STORY })
+            : t("counter", { length, max })}
         </p>
       </div>
     </div>

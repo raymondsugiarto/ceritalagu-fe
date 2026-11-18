@@ -82,11 +82,14 @@ export const paymentApi = {
   },
 };
 
-/** "Rp49.000" */
-export function formatIDR(amount: number): string {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    maximumFractionDigits: 0,
-  }).format(amount);
+/** IDR price options for Intl / next-intl `format.number` (no decimals). */
+export const IDR_FORMAT = {
+  style: "currency",
+  currency: "IDR",
+  maximumFractionDigits: 0,
+} as const satisfies Intl.NumberFormatOptions;
+
+/** "Rp 49.000" (id) / "IDR 49,000" (en). Customer screens use next-intl `useFormatter` instead. */
+export function formatIDR(amount: number, locale = "id-ID"): string {
+  return new Intl.NumberFormat(locale, IDR_FORMAT).format(amount);
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Music2Icon } from "lucide-react";
 import { sampleApi, type SampleOutput } from "@/lib/playground-api";
 import { SectionHeading } from "./how-it-works";
@@ -10,6 +11,7 @@ import { SectionHeading } from "./how-it-works";
  * least one is picked, so the landing page never shows an empty section.
  */
 export function Samples() {
+  const t = useTranslations("landing.samples");
   const [samples, setSamples] = React.useState<SampleOutput[]>([]);
 
   React.useEffect(() => {
@@ -28,11 +30,7 @@ export function Samples() {
   return (
     <section id="contoh-lagu" className="scroll-mt-20 py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4">
-        <SectionHeading
-          eyebrow="Contoh lagu"
-          title="Dengarkan lagu yang sudah kami buat"
-          description="Setiap lagu ditulis dari cerita yang berbeda. Putar dan rasakan sendiri."
-        />
+        <SectionHeading eyebrow={t("eyebrow")} title={t("title")} description={t("description")} />
         <ul className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {samples.map((s) => (
             <li key={s.id} className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-sm">

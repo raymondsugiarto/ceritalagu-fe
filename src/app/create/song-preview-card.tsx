@@ -1,11 +1,12 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { HeartIcon, MusicIcon } from "lucide-react";
 import { Equalizer } from "@/components/landing/equalizer";
 import {
-  LANGUAGES,
   OTHER,
-  VOICES,
+  isSongLanguageCode,
+  isVoiceCode,
   labelOf,
   type ChoiceOptions,
   type QuestionnaireValues,
@@ -21,6 +22,8 @@ interface SongPreviewCardProps {
  * step visibly builds "their" song.
  */
 export function SongPreviewCard({ values: v, options }: SongPreviewCardProps) {
+  const t = useTranslations("create.preview");
+  const tc = useTranslations("common");
   const name = v.recipient_nickname || v.recipient_name;
   const who =
     v.recipient_type === OTHER
@@ -36,9 +39,9 @@ export function SongPreviewCard({ values: v, options }: SongPreviewCardProps) {
         : "";
   const tags = [
     v.genre && labelOf(options.genres, v.genre),
-    v.voice && `Suara ${labelOf(VOICES, v.voice).toLowerCase()}`,
+    isVoiceCode(v.voice) && tc(`voiceTags.${v.voice}`),
     v.mood && labelOf(options.moods, v.mood),
-    v.language && labelOf(LANGUAGES, v.language),
+    isSongLanguageCode(v.language) && tc(`songLanguages.${v.language}`),
   ].filter(Boolean);
   const quote = v.message || v.memory || v.special;
 
@@ -50,13 +53,14 @@ export function SongPreviewCard({ values: v, options }: SongPreviewCardProps) {
           <HeartIcon className="absolute top-6 right-6 size-10 fill-current opacity-30" />
           <div className="min-w-0">
             <p className="text-xs font-medium tracking-widest uppercase opacity-80">
-              {[who && `Untuk ${who}`, occasion].filter(Boolean).join(" · ") || "Lagu spesial"}
+              {[who && t("forWho", { who }), occasion].filter(Boolean).join(" · ") ||
+                t("defaultMeta")}
             </p>
             <p className="mt-1 truncate text-2xl font-bold">
-              {name ? `Lagu untuk ${name}` : "Lagu untuk …"}
+              {name ? t("songFor", { name }) : t("songForEmpty")}
             </p>
             <p className="text-sm opacity-80">
-              {tags.length ? tags.join(" · ") : "Genre · Suara · Mood"}
+              {tags.length ? tags.join(" · ") : t("tagsPlaceholder")}
             </p>
           </div>
         </div>
@@ -65,10 +69,10 @@ export function SongPreviewCard({ values: v, options }: SongPreviewCardProps) {
           <div className="rounded-xl bg-muted/60 p-4 text-sm leading-relaxed">
             <p className="flex items-center gap-1.5 text-xs font-semibold tracking-wide text-highlight uppercase">
               <MusicIcon className="size-3.5" />
-              Dari ceritamu
+              {t("fromStory")}
             </p>
             <p className="mt-1 line-clamp-4 break-words whitespace-pre-line text-muted-foreground">
-              {quote || "Ceritamu akan kami rangkai menjadi lirik yang hanya cocok untuknya."}
+              {quote || t("quotePlaceholder")}
             </p>
           </div>
         </div>

@@ -1,9 +1,11 @@
 version: "3.7"
 services:
   music-web:
+    container_name: music-web
+    hostname: music-web
     image: ghcr.io/${IMAGE_OWNER:-raymondsugiarto}/music-web:latest
     ports:
-      - "8020:3000"
+      - "8020:8020"
     restart: unless-stopped
     networks:
       - platform

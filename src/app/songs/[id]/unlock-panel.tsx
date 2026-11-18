@@ -1,13 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { useFormatter, useTranslations } from "next-intl";
 import { Loader2Icon, SparklesIcon, TicketPercentIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { FieldError } from "@/components/ui/field-error";
 import { Input } from "@/components/ui/input";
-import { errorMessage } from "@/lib/api";
-import { formatIDR, paymentApi, type PricingOutput, type QuoteOutput } from "@/lib/payment-api";
+import { useApiError } from "@/hooks/use-api-error";
+import { IDR_FORMAT, paymentApi, type PricingOutput, type QuoteOutput } from "@/lib/payment-api";
 
 interface UnlockPanelProps {
   songId: string;
@@ -16,6 +17,10 @@ interface UnlockPanelProps {
 
 /** Price (normal struck through, sale below), optional voucher, and the button to pay on DOKU. */
 export function UnlockPanel({ songId, pricing }: UnlockPanelProps) {
+  const t = useTranslations("song.unlock");
+  const format = useFormatter();
+  const { errorText } = useApiError();
+  const formatIDR = (amount: number) => format.number(amount, IDR_FORMAT);
   const [code, setCode] = React.useState("");
   const [applied, setApplied] = React.useState<QuoteOutput | null>(null);
   const [voucherError, setVoucherError] = React.useState<string | null>(null);
@@ -24,7 +29,7 @@ export function UnlockPanel({ songId, pricing }: UnlockPanelProps) {
   const [checkingOut, setCheckingOut] = React.useState(false);
 
   const normal = applied?.normal_price ?? pricing?.normal_price;
-  const sale = applied?.sale_price ?? pricing?.sale_price;
+  const sale = applied?.sale_price ?? pricing?.sale_price ?? pricing?.unlock_price;
   const total = applied?.total ?? sale;
   const disabled = checkingOut || pricing?.enabled === false;
 
@@ -32,7 +37,7 @@ export function UnlockPanel({ songId, pricing }: UnlockPanelProps) {
     e.preventDefault();
     const c = code.trim();
     if (!c) {
-      setVoucherError("Masukkan kode voucher.");
+      setVoucherError(t("enterVoucher"));
       return;
     }
     setCheckingVoucher(true);
@@ -43,7 +48,16 @@ export function UnlockPanel({ songId, pricing }: UnlockPanelProps) {
       setCode(q.voucher_code ?? c.toUpperCase());
     } catch (err) {
       setApplied(null);
-      setVoucherError(errorMessage(err, "Voucher tidak bisa dipakai."));
+      setVoucherError(
+        errorText(err, {
+          overrides: {
+            BAD_REQUEST: t("errors.voucherInvalid"),
+            CONFLICT: t("errors.voucherConflict"),
+            SERVICE_UNAVAILABLE: t("errors.paymentUnavailable"),
+          },
+          fallback: t("voucherFailed"),
+        }),
+      );
     } finally {
       setCheckingVoucher(false);
     }
@@ -61,30 +75,46 @@ export function UnlockPanel({ songId, pricing }: UnlockPanelProps) {
       const out = await paymentApi.checkout(songId, applied?.voucher_code);
       window.location.assign(out.payment_url);
     } catch (err) {
-      toast.error(errorMessage(err, "Halaman pembayaran tidak bisa dibuka."));
+      toast.error(
+        errorText(err, {
+          overrides: {
+            BAD_REQUEST: t("errors.voucherInvalid"),
+            CONFLICT: t("errors.checkoutConflict"),
+            FORBIDDEN: t("errors.accountDisabled"),
+            SERVICE_UNAVAILABLE: t("errors.paymentUnavailable"),
+          },
+          fallback: t("checkoutFailed"),
+        }),
+      );
       setCheckingOut(false);
     }
   }
 
   return (
-    <div className="space-y-3 rounded-xl border bg-card p-4">
+    <div className="relative space-y-4 overflow-hidden rounded-3xl border bg-card p-6 shadow-xl">
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-primary to-highlight"
+      />
       {sale !== undefined && (
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs text-muted-foreground">Full lagu</p>
+            <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+              {t("heading")}
+            </p>
             {normal !== undefined && normal > sale && (
               <p
                 className="text-sm text-muted-foreground line-through"
-                aria-label={`Harga normal ${formatIDR(normal)}`}
+                aria-label={t("normalPriceAria", { price: formatIDR(normal) })}
               >
                 {formatIDR(normal)}
               </p>
             )}
-            <p className="text-2xl font-semibold tabular-nums">{formatIDR(sale)}</p>
+            <p className="text-3xl font-bold tracking-tight tabular-nums">{formatIDR(sale)}</p>
           </div>
           {normal !== undefined && normal > sale && (
-            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-              Hemat {Math.round(((normal - sale) / normal) * 100)}%
+            <span className="rounded-full bg-highlight/15 px-2.5 py-1 text-xs font-semibold text-highlight">
+              {t("save", { percent: Math.round(((normal - sale) / normal) * 100) })}
             </span>
           )}
         </div>
@@ -95,12 +125,12 @@ export function UnlockPanel({ songId, pricing }: UnlockPanelProps) {
           <div className="flex items-center justify-between gap-2">
             <span className="flex items-center gap-1.5">
               <TicketPercentIcon className="size-4 text-primary" aria-hidden />
-              Voucher <span className="font-mono font-medium">{applied.voucher_code}</span>
+              {t("voucher")} <span className="font-mono font-medium">{applied.voucher_code}</span>
               <button
                 type="button"
                 onClick={removeVoucher}
                 className="rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-                aria-label="Hapus voucher"
+                aria-label={t("removeVoucher")}
               >
                 <XIcon className="size-3.5" aria-hidden />
               </button>
@@ -110,7 +140,7 @@ export function UnlockPanel({ songId, pricing }: UnlockPanelProps) {
             </span>
           </div>
           <div className="flex items-center justify-between font-semibold">
-            <span>Total bayar</span>
+            <span>{t("total")}</span>
             <span className="tabular-nums">{formatIDR(applied.total)}</span>
           </div>
         </div>
@@ -123,8 +153,8 @@ export function UnlockPanel({ songId, pricing }: UnlockPanelProps) {
                 setCode(e.target.value.toUpperCase());
                 setVoucherError(null);
               }}
-              placeholder="Kode voucher"
-              aria-label="Kode voucher"
+              placeholder={t("voucherPlaceholder")}
+              aria-label={t("voucherPlaceholder")}
               aria-invalid={!!voucherError}
               className="font-mono uppercase"
               spellCheck={false}
@@ -134,7 +164,7 @@ export function UnlockPanel({ songId, pricing }: UnlockPanelProps) {
             />
             <Button type="submit" variant="outline" disabled={checkingVoucher}>
               {checkingVoucher && <Loader2Icon className="animate-spin" aria-hidden />}
-              Pakai
+              {t("apply")}
             </Button>
           </div>
           <FieldError role="alert">{voucherError}</FieldError>
@@ -146,22 +176,25 @@ export function UnlockPanel({ songId, pricing }: UnlockPanelProps) {
           className="flex items-center gap-1.5 text-sm text-primary hover:underline"
         >
           <TicketPercentIcon className="size-4" aria-hidden />
-          Punya kode voucher?
+          {t("haveVoucher")}
         </button>
       )}
 
-      <Button size="lg" className="w-full" onClick={unlock} disabled={disabled}>
+      <Button
+        size="lg"
+        className="h-12 w-full rounded-full bg-linear-to-r from-primary to-highlight text-base shadow-lg shadow-primary/25 hover:opacity-95"
+        onClick={unlock}
+        disabled={disabled}
+      >
         {checkingOut ? (
           <Loader2Icon className="animate-spin" aria-hidden />
         ) : (
           <SparklesIcon aria-hidden />
         )}
-        Dapatkan Full Lagu{total !== undefined ? ` · ${formatIDR(total)}` : ""}
+        {total !== undefined ? t("ctaWithPrice", { price: formatIDR(total) }) : t("cta")}
       </Button>
       <p className="text-center text-xs text-muted-foreground">
-        {pricing?.enabled === false
-          ? "Pembayaran belum tersedia saat ini."
-          : "Bayar aman lewat DOKU: QRIS, e-wallet, virtual account, atau kartu."}
+        {pricing?.enabled === false ? t("unavailable") : t("methods")}
       </p>
     </div>
   );

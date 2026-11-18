@@ -32,11 +32,15 @@ export type ApiCode =
 export interface ErrorDetail {
   field?: string;
   message: string;
+  /** Optional stable cause (backend apperror.Reason*), e.g. "option_unavailable". */
+  reason?: string;
 }
 
 /** Every response body. `data` is absent on errors and on message-only responses. */
 export interface ApiResponse<T> {
   code: ApiCode;
+  /** Optional stable cause within `code` (backend apperror.Reason*), e.g. "voucher_expired". */
+  reason?: string;
   message: string;
   errors: ErrorDetail[];
   data?: T;
@@ -70,12 +74,23 @@ export class ApiError extends Error {
     message: string,
     readonly errors: ErrorDetail[] = [],
     readonly requestId?: string,
+    /** Stable machine-readable cause, when the backend sends one. */
+    readonly reason?: string,
   ) {
     super(message);
     this.name = "ApiError";
   }
 
   /** Field errors keyed by field name, ready for react-hook-form `setError`. */
+  /** Field reasons keyed by field name (only fields that carry one). */
+  get fieldReasons(): Record<string, string> {
+    return Object.fromEntries(
+      this.errors
+        .filter((e) => e.field && e.reason)
+        .map((e) => [e.field as string, e.reason as string]),
+    );
+  }
+
   get fieldMap(): Record<string, string> {
     return Object.fromEntries(
       this.errors.filter((e) => e.field).map((e) => [e.field as string, e.message]),
@@ -161,6 +176,7 @@ async function request<T>(
       parsed?.message ?? `Request failed with status ${res.status}.`,
       parsed?.errors ?? [],
       res.headers.get("X-Request-ID") ?? undefined,
+      parsed?.reason || undefined,
     );
   }
   return parsed;

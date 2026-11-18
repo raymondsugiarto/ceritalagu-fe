@@ -107,6 +107,9 @@ jobs:
             exit 1
           }
 
+          # Accept https://host:9443, https://host:9443/ or https://host:9443/api.
+          PORTAINER_URL="${PORTAINER_URL%/}"; PORTAINER_URL="${PORTAINER_URL%/api}"
+
           auth_file="$RUNNER_TEMP/portainer-auth.json"
           env_file="$RUNNER_TEMP/portainer-env.json"
           request_file="$RUNNER_TEMP/portainer-update.json"
@@ -118,9 +121,13 @@ jobs:
             -X POST -H "Content-Type: application/json" \
             --data-binary @"$auth_file" "${PORTAINER_URL%/}/api/auth")
           auth_code=$(printf '%s\n' "$auth_response" | tail -n 1)
-          token=$(printf '%s\n' "$auth_response" | sed '$d' | jq -r '.jwt // empty')
+          auth_body=$(printf '%s\n' "$auth_response" | sed '$d')
+          token=$(printf '%s\n' "$auth_body" | jq -r 'if type == "object" then .jwt // empty else empty end' 2>/dev/null || true)
           if [ "$auth_code" != "200" ] || [ -z "$token" ]; then
-            echo "::error::Portainer authentication failed (HTTP $auth_code)"
+            echo "::error::Portainer authentication failed (HTTP $auth_code) at ${PORTAINER_URL}/api/auth: $(printf '%s' "$auth_body" | head -c 300)"
+            if [ "$auth_code" = "404" ]; then
+              echo "::error::PORTAINER_URL must be the Portainer base URL, e.g. https://host:9443 (no path)."
+            fi
             exit 1
           fi
 

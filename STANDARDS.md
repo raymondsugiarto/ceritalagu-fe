@@ -156,7 +156,7 @@ aria-describedby>` + `<FieldError id>`.
 
 | Command           | Purpose                                      |
 | ----------------- | -------------------------------------------- |
-| `pnpm dev`        | Dev server on :3000, proxies `/api` → :8080  |
+| `pnpm dev`        | Dev server on :8020, proxies `/api` → :8080  |
 | `pnpm build`      | Production build (`output: "standalone"`)    |
 | `pnpm lint`       | ESLint (incl. the styling rules)             |
 | `pnpm type-check` | `tsc --noEmit`                               |

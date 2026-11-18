@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -25,13 +26,15 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { FieldError } from "@/components/ui/field-error";
-import { ApiError, errorMessage } from "@/lib/api";
+import { ApiError } from "@/lib/api";
+import { useApiError } from "@/hooks/use-api-error";
 import {
   EMPTY_VALUES,
   QUESTIONNAIRE_STEPS,
   TOTAL_STEPS,
+  createQuestionnaireSchema,
+  isSongLanguageCode,
   loadDraft,
-  questionnaireSchema,
   saveDraft,
   staleChoices,
   startNewDraft,
@@ -67,6 +70,14 @@ const STEP_ICONS: Record<number, LucideIcon> = {
 
 /** The questionnaire: one step per screen, a review screen, then submit → job progress page. */
 export function CreateView() {
+  const t = useTranslations("create");
+  const tCommon = useTranslations("common.actions");
+  const tValidation = useTranslations("validation");
+  const locale = useLocale();
+  const { errorText, fieldText } = useApiError();
+  const schema = React.useMemo(() => createQuestionnaireSchema(tValidation), [tValidation]);
+  // The song language defaults to the UI locale; the guest can still change it on step 4.
+  const defaultSongLanguage = isSongLanguageCode(locale) ? locale : EMPTY_VALUES.language;
   const router = useRouter();
   const [step, setStep] = React.useState(1);
   const [restored, setRestored] = React.useState(false);
@@ -74,8 +85,8 @@ export function CreateView() {
   const { state: optionsState, retry: retryOptions } = useQuestionnaireOptions();
 
   const form = useForm<QuestionnaireValues>({
-    resolver: zodResolver(questionnaireSchema),
-    defaultValues: EMPTY_VALUES,
+    resolver: zodResolver(schema),
+    defaultValues: { ...EMPTY_VALUES, language: defaultSongLanguage },
     mode: "onTouched",
   });
   const { handleSubmit, trigger, reset, watch, setError, setValue, getValues, formState } = form;
@@ -84,7 +95,7 @@ export function CreateView() {
   // "Buat Lagu Baru" (/create?baru=1) starts over from step 1; the flag is then dropped so a refresh resumes.
   React.useEffect(() => {
     if (new URLSearchParams(window.location.search).has("baru")) {
-      startNewDraft();
+      startNewDraft(defaultSongLanguage);
       router.replace("/create", { scroll: false });
     }
     const draft = loadDraft();
@@ -93,7 +104,7 @@ export function CreateView() {
       setStep(draft.step);
     }
     setRestored(true);
-  }, [reset, router]);
+  }, [reset, router, defaultSongLanguage]);
 
   // Save the draft on every change, after restoring so the empty defaults never overwrite it.
   React.useEffect(() => {
@@ -144,18 +155,25 @@ export function CreateView() {
       if (err instanceof ApiError && err.code === "VALIDATION_ERROR") {
         const fields = Object.entries(err.fieldMap);
         for (const [field, message] of fields) {
-          setError(field as QuestionnaireField, { type: "server", message });
+          setError(field as QuestionnaireField, {
+            type: "server",
+            message: fieldText(message, err.fieldReasons[field]),
+          });
         }
         const first = fields[0];
         if (first) setStep(stepOfField(first[0]));
         return;
       }
       // 429 (quota) and 503 carry a customer-ready message from the API; anything else gets ours.
-      const serverWorded =
-        err instanceof ApiError &&
-        (err.code === "TOO_MANY_REQUESTS" || err.code === "SERVICE_UNAVAILABLE");
       setServerError(
-        serverWorded ? errorMessage(err) : "Maaf, lagumu belum bisa dibuat. Silakan coba lagi.",
+        errorText(err, {
+          trusted: ["TOO_MANY_REQUESTS", "SERVICE_UNAVAILABLE"],
+          overrides: {
+            TOO_MANY_REQUESTS: t("submitErrors.quota"),
+            SERVICE_UNAVAILABLE: t("submitErrors.busy"),
+          },
+          fallback: t("submitError"),
+        }),
       );
     }
   }
@@ -173,12 +191,12 @@ export function CreateView() {
         ) : (
           <Card>
             <CardHeader>
-              <CardTitle>Pilihan lagu belum bisa dimuat</CardTitle>
+              <CardTitle>{t("optionsError.title")}</CardTitle>
               <CardDescription>{optionsState.message}</CardDescription>
             </CardHeader>
             <CardContent>
               <Button variant="outline" onClick={retryOptions}>
-                Coba lagi
+                {tCommon("tryAgain")}
               </Button>
             </CardContent>
           </Card>
@@ -206,7 +224,11 @@ export function CreateView() {
       progress={
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
-            <span>{isReview ? "Semua jawaban terisi" : `Langkah ${step} dari ${TOTAL_STEPS}`}</span>
+            <span>
+              {isReview
+                ? t("progress.allAnswered")
+                : t("progress.stepOf", { step, total: TOTAL_STEPS })}
+            </span>
             <span className="tabular-nums">
               {Math.round(((isReview ? TOTAL_STEPS : step - 1) / TOTAL_STEPS) * 100)}%
             </span>
@@ -228,13 +250,13 @@ export function CreateView() {
                 <Icon className="size-6" aria-hidden />
               </span>
               <p className="text-xs font-semibold tracking-wide text-highlight uppercase">
-                {isReview ? "Terakhir" : `Pertanyaan ${step}`}
+                {isReview ? t("last") : t("question", { step })}
               </p>
               <CardTitle className="text-2xl font-bold tracking-tight text-balance md:text-3xl">
-                {isReview ? "Siap membuat lagumu?" : current?.title}
+                {isReview ? t("reviewTitle") : current && t(`steps.${current.id}.title`)}
               </CardTitle>
               <CardDescription className="text-base text-pretty">
-                {isReview ? "Kamu masih bisa mengubah jawaban sebelum lagu dibuat." : current?.hint}
+                {isReview ? t("reviewHint") : current && t(`steps.${current.id}.hint`)}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -264,7 +286,7 @@ export function CreateView() {
                 disabled={formState.isSubmitting}
               >
                 <ArrowLeftIcon aria-hidden />
-                Kembali
+                {tCommon("back")}
               </Button>
             )}
             {/* Distinct keys: React must not reuse the "Lanjut" element as the submit button, or the
@@ -282,7 +304,7 @@ export function CreateView() {
                 ) : (
                   <SparklesIcon aria-hidden />
                 )}
-                Buat Laguku
+                {t("submit")}
               </Button>
             ) : (
               <Button
@@ -292,19 +314,17 @@ export function CreateView() {
                 className="h-12 flex-1 rounded-full text-base shadow-lg shadow-primary/25"
                 onClick={next}
               >
-                {step === TOTAL_STEPS ? "Lihat ringkasan" : "Lanjut"}
+                {step === TOTAL_STEPS ? t("showSummary") : tCommon("next")}
                 <ArrowRightIcon aria-hidden />
               </Button>
             )}
           </div>
-          <p className="text-center text-xs text-muted-foreground">
-            Jawabanmu tersimpan otomatis di perangkat ini.
-          </p>
+          <p className="text-center text-xs text-muted-foreground">{t("autosave")}</p>
         </form>
 
         <aside className="hidden lg:sticky lg:top-24 lg:block">
           <p className="mb-4 text-center text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-            Lagumu sedang terbentuk
+            {t("forming")}
           </p>
           <SongPreviewCard values={watch()} options={options} />
         </aside>
@@ -321,6 +341,7 @@ function CreateShell({
   children: React.ReactNode;
   progress?: React.ReactNode;
 }) {
+  const t = useTranslations("create");
   return (
     <CustomerShell
       actions={
@@ -328,7 +349,7 @@ function CreateShell({
           <AccountMenu />
           <Link
             href="/"
-            aria-label="Tutup dan kembali ke beranda"
+            aria-label={t("closeAria")}
             className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "rounded-full")}
           >
             <XIcon aria-hidden />

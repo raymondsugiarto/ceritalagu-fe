@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { JobView } from "./job-view";
 
-export const metadata: Metadata = { title: "Membuat Lagu" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("metadata");
+  return { title: t("job") };
+}
 
 interface JobPageProps {
   params: Promise<{ id: string }>;

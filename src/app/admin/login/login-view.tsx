@@ -14,6 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { FieldError } from "@/components/ui/field-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BrandLogo } from "@/components/brand-logo";
 
 const loginSchema = z.object({
   email: z.string().trim().max(255).pipe(z.email("Masukkan email yang valid")),
@@ -64,7 +65,8 @@ export function LoginView() {
     <main className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Music Admin</CardTitle>
+          <BrandLogo size={40} markOnly className="mb-2" />
+          <CardTitle className="text-xl">CeritaLagu Admin</CardTitle>
           <CardDescription>Masuk dengan akun admin.</CardDescription>
         </CardHeader>
         <CardContent>

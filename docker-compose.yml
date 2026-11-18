@@ -5,7 +5,7 @@ services:
       args:
         API_PROXY_TARGET: http://api:8080
     ports:
-      - "127.0.0.1:3001:3000"
+      - "127.0.0.1:3001:8020"
     restart: unless-stopped
     networks:
       - music-dev

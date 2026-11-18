@@ -4,13 +4,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
+import { BrandLogo } from "@/components/brand-logo";
 
 export function AppSidebar() {
   const pathname = usePathname();
 
   return (
     <aside className="hidden w-60 shrink-0 border-r bg-card md:block">
-      <div className="px-6 py-5 text-lg font-semibold">Music Admin</div>
+      <div className="flex items-center gap-2 px-6 py-5">
+        <BrandLogo size={28} markOnly />
+        <span className="text-lg font-semibold">Admin</span>
+      </div>
       <nav className="flex flex-col gap-1 px-3" aria-label="Main">
         {NAV_ITEMS.map(({ title, href, icon: Icon }) => {
           const active = href === "/admin" ? pathname === href : pathname.startsWith(href);

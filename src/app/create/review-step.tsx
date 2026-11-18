@@ -1,9 +1,10 @@
+import { useTranslations } from "next-intl";
 import { PencilIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  LANGUAGES,
   OTHER,
-  VOICES,
+  isSongLanguageCode,
+  isVoiceCode,
   labelOf,
   type ChoiceOptions,
   type QuestionnaireValues,
@@ -18,10 +19,12 @@ interface ReviewStepProps {
 
 /** Summary of every answer before generating (PRD §5.1 "Halaman Review"). */
 export function ReviewStep({ values: v, options, onEdit }: ReviewStepProps) {
+  const t = useTranslations("create.review");
+  const tc = useTranslations("common");
   const rows: { step: number; label: string; value: string }[] = [
     {
       step: 1,
-      label: "Untuk",
+      label: t("for"),
       value:
         v.recipient_type === OTHER
           ? v.recipient_other
@@ -29,32 +32,32 @@ export function ReviewStep({ values: v, options, onEdit }: ReviewStepProps) {
     },
     {
       step: 2,
-      label: "Nama",
+      label: t("name"),
       value: v.recipient_nickname
         ? `${v.recipient_name} (${v.recipient_nickname})`
         : v.recipient_name,
     },
     {
       step: 3,
-      label: "Momen",
+      label: t("occasion"),
       value: v.occasion === OTHER ? v.occasion_other : labelOf(options.occasions, v.occasion),
     },
     {
       step: 4,
-      label: "Musik",
+      label: t("music"),
       value: [
         labelOf(options.genres, v.genre),
-        labelOf(VOICES, v.voice),
-        labelOf(LANGUAGES, v.language),
+        isVoiceCode(v.voice) ? tc(`voices.${v.voice}`) : v.voice,
+        isSongLanguageCode(v.language) ? tc(`songLanguages.${v.language}`) : v.language,
         v.mood && labelOf(options.moods, v.mood),
       ]
         .filter(Boolean)
         .join(" · "),
     },
-    { step: 5, label: "Yang membuatnya spesial", value: v.special },
-    { step: 6, label: "Kenangan favorit", value: v.memory },
-    { step: 7, label: "Pesan dari hati", value: v.message },
-    { step: 8, label: "Dikirim ke", value: `${v.email}\n${v.phone}` },
+    { step: 5, label: t("special"), value: v.special },
+    { step: 6, label: t("memory"), value: v.memory },
+    { step: 7, label: t("message"), value: v.message },
+    { step: 8, label: t("contact"), value: `${v.email}\n${v.phone}` },
   ];
 
   return (
@@ -69,7 +72,7 @@ export function ReviewStep({ values: v, options, onEdit }: ReviewStepProps) {
             type="button"
             variant="ghost"
             size="icon"
-            aria-label={`Ubah ${row.label}`}
+            aria-label={t("edit", { label: row.label })}
             onClick={() => onEdit(row.step)}
           >
             <PencilIcon aria-hidden />

@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   AlertTriangleIcon,
   AudioLinesIcon,
@@ -25,14 +26,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CustomerShell } from "@/components/customer/customer-shell";
 import { Equalizer } from "@/components/landing/equalizer";
 import { useCustomer } from "@/hooks/use-customer";
-import { ApiError, errorMessage } from "@/lib/api";
+import { ApiError } from "@/lib/api";
+import { useApiError } from "@/hooks/use-api-error";
 import { NEW_SONG_HREF } from "@/lib/questionnaire";
 import { questionnaireApi } from "@/lib/questionnaire-api";
 import {
   isFinal,
-  loadErrorText,
+  jobFailureKind,
+  loadErrorKind,
   songApi,
   type JobStatus,
+  type LoadErrorKind,
   type SongJobOutput,
 } from "@/lib/song-api";
 import { cn } from "@/lib/utils";
@@ -45,13 +49,12 @@ const BAR_SEGMENTS = 50;
 interface Stage {
   status: JobStatus;
   icon: LucideIcon;
-  label: string;
-  detail: string;
+  /** Message key under `job.stages`. */
+  key: "lyrics" | "music" | "finishing";
   /** Progress bar range [from, to] in %, and a typical duration used to ease within it. */
   from: number;
   to: number;
   typicalSec: number;
-  tips: string[];
 }
 
 /** The three visible pipeline stages (queued shows as "getting ready" before the first). */
@@ -59,48 +62,33 @@ const STAGES: Stage[] = [
   {
     status: "generating_lyrics",
     icon: PenLineIcon,
-    label: "Menulis lirik",
-    detail: "Merangkai ceritamu jadi bait dan reff",
+    key: "lyrics",
     from: 5,
     to: 30,
     typicalSec: 25,
-    tips: [
-      "Memilih kata yang paling pas untuk kenanganmu…",
-      "Menyusun reff yang mudah diingat…",
-      "Menyelipkan nama panggilannya ke dalam lirik…",
-    ],
   },
   {
     status: "generating_music",
     icon: AudioLinesIcon,
-    label: "Membuat musik & vokal",
-    detail: "Mengaransemen musik dan merekam vokal",
+    key: "music",
     from: 30,
     to: 90,
     typicalSec: 100,
-    tips: [
-      "Menyetel tempo sesuai mood pilihanmu…",
-      "Menyanyikan bait pertama…",
-      "Menambahkan harmoni di bagian reff…",
-      "Ini bagian paling lama — sebentar lagi ya…",
-    ],
   },
   {
     status: "processing_audio",
     icon: WandSparklesIcon,
-    label: "Sentuhan akhir",
-    detail: "Menyiapkan preview sampai reff pertama untukmu",
+    key: "finishing",
     from: 90,
     to: 99,
     typicalSec: 10,
-    tips: ["Merapikan suara…", "Hampir selesai…"],
   },
 ];
 
 type JobState =
   | { kind: "loading" }
   | { kind: "ok"; job: SongJobOutput }
-  | { kind: "error"; title: string; message: string };
+  | { kind: "error"; error: LoadErrorKind };
 
 interface JobViewProps {
   jobId: string;
@@ -108,6 +96,9 @@ interface JobViewProps {
 
 /** Generation screen: polls the job until it finishes, then opens the song (PRD §5.2). */
 export function JobView({ jobId }: JobViewProps) {
+  const t = useTranslations("job");
+  const tc = useTranslations("common");
+  const { errorText } = useApiError();
   const router = useRouter();
   const [state, setState] = React.useState<JobState>({ kind: "loading" });
   const [retrying, setRetrying] = React.useState(false);
@@ -145,10 +136,11 @@ export function JobView({ jobId }: JobViewProps) {
         // running on the worker. Keep the last known progress on screen and retry with
         // backoff; give up only on a definite answer (4xx) or after ~1 minute of failures.
         failures += 1;
-        const definite = err instanceof ApiError && err.status >= 400 && err.status < 500 && err.status !== 429;
+        const definite =
+          err instanceof ApiError && err.status >= 400 && err.status < 500 && err.status !== 429;
         console.warn("[job-view] poll failed", { jobId, failures, err });
         if (definite || failures >= MAX_POLL_FAILURES || (!seenJob && failures >= 3)) {
-          setState({ kind: "error", ...loadErrorText(err) });
+          setState({ kind: "error", error: loadErrorKind(err) });
           return;
         }
         timer = setTimeout(poll, Math.min(POLL_MS * 2 ** (failures - 1), 10_000));
@@ -167,7 +159,16 @@ export function JobView({ jobId }: JobViewProps) {
       const next = await songApi.regenerate(job.id);
       router.push(`/jobs/${next.id}`);
     } catch (err) {
-      toast.error(errorMessage(err, "Gagal membuat ulang lagu."));
+      toast.error(
+        errorText(err, {
+          overrides: {
+            TOO_MANY_REQUESTS: t("regenerateErrors.limit"),
+            CONFLICT: t("regenerateErrors.processing"),
+            SERVICE_UNAVAILABLE: t("regenerateErrors.busy"),
+          },
+          fallback: t("regenerateFailed"),
+        }),
+      );
       setRetrying(false);
     }
   }
@@ -182,9 +183,13 @@ export function JobView({ jobId }: JobViewProps) {
       )}
 
       {state.kind === "error" && (
-        <Notice icon={AlertTriangleIcon} title={state.title} message={state.message}>
+        <Notice
+          icon={AlertTriangleIcon}
+          title={tc(`loadError.${state.error}.title`)}
+          message={tc(`loadError.${state.error}.message`)}
+        >
           <Link href={NEW_SONG_HREF} className={cn(buttonVariants({ size: "lg" }), "rounded-full")}>
-            Buat lagu baru
+            {t("newSong")}
           </Link>
         </Notice>
       )}
@@ -192,8 +197,8 @@ export function JobView({ jobId }: JobViewProps) {
       {state.kind === "ok" && state.job.status === "failed" && (
         <Notice
           icon={AlertTriangleIcon}
-          title="Maaf, lagumu belum berhasil dibuat"
-          message={state.job.error_message || "Terjadi kendala saat membuat lagu."}
+          title={t("failedTitle")}
+          message={t(`failure.${jobFailureKind(state.job.error_code)}`)}
         >
           {state.job.regenerates_left > 0 && (
             <Button
@@ -207,7 +212,7 @@ export function JobView({ jobId }: JobViewProps) {
               ) : (
                 <RotateCcwIcon aria-hidden />
               )}
-              Coba lagi
+              {t("tryAgain")}
             </Button>
           )}
           <Link
@@ -215,7 +220,7 @@ export function JobView({ jobId }: JobViewProps) {
             className={cn(buttonVariants({ size: "lg", variant: "outline" }), "rounded-full")}
           >
             <PencilIcon aria-hidden />
-            Ubah jawaban
+            {t("editAnswers")}
           </Link>
           {state.job.regenerates_left <= 0 && (
             <Link
@@ -223,7 +228,7 @@ export function JobView({ jobId }: JobViewProps) {
               className={cn(buttonVariants({ size: "lg", variant: "outline" }), "rounded-full")}
             >
               <PlusIcon aria-hidden />
-              Buat lagu baru
+              {t("newSong")}
             </Link>
           )}
         </Notice>
@@ -239,6 +244,7 @@ export function JobView({ jobId }: JobViewProps) {
 // ---- In progress ----
 
 function Generating({ job, recipient }: { job: SongJobOutput; recipient: string }) {
+  const t = useTranslations("job");
   const done = job.status === "completed";
   const stageIndex = STAGES.findIndex((s) => s.status === job.status);
   const stage = STAGES[stageIndex];
@@ -251,7 +257,9 @@ function Generating({ job, recipient }: { job: SongJobOutput; recipient: string 
     const eased = 1 - Math.exp(-stageSec / stage.typicalSec);
     percent = stage.from + (stage.to - stage.from) * eased;
   }
-  const tip = useRotating(stage?.tips ?? ["Menyiapkan studio untuk lagumu…"], 5000, job.status);
+  // Every tip of the stage, in order (plain text, read raw from `job.stages.<key>.tips`).
+  const tips = stage ? (t.raw(`stages.${stage.key}.tips`) as string[]) : [t("preparingTip")];
+  const tip = useRotating(tips, 5000, job.status);
 
   return (
     <div className="space-y-6">
@@ -264,13 +272,13 @@ function Generating({ job, recipient }: { job: SongJobOutput; recipient: string 
               aria-hidden
             />
             <p className="text-xs font-medium tracking-widest uppercase opacity-80">
-              {done ? "Lagumu sudah jadi" : "Sedang dibuat"}
+              {done ? t("eyebrowDone") : t("eyebrowRunning")}
             </p>
             <h1 className="mt-1 text-2xl font-bold text-balance sm:text-3xl">
-              {recipient ? `Lagu untuk ${recipient}` : "Lagu spesialmu"}
+              {recipient ? t("titleFor", { name: recipient }) : t("titleDefault")}
             </h1>
             <p className="mt-1 min-h-5 text-sm opacity-85" aria-live="polite">
-              {done ? "Membuka lagumu…" : job.status_message}
+              {done ? t("opening") : t(`status.${job.status}`)}
             </p>
             <Equalizer tone="inverse" className="mt-6 h-12" />
           </div>
@@ -290,7 +298,7 @@ function Generating({ job, recipient }: { job: SongJobOutput; recipient: string 
               aria-valuemin={0}
               aria-valuemax={100}
               aria-valuenow={Math.floor(percent)}
-              aria-label="Progres pembuatan lagu"
+              aria-label={t("progressAria")}
             >
               <div className="absolute inset-0 flex">
                 {Array.from({ length: BAR_SEGMENTS }, (_, i) => (
@@ -313,7 +321,7 @@ function Generating({ job, recipient }: { job: SongJobOutput; recipient: string 
               key={tip}
               className="min-h-5 text-sm text-muted-foreground motion-safe:animate-in motion-safe:fade-in"
             >
-              {done ? "Selesai! 🎉" : tip}
+              {done ? t("doneTip") : tip}
             </p>
           </div>
         </div>
@@ -353,20 +361,20 @@ function Generating({ job, recipient }: { job: SongJobOutput; recipient: string 
               </span>
               <div className="min-w-0 flex-1">
                 <p className={cn("font-medium", !isDone && !active && "text-muted-foreground")}>
-                  {s.label}
+                  {t(`stages.${s.key}.label`)}
                 </p>
-                <p className="text-sm text-muted-foreground">{s.detail}</p>
+                <p className="text-sm text-muted-foreground">{t(`stages.${s.key}.detail`)}</p>
               </div>
               <span className="shrink-0 text-xs font-medium">
                 {isDone ? (
-                  <span className="text-primary">Selesai</span>
+                  <span className="text-primary">{t("stageDone")}</span>
                 ) : active ? (
                   <Loader2Icon
                     className="size-4 animate-spin text-primary"
-                    aria-label="Sedang berjalan"
+                    aria-label={t("stageRunning")}
                   />
                 ) : (
-                  <span className="text-muted-foreground">Menunggu</span>
+                  <span className="text-muted-foreground">{t("stageWaiting")}</span>
                 )}
               </span>
             </li>
@@ -381,20 +389,18 @@ function Generating({ job, recipient }: { job: SongJobOutput; recipient: string 
 
 /** "You may close this page" + a sign-in nudge so the song is tied to their account. */
 function SaveHint({ jobId }: { jobId: string }) {
+  const t = useTranslations("job");
   const { state } = useCustomer();
   return (
     <div className="flex flex-col items-center gap-3 text-center text-sm text-muted-foreground">
-      <p className="text-pretty">
-        Biasanya 1–3 menit. Kamu boleh menutup halaman ini — buka lagi link ini nanti dan lagumu
-        tetap ada.
-      </p>
+      <p className="text-pretty">{t("saveHint")}</p>
       {state.kind === "signed-out" && (
         <Link
           href={`/login?next=${encodeURIComponent(`/jobs/${jobId}`)}`}
           className="inline-flex items-center gap-1.5 font-medium text-primary hover:underline"
         >
           <LogInIcon className="size-4" aria-hidden />
-          Masuk dengan emailmu agar lagu tersimpan di akunmu
+          {t("signInHint")}
         </Link>
       )}
     </div>
@@ -412,6 +418,7 @@ function Notice({
   message: string;
   children: React.ReactNode;
 }) {
+  const t = useTranslations("job");
   return (
     <div className="space-y-6 rounded-3xl border bg-card/80 p-6 text-center shadow-xl shadow-primary/5 backdrop-blur sm:p-8">
       <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-destructive/10 text-destructive">
@@ -424,7 +431,7 @@ function Notice({
       <div className="flex flex-wrap justify-center gap-3">{children}</div>
       <p className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
         <SparklesIcon className="size-3.5" aria-hidden />
-        Jawabanmu masih tersimpan, kamu tidak perlu mengisi ulang.
+        {t("answersKept")}
       </p>
     </div>
   );

@@ -1,6 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
-import { MusicIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { BrandLogo } from "@/components/brand-logo";
 import { cn } from "@/lib/utils";
 import { AccountMenu } from "./account-menu";
 
@@ -26,8 +27,9 @@ export function CustomerShell({
   width = "5xl",
   centered = false,
 }: CustomerShellProps) {
+  const t = useTranslations("common");
   return (
-    <div className="relative flex min-h-screen flex-col overflow-hidden">
+    <div className="relative flex min-h-screen flex-col overflow-clip">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -top-40 left-1/2 size-[40rem] -translate-x-1/2 rounded-full bg-primary/15 blur-3xl" />
         <div className="absolute top-1/2 -right-32 size-96 rounded-full bg-highlight/15 blur-3xl" />
@@ -35,11 +37,8 @@ export function CustomerShell({
       </div>
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/75 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
-            <span className="flex size-8 items-center justify-center rounded-lg bg-linear-to-br from-primary to-highlight text-primary-foreground">
-              <MusicIcon className="size-4" aria-hidden />
-            </span>
-            Lagu Untukmu
+          <Link href="/" aria-label={t("homeAria")}>
+            <BrandLogo />
           </Link>
           {actions ?? <AccountMenu />}
         </div>

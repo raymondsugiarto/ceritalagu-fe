@@ -1,4 +1,8 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+// Locale is resolved per request in src/i18n/request.ts (no URL prefix, no middleware).
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 // The Docker build sets this to the API service name; local `next dev` defaults to localhost.
 // Browser requests remain same-origin and Next forwards `/api/*` server-side.
@@ -16,4 +20,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

@@ -1,0 +1,795 @@
+{
+  "common": {
+    "appName": "Cerita Lagu",
+    "homeAria": "Cerita Lagu — home",
+    "languages": {
+      "id": "Bahasa Indonesia",
+      "en": "English"
+    },
+    "actions": {
+      "next": "Next",
+      "back": "Back",
+      "tryAgain": "Try again"
+    },
+    "account": {
+      "signIn": "Sign in",
+      "signOut": "Sign out"
+    },
+    "other": "Other",
+    "voices": {
+      "male": "Male",
+      "female": "Female",
+      "surprise": "Surprise me"
+    },
+    "voiceTags": {
+      "male": "Male vocals",
+      "female": "Female vocals",
+      "surprise": "Surprise vocals"
+    },
+    "songLanguages": {
+      "id": "Indonesian",
+      "en": "English"
+    },
+    "loadError": {
+      "notFound": {
+        "title": "Song not found",
+        "message": "This song doesn’t exist, or it was created on another device."
+      },
+      "failed": {
+        "title": "Something went wrong",
+        "message": "We can’t load your song right now. Try refreshing the page in a moment."
+      }
+    }
+  },
+  "metadata": {
+    "defaultTitle": "Cerita Lagu",
+    "titleTemplate": "%s · Cerita Lagu",
+    "description": "Create a personal song for someone you love in just a few minutes.",
+    "create": "Create a Song",
+    "job": "Creating Your Song",
+    "song": "Your Song",
+    "login": "Sign in",
+    "contact": {
+      "title": "Contact Us",
+      "description": "Send questions, feedback, or order issues to the Cerita Lagu team."
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "description": "Terms and conditions for using Cerita Lagu."
+    },
+    "notFound": "Page not found"
+  },
+  "landing": {
+    "header": {
+      "howItWorks": "How It Works",
+      "features": "Features",
+      "faq": "FAQ",
+      "contact": "Contact",
+      "cta": "Create Song"
+    },
+    "hero": {
+      "badge": "Written & sung just for them",
+      "title": "Turn your story into <highlight>a song they’ll never forget</highlight>",
+      "body": "Answer 7 questions about someone you love. We write lyrics from your memories, then arrange and sing them in the genre you choose.",
+      "ctaPrimary": "Create a Song Now",
+      "ctaSecondary": "See how it works",
+      "promises": {
+        "freePreview": "Free preview up to the chorus",
+        "noSignup": "No sign-up",
+        "fast": "Ready in minutes"
+      },
+      "mock": {
+        "meta": "For Mom · Mother’s Day",
+        "title": "The Light of Our Home",
+        "tags": "Ballad · Female vocals · Touching",
+        "chorus": "Chorus",
+        "line1": "The hands that once guided every step I took,",
+        "line2": "now I hold them close, Mom…",
+        "line3": "every prayer you whispered in the night"
+      }
+    },
+    "marquee": {
+      "aria": "Occasions it’s perfect for",
+      "title": "The perfect gift for every moment",
+      "occasions": {
+        "birthday": "🎂 Birthday",
+        "anniversary": "💍 Anniversary",
+        "wedding": "💒 Wedding",
+        "proposal": "💐 Proposal",
+        "mothersDay": "👩‍👧 Mother’s Day",
+        "fathersDay": "👨‍👦 Father’s Day",
+        "graduation": "🎓 Graduation",
+        "apology": "🙏 Apology",
+        "thankYou": "🤝 Thank You",
+        "farewell": "👋 Farewell",
+        "valentine": "❤️ Valentine’s Day",
+        "justBecause": "🥰 Just Because I Love You"
+      }
+    },
+    "howItWorks": {
+      "eyebrow": "How it works",
+      "title": "From story to song in 3 steps",
+      "description": "No singing or songwriting skills needed. Just tell us how you feel.",
+      "steps": {
+        "tell": {
+          "title": "Tell us about them",
+          "body": "Answer 7 short questions: who they are, the occasion, your memories together, and the message you want to share."
+        },
+        "create": {
+          "title": "We create the song",
+          "body": "We write lyrics from your story, then arrange and sing them in the genre, voice, and mood you pick."
+        },
+        "listen": {
+          "title": "Listen & share",
+          "body": "Play the free preview up to the first chorus. Love it? Unlock the full song and send it as a gift."
+        }
+      }
+    },
+    "samples": {
+      "eyebrow": "Sample songs",
+      "title": "Listen to songs we’ve made",
+      "description": "Every song is written from a different story. Press play and feel it for yourself."
+    },
+    "features": {
+      "eyebrow": "Why Cerita Lagu",
+      "title": "A truly personal gift",
+      "description": "Not an off-the-shelf song. Every song is made from scratch, based on your story.",
+      "more": "and more…",
+      "items": {
+        "lyrics": {
+          "title": "Lyrics from your memories",
+          "body": "Nicknames, special moments, and your message woven into lyrics that fit only them."
+        },
+        "genres": {
+          "title": "Plenty of genres",
+          "body": "Pop, Ballad, Acoustic, R&B, Jazz, Dangdut, Keroncong, even lullabies."
+        },
+        "voice": {
+          "title": "Choose the singer’s voice",
+          "body": "Male or female vocals — or let us surprise you."
+        },
+        "mood": {
+          "title": "Set the mood",
+          "body": "Romantic, cheerful, moving, funny, or upbeat — match it to the moment."
+        },
+        "language": {
+          "title": "Indonesian & English",
+          "body": "Write the lyrics in the language closest to both your hearts."
+        },
+        "fast": {
+          "title": "Fast and easy",
+          "body": "Fill in the questionnaire in a few minutes and hear the preview right away, no account needed."
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Frequently asked questions",
+      "items": {
+        "account": {
+          "q": "Do I need to sign up first?",
+          "a": "No. You can fill in the questionnaire and listen to the preview without an account. You only need one to save your song and unlock the full version."
+        },
+        "duration": {
+          "q": "How long does it take?",
+          "a": "Usually just a few minutes after you send your answers. The page shows your song automatically as soon as it’s ready."
+        },
+        "dislike": {
+          "q": "What if I don’t love the result?",
+          "a": "You can regenerate the song from the same answers to get different lyrics and a different arrangement."
+        },
+        "previewVsFull": {
+          "q": "What’s the difference between the preview and the full song?",
+          "a": "The preview plays from the start of the song to the end of the first chorus. The full song includes everything, plus the complete lyrics, ready to download and share."
+        },
+        "languages": {
+          "q": "Which languages are supported?",
+          "a": "Right now, lyrics can be written in Indonesian and English."
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Make them smile with a song that’s theirs alone",
+      "body": "Start now — the preview is free, no sign-up needed.",
+      "cta": "Create a Song Now"
+    },
+    "footer": {
+      "tagline": "Personal songs from your story, for the people you love.",
+      "cta": "Create a Song Now",
+      "columns": {
+        "product": "Product",
+        "help": "Help",
+        "legal": "Legal"
+      },
+      "links": {
+        "create": "Create a Song",
+        "howItWorks": "How It Works",
+        "samples": "Sample Songs",
+        "features": "Features",
+        "faq": "FAQ",
+        "contact": "Contact Us",
+        "signIn": "Sign in",
+        "terms": "Terms & Conditions",
+        "refund": "Refund Policy",
+        "privacy": "Personal Data"
+      },
+      "copyright": "© {year} Cerita Lagu. Made with ❤️ in Indonesia.",
+      "payment": "Payments securely processed by DOKU"
+    }
+  },
+  "create": {
+    "closeAria": "Close and go back home",
+    "progress": {
+      "stepOf": "Step {step} of {total}",
+      "allAnswered": "All questions answered",
+      "aria": "Questionnaire progress"
+    },
+    "question": "Question {step}",
+    "last": "Last step",
+    "reviewTitle": "Ready to create your song?",
+    "reviewHint": "You can still change your answers before we make the song.",
+    "showSummary": "Review answers",
+    "submit": "Create My Song",
+    "autosave": "Your answers are saved automatically on this device.",
+    "forming": "Your song is taking shape",
+    "optionsError": {
+      "title": "We couldn’t load the song options",
+      "message": "We couldn’t load the song options."
+    },
+    "submitError": "Sorry, we couldn’t create your song. Please try again.",
+    "submitErrors": {
+      "quota": "Today’s free song limit has been reached. Try again tomorrow, or sign in to continue.",
+      "busy": "We’re a little busy right now. Please try again."
+    },
+    "steps": {
+      "recipient": {
+        "title": "Who is this song for?",
+        "hint": "Pick how you know them."
+      },
+      "name": {
+        "title": "Their name and nickname",
+        "hint": "This name will be sung in the song."
+      },
+      "occasion": {
+        "title": "What’s the occasion?",
+        "hint": "The moment you want to celebrate."
+      },
+      "music": {
+        "title": "Pick a genre and voice",
+        "hint": "Set the feel of the song."
+      },
+      "special": {
+        "title": "What makes them special?",
+        "hint": "Traits, habits, or little things you love about them."
+      },
+      "memory": {
+        "title": "Share a favorite memory",
+        "hint": "The moment with them you remember most."
+      },
+      "message": {
+        "title": "A message from your heart",
+        "hint": "What you want to tell them through this song."
+      },
+      "contact": {
+        "title": "Where should we send the song?",
+        "hint": "We’ll send your song link to this email and phone number."
+      }
+    },
+    "fields": {
+      "fallbackName": "them",
+      "recipientType": "Who is this song for?",
+      "recipientOther": {
+        "label": "Who is it for?",
+        "placeholder": "e.g. My favorite teacher"
+      },
+      "recipientName": {
+        "label": "Name",
+        "placeholder": "e.g. Nadia"
+      },
+      "recipientNickname": {
+        "label": "Nickname (optional)",
+        "placeholder": "e.g. Nad, Babe, Mom"
+      },
+      "occasion": "What’s the occasion?",
+      "occasionOther": {
+        "label": "The occasion",
+        "placeholder": "e.g. Our little one’s first birthday"
+      },
+      "genre": "Genre",
+      "voice": "Singer’s voice",
+      "language": "Song language",
+      "mood": {
+        "heading": "Mood (optional)",
+        "label": "Mood"
+      },
+      "special": {
+        "label": "What makes {name} special?",
+        "placeholder": "e.g. They always laugh the loudest at comedies, and never forget my favorite coffee."
+      },
+      "memory": {
+        "label": "Your favorite memory together",
+        "placeholder": "e.g. Getting caught in the rain in Braga and hiding in a bookshop until it closed."
+      },
+      "message": {
+        "label": "Your message for {name}",
+        "placeholder": "e.g. Thank you for always being there. I’m proud to be part of your life."
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "name@email.com"
+      },
+      "phone": {
+        "label": "Phone / WhatsApp number",
+        "placeholder": "0812 3456 7890"
+      },
+      "privacy": "We only use these details to send you your song. No spam.",
+      "counterMin": "{length}/{max} · at least {min}",
+      "counter": "{length}/{max}"
+    },
+    "review": {
+      "for": "For",
+      "name": "Name",
+      "occasion": "Occasion",
+      "music": "Music",
+      "special": "What makes them special",
+      "memory": "Favorite memory",
+      "message": "Message from the heart",
+      "contact": "Send to",
+      "edit": "Edit {label}"
+    },
+    "preview": {
+      "forWho": "For {who}",
+      "defaultMeta": "A special song",
+      "songFor": "A song for {name}",
+      "songForEmpty": "A song for …",
+      "tagsPlaceholder": "Genre · Voice · Mood",
+      "fromStory": "From your story",
+      "quotePlaceholder": "We’ll weave your story into lyrics that fit only them."
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "minChars": "At least {min} characters",
+    "maxChars": "At most {max} characters",
+    "pickOne": "Pick one",
+    "pickGenre": "Pick a genre",
+    "pickVoice": "Pick a voice",
+    "emailFormat": "That email doesn’t look right",
+    "emailValid": "Enter a valid email",
+    "phoneFormat": "That phone number doesn’t look right (e.g. 0812 3456 7890)",
+    "recipientOther": "Tell us who this song is for",
+    "occasionOther": "Tell us the occasion",
+    "passwordRequired": "Password is required",
+    "passwordMismatch": "Passwords don’t match",
+    "nameMin": "Name must be at least {min} letters",
+    "nameMax": "Name must be at most {max} letters",
+    "messageMin": "Message must be at least {min} characters",
+    "messageMax": "Message must be at most {max} characters"
+  },
+  "job": {
+    "stages": {
+      "lyrics": {
+        "label": "Writing the lyrics",
+        "detail": "Turning your story into verses and a chorus",
+        "tips": [
+          "Finding just the right words for your memories…",
+          "Shaping a chorus that sticks…",
+          "Weaving their nickname into the lyrics…"
+        ]
+      },
+      "music": {
+        "label": "Making the music & vocals",
+        "detail": "Arranging the music and recording the vocals",
+        "tips": [
+          "Setting the tempo to match your mood…",
+          "Singing the first verse…",
+          "Adding harmonies to the chorus…",
+          "This part takes the longest — almost there…"
+        ]
+      },
+      "finishing": {
+        "label": "Finishing touches",
+        "detail": "Preparing your preview up to the first chorus",
+        "tips": ["Polishing the sound…", "Nearly done…"]
+      }
+    },
+    "preparingTip": "Getting the studio ready for your song…",
+    "status": {
+      "queued": "Getting your song ready…",
+      "generating_lyrics": "Writing your special lyrics…",
+      "generating_music": "Arranging the music & recording vocals…",
+      "processing_audio": "Finishing touches…",
+      "completed": "Your song is ready!",
+      "failed": "Sorry, something went wrong."
+    },
+    "eyebrowDone": "Your song is ready",
+    "eyebrowRunning": "In the making",
+    "titleFor": "A song for {name}",
+    "titleDefault": "Your special song",
+    "opening": "Opening your song…",
+    "doneTip": "Done! 🎉",
+    "progressAria": "Song creation progress",
+    "stageDone": "Done",
+    "stageRunning": "In progress",
+    "stageWaiting": "Waiting",
+    "saveHint": "Usually 1–3 minutes. You can close this page — open this link again later and your song will still be here.",
+    "signInHint": "Sign in with your email to save the song to your account",
+    "failedTitle": "Sorry, we couldn’t create your song",
+    "failure": {
+      "contentFlagged": "Sorry, we couldn’t process some of your answers. Try rewording them, then create the song again.",
+      "busy": "Our servers are busy right now. Please try again in a moment.",
+      "generic": "Sorry, something went wrong while creating your song. Please try again."
+    },
+    "tryAgain": "Try again",
+    "editAnswers": "Edit answers",
+    "newSong": "Create a new song",
+    "answersKept": "Your answers are still saved, so you don’t need to fill them in again.",
+    "regenerateFailed": "We couldn’t regenerate the song.",
+    "regenerateErrors": {
+      "limit": "You’ve used all the regenerations for this song.",
+      "processing": "This song is still being made.",
+      "busy": "We’re a little busy right now. Please try again."
+    }
+  },
+  "song": {
+    "player": {
+      "full": "Full song",
+      "preview": "Free preview",
+      "noAudio": "Your browser doesn’t support the audio player.",
+      "seekAria": "Song position",
+      "seekValue": "{time} of {duration}",
+      "pause": "Pause",
+      "replay": "Play again",
+      "play": "Play",
+      "download": "Download MP3",
+      "previewNote": "Preview up to the first chorus · full song about {minutes} min"
+    },
+    "lyrics": {
+      "title": "Lyrics",
+      "untilChorus": "Up to the first chorus",
+      "full": "Full lyrics",
+      "locked": "Full lyrics come with the full song",
+      "sections": {
+        "preChorus": "{n, select, none {Pre-Chorus} other {Pre-Chorus {n}}}",
+        "chorus": "{n, select, none {Chorus} other {Chorus {n}}}",
+        "verse": "{n, select, none {Verse} other {Verse {n}}}",
+        "bridge": "Bridge",
+        "intro": "Intro",
+        "outro": "Outro",
+        "hook": "Hook"
+      }
+    },
+    "paymentSuccessToast": "Payment successful! Your full song is unlocked.",
+    "paymentCheckFailed": "We couldn’t check your payment status.",
+    "newSong": "Create a new song",
+    "paidBanner": "Payment successful. Enjoy your full song!",
+    "waitingDoku": "Waiting for payment confirmation from DOKU…",
+    "unpaid": {
+      "pending": "Your payment isn’t confirmed yet. If you’ve already paid, wait a moment and check again.",
+      "expired": "The payment window has expired. Please start a new payment.",
+      "failed": "Payment failed. Please try again."
+    },
+    "continuePayment": "Continue payment",
+    "checkAgain": "Check again",
+    "notQuite": "Not quite right?",
+    "regenExhausted": "You’ve used all the regenerations for this song. Create a new song with different answers.",
+    "regenOptions": "Regenerate with the same answers, change your story, or start a new song.",
+    "regenerate": "Regenerate",
+    "regenerateLeft": "Regenerate ({count} left)",
+    "editAnswers": "Edit Answers",
+    "newSongCta": "Create a New Song",
+    "unlock": {
+      "heading": "Full song + complete lyrics",
+      "normalPriceAria": "Regular price {price}",
+      "save": "Save {percent}%",
+      "voucher": "Voucher",
+      "removeVoucher": "Remove voucher",
+      "total": "Total",
+      "voucherPlaceholder": "Voucher code",
+      "apply": "Apply",
+      "haveVoucher": "Have a voucher code?",
+      "cta": "Get the Full Song",
+      "ctaWithPrice": "Get the Full Song · {price}",
+      "unavailable": "Payments aren’t available right now.",
+      "methods": "Pay securely with QRIS, e-wallet, virtual account, or card.",
+      "enterVoucher": "Enter a voucher code.",
+      "voucherFailed": "This voucher can’t be used.",
+      "checkoutFailed": "We couldn’t open the payment page.",
+      "errors": {
+        "voucherInvalid": "This voucher code wasn’t found, is no longer active, or has expired.",
+        "voucherConflict": "You’ve already used this voucher, or it has run out.",
+        "paymentUnavailable": "Payments aren’t available yet. Please try again later.",
+        "checkoutConflict": "This song is already unlocked, or your email and phone number are missing.",
+        "accountDisabled": "This account has been disabled."
+      }
+    }
+  },
+  "auth": {
+    "headings": {
+      "email": {
+        "title": "Sign in to your account",
+        "hint": "Use the email you entered when creating your song."
+      },
+      "password": {
+        "title": "Welcome back",
+        "hint": "Enter your account password."
+      },
+      "code": {
+        "title": "Check your email",
+        "hint": "We sent a 6-digit code to make sure it’s really you."
+      },
+      "setPassword": {
+        "title": "Create a password",
+        "hint": "Next time, just sign in with this email and password."
+      },
+      "done": {
+        "title": "You’re signed in",
+        "hint": "Redirecting…"
+      }
+    },
+    "signedInAs": "Signed in as {email}",
+    "safety": "We will never ask for your code or password by chat or phone.",
+    "email": "Email",
+    "emailPlaceholder": "name@email.com",
+    "changeEmail": "Change email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "continue": "Continue",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "code": {
+      "sentTo": "Sent to <b>{email}</b>",
+      "change": "Change",
+      "label": "Verification code",
+      "verify": "Verify",
+      "noCode": "Didn’t get the code? Check your spam folder, or",
+      "resendIn": "resend in {seconds}s",
+      "sending": "sending…",
+      "resend": "resend the code",
+      "group": "6-digit code",
+      "digit": "Digit {n}"
+    },
+    "setPassword": {
+      "verified": "Email <b>{email}</b> verified",
+      "newPassword": "New password",
+      "hint": "At least {min} characters. Mix letters, numbers, or symbols.",
+      "confirm": "Repeat password",
+      "signInAgain": "Sign in again",
+      "save": "Save & sign in"
+    },
+    "strength": {
+      "weak": "Weak",
+      "fair": "Fair",
+      "strong": "Strong",
+      "veryStrong": "Very strong"
+    },
+    "failed": {
+      "signIn": "We couldn’t sign you in. Please try again.",
+      "continue": "We couldn’t continue. Please try again.",
+      "wrongCode": "Wrong code.",
+      "verify": "We couldn’t check the code. Please try again.",
+      "resend": "We couldn’t resend the code. Please try again.",
+      "savePassword": "We couldn’t save your password. Please try again."
+    },
+    "errors": {
+      "notRegistered": "This email isn’t registered yet. Create your first song — your email gets registered in the last step.",
+      "suspended": "This account is currently disabled. Contact us for help.",
+      "badLogin": "Wrong email or password.",
+      "tooMany": "Too many attempts. Please try again shortly.",
+      "hasPassword": "This account already has a password. Sign in with your password.",
+      "codeExpired": "This code is no longer valid, or there were too many wrong tries. Request a new code.",
+      "setupExpired": "Your verification session has ended. Sign in again to get a new code.",
+      "sendUnavailable": "We couldn’t send the code yet. Please try again shortly."
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "How can <highlight>we help?</highlight>",
+    "body": "Questions about your song or payment, or just want to share feedback? Write to us and we’ll reply to your email.",
+    "shortcuts": {
+      "email": "Email",
+      "faq": {
+        "title": "FAQ",
+        "body": "Quick answers to common questions"
+      },
+      "terms": {
+        "title": "Terms & Conditions",
+        "body": "Payments, refunds, and usage rights"
+      }
+    },
+    "form": {
+      "title": "Send a message",
+      "allRequired": "All fields are required.",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "name@email.com",
+      "topic": "Topic",
+      "message": "Message",
+      "messagePlaceholder": "Tell us how we can help. If it’s about an order, include your song link or account email.",
+      "sending": "Sending…",
+      "send": "Send Message",
+      "sentTitle": "Message sent!",
+      "sentBody": "Thanks for reaching out. We’ll reply to <b>{email}</b>.",
+      "sendAnother": "Send another message",
+      "failed": "Your message wasn’t sent. Please try again shortly.",
+      "tooMany": "Too many messages sent. Please try again in a few minutes.",
+      "missing": "Name and message are required."
+    },
+    "topics": {
+      "general": "General question",
+      "order": "Orders & payment",
+      "refund": "Refunds",
+      "song": "Problem with a song",
+      "partner": "Partnerships",
+      "other": "Other"
+    }
+  },
+  "legal": {
+    "eyebrow": "Legal",
+    "title": "Terms & Conditions",
+    "updated": "Last updated {date}",
+    "prevailing": "This English version is provided for convenience. If it differs from the Indonesian version, the Indonesian version prevails.",
+    "toc": "Contents",
+    "sections": {
+      "penerimaan": {
+        "title": "Acceptance of Terms",
+        "body": [
+          "By accessing or using Cerita Lagu (the \"Service\"), you agree to these Terms & Conditions. If you do not agree, please do not use the Service.",
+          "We may update these terms at any time. The latest version is always available on this page, and using the Service after a change means you accept that version."
+        ]
+      },
+      "layanan": {
+        "title": "About the Service",
+        "body": [
+          "Cerita Lagu creates personal songs based on the questionnaire answers you provide. Lyrics, arrangements, and vocals are generated with the help of artificial intelligence (AI).",
+          "Because songs are made by AI, every result can differ and may not always match your expectations. We do not guarantee that name pronunciation, rhymes, or musical style will be exactly as you imagine."
+        ]
+      },
+      "akun": {
+        "title": "Accounts & Use Without an Account",
+        "body": [
+          "You can fill in the questionnaire and listen to the preview without creating an account. To save songs and unlock the full version, you need to sign in with a valid email address.",
+          "You are responsible for keeping access to your account and email confidential, and for all activity that takes place through your account.",
+          "Songs created without an account are stored on the device/browser you use. If they are not claimed to an account within 30 days, that data and those songs may be deleted automatically."
+        ]
+      },
+      "konten-pengguna": {
+        "title": "Questionnaire Content",
+        "body": [
+          "You confirm that the stories, names, and information you enter are yours or that you have the right to use them, and that they do not infringe anyone else’s rights.",
+          "You may not enter content that contains hate speech, discrimination based on ethnicity, religion, race, or group (SARA), pornography, violence, defamation, harassment, or anything else that violates the laws of the Republic of Indonesia.",
+          "We may refuse, stop creating, or delete songs that violate these terms, without any obligation to refund."
+        ]
+      },
+      "preview": {
+        "title": "Preview & Regenerate",
+        "body": [
+          "Every song comes with a free preview of its opening section. Listen to the preview before buying the full song.",
+          "You can regenerate a song from the same answers within the limit shown on the song page. Daily song creation may also be limited to prevent abuse."
+        ]
+      },
+      "harga": {
+        "title": "Pricing & Payment",
+        "body": [
+          "The price of the full song is shown in Indonesian Rupiah (IDR) before you pay, including any discount from a valid voucher. Payment is made once per song.",
+          "Payments are processed by our payment gateway partner (DOKU). We do not store your card or bank account details.",
+          "Orders that are not paid within the set time limit expire automatically. You can check out again at any time.",
+          "Vouchers are valid only under their own terms, validity period, and quota, cannot be exchanged for cash, and may be cancelled if misuse is suspected."
+        ]
+      },
+      "pengiriman": {
+        "title": "Delivery of Digital Products",
+        "body": [
+          "The full song is a digital product. Once payment is confirmed, the song is unlocked immediately on the song page and can be played and downloaded through your account."
+        ]
+      },
+      "pengembalian-dana": {
+        "title": "Cancellations & Refunds",
+        "body": [
+          "Because a preview is available before purchase and the song is delivered instantly, completed purchases cannot be cancelled or refunded for reasons of taste or a change of mind.",
+          "A refund may be given if: (a) you were charged twice for the same song; (b) payment succeeded but the song did not unlock and we cannot fix it; or (c) the song file is corrupted and we cannot provide a replacement.",
+          "Submit your request within 7 days of payment, including your account email and proof of payment. Approved refunds are returned to the original payment method, subject to the payment provider’s processing time."
+        ]
+      },
+      "hak-penggunaan": {
+        "title": "Song Usage Rights",
+        "body": [
+          "After buying the full song, you may use it for personal, non-commercial purposes — for example, playing it at a family event, giving it as a gift, or sharing it on your personal social media.",
+          "Commercial use, such as reselling the song, registering it with music distribution or streaming services, or using it in paid advertising, is not allowed without our written consent.",
+          "We may use songs and lyrics anonymously (without names or personal data) to improve the quality of the Service. We will not feature your song as a public sample without your permission."
+        ]
+      },
+      "larangan": {
+        "title": "Prohibited Use",
+        "body": [
+          "You may not try to access full songs without paying, disrupt or overload the system, use bots or automated scripts, or abuse quotas, vouchers, or security vulnerabilities of the Service.",
+          "Violations may result in restricted access, account deactivation, and cancellation of purchases."
+        ]
+      },
+      "privasi": {
+        "title": "Personal Data",
+        "body": [
+          "We process questionnaire answers, email addresses, and technical data only as needed to create songs, run accounts, process payments, and prevent abuse. We do not sell your personal data to anyone.",
+          "You can request deletion of your account and song data by contacting us."
+        ]
+      },
+      "tanggung-jawab": {
+        "title": "Limitation of Liability",
+        "body": [
+          "The Service is provided \"as is\". We work to keep the Service available, but we do not guarantee that it will be free of interruptions or errors.",
+          "To the extent permitted by law, our liability for any claim relating to a song is limited to the amount you paid for that song."
+        ]
+      },
+      "hukum": {
+        "title": "Governing Law",
+        "body": [
+          "These Terms & Conditions are governed by the laws of the Republic of Indonesia. Any dispute will first be resolved through good-faith discussion (musyawarah)."
+        ]
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "body": "Questions about these terms, payments, or refunds? Send us a message through the <link>contact page</link> or email <mail>{email}</mail>."
+    }
+  },
+  "notFound": {
+    "message": "This page doesn’t exist.",
+    "home": "Back to home"
+  },
+  "errors": {
+    "BAD_REQUEST": "We couldn’t process that request. Please check your input.",
+    "VALIDATION_ERROR": "Some fields aren’t filled in correctly.",
+    "UNAUTHORIZED": "Please sign in first.",
+    "FORBIDDEN": "You don’t have access to this.",
+    "NOT_FOUND": "We couldn’t find what you were looking for.",
+    "CONFLICT": "This request can’t be completed right now.",
+    "TOO_MANY_REQUESTS": "Too many attempts. Please try again shortly.",
+    "SERVICE_UNAVAILABLE": "We’re a little busy right now. Please try again.",
+    "INTERNAL_ERROR": "Something went wrong on our end. Please try again.",
+    "NETWORK_ERROR": "Can’t reach the server. Check your internet connection.",
+    "ABORTED": "The request was cancelled.",
+    "unknown": "Something went wrong. Please try again.",
+    "fieldInvalid": "Please check this field.",
+    "email_not_registered": "This email isn’t registered yet. Create your first song — your email gets registered in the last step.",
+    "account_suspended": "This account is currently disabled. Contact us for help.",
+    "invalid_credentials": "Wrong email or password.",
+    "otp_invalid": "Wrong code. Check the email we sent you.",
+    "otp_expired": "This code has expired. Request a new one.",
+    "otp_too_many_attempts": "Too many wrong codes. Request a new one.",
+    "otp_send_failed": "We couldn’t send the code yet. Please try again shortly.",
+    "setup_session_expired": "Your verification session has ended. Sign in again to get a new code.",
+    "password_already_set": "This account already has a password. Sign in with your password.",
+    "password_too_short": "Password is too short.",
+    "password_too_long": "Password is too long.",
+    "password_blank": "Password can’t be only spaces.",
+    "login_required": "Please sign in first.",
+    "too_many_attempts": "Too many attempts. Please try again shortly.",
+    "voucher_required": "Enter a voucher code.",
+    "voucher_not_found": "We couldn’t find that voucher code.",
+    "voucher_inactive": "This voucher is no longer active.",
+    "voucher_expired": "This voucher has expired.",
+    "voucher_already_used": "You’ve already used this voucher.",
+    "voucher_quota_exhausted": "This voucher has run out.",
+    "payment_unavailable": "Payments aren’t available yet. Please try again later.",
+    "checkout_unavailable": "We couldn’t open the payment page. Please try again shortly.",
+    "song_already_unlocked": "This song is already fully unlocked.",
+    "contact_details_missing": "Add your email and phone number before buying the song.",
+    "account_disabled": "This account has been disabled.",
+    "daily_quota_exceeded": "Today’s free song limit has been reached. Try again tomorrow, or sign in to continue.",
+    "regenerate_limit_reached": "You’ve used all the regenerations for this song.",
+    "job_in_progress": "This song is still being made.",
+    "generation_unavailable": "We’re a little busy right now. Please try again.",
+    "full_song_locked": "The full song is available after payment.",
+    "required": "This field is required.",
+    "invalid_email": "That email doesn’t look right.",
+    "below_min": "This is too short.",
+    "above_max": "This is too long.",
+    "invalid_choice": "That choice isn’t valid.",
+    "invalid_format": "This isn’t in the right format.",
+    "option_unavailable": "This option is no longer available. Please pick another.",
+    "contact_fields_missing": "Name and message are required.",
+    "contact_send_failed": "Your message wasn’t sent. Please try again shortly.",
+    "too_many_messages": "Too many messages sent. Please try again in a few minutes."
+  }
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 interface OtpInputProps {
@@ -26,6 +27,7 @@ export function OtpInput({
   autoFocus,
   "aria-describedby": describedBy,
 }: OtpInputProps) {
+  const t = useTranslations("auth.code");
   const refs = React.useRef<(HTMLInputElement | null)[]>([]);
   const digits = Array.from({ length }, (_, i) => value[i] ?? "");
 
@@ -78,7 +80,7 @@ export function OtpInput({
   }
 
   return (
-    <div className="flex justify-between gap-2" role="group" aria-label="Kode 6 digit">
+    <div className="flex justify-between gap-2" role="group" aria-label={t("group")}>
       {digits.map((d, i) => (
         <input
           key={i}
@@ -95,7 +97,7 @@ export function OtpInput({
           maxLength={length}
           disabled={disabled}
           autoFocus={autoFocus && i === 0}
-          aria-label={`Digit ${i + 1}`}
+          aria-label={t("digit", { n: i + 1 })}
           aria-invalid={invalid || undefined}
           aria-describedby={describedBy}
           className={cn(

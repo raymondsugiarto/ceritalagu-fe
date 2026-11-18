@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -24,7 +25,9 @@ import { FieldError } from "@/components/ui/field-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CustomerShell } from "@/components/customer/customer-shell";
-import { ApiError, errorMessage } from "@/lib/api";
+import { ApiError, type ApiCode } from "@/lib/api";
+import { useApiError } from "@/hooks/use-api-error";
+import type { ValidationT } from "@/lib/questionnaire";
 import { authApi, safeNext } from "@/lib/auth-api";
 import { cn } from "@/lib/utils";
 import { OtpInput } from "./otp-input";
@@ -39,64 +42,60 @@ type Stage =
   | { kind: "set-password"; email: string; setupToken: string }
   | { kind: "done"; email: string };
 
-const emailSchema = z.object({
-  email: z.string().trim().max(254).pipe(z.email("Masukkan email yang valid")),
-  password: z.string().max(72),
-});
-type EmailValues = z.infer<typeof emailSchema>;
-
-const newPasswordSchema = z
-  .object({
-    password: z
+function createEmailSchema(t: ValidationT) {
+  return z.object({
+    email: z
       .string()
-      .min(MIN_PASSWORD, `Minimal ${MIN_PASSWORD} karakter`)
-      .max(72, "Maksimal 72 karakter"),
-    confirm: z.string(),
-  })
-  .refine((v) => v.password === v.confirm, {
-    path: ["confirm"],
-    message: "Password tidak sama",
+      .trim()
+      .max(254)
+      .pipe(z.email(t("emailValid"))),
+    password: z.string().max(72),
   });
-type NewPasswordValues = z.infer<typeof newPasswordSchema>;
+}
+type EmailValues = z.infer<ReturnType<typeof createEmailSchema>>;
 
-/** Errors whose API message is written for customers; anything else gets our fallback. */
-function customerMessage(err: unknown, fallback: string): string {
-  const worded =
-    err instanceof ApiError &&
-    [
-      "BAD_REQUEST",
-      "UNAUTHORIZED",
-      "FORBIDDEN",
-      "NOT_FOUND",
-      "CONFLICT",
-      "TOO_MANY_REQUESTS",
-      "SERVICE_UNAVAILABLE",
-    ].includes(err.code);
-  return worded ? errorMessage(err) : fallback;
+function createNewPasswordSchema(t: ValidationT) {
+  return z
+    .object({
+      password: z
+        .string()
+        .min(MIN_PASSWORD, t("minChars", { min: MIN_PASSWORD }))
+        .max(72, t("maxChars", { max: 72 })),
+      confirm: z.string(),
+    })
+    .refine((v) => v.password === v.confirm, {
+      path: ["confirm"],
+      message: t("passwordMismatch"),
+    });
+}
+type NewPasswordValues = z.infer<ReturnType<typeof createNewPasswordSchema>>;
+
+/**
+ * Customer wording per envelope code for the auth endpoints, used outside the default locale
+ * (in `id` the backend's own message is shown; see apiErrorText).
+ */
+function useAuthErrorOverrides(): Partial<Record<ApiCode, string>> {
+  const t = useTranslations("auth.errors");
+  return React.useMemo(
+    () => ({
+      NOT_FOUND: t("notRegistered"),
+      FORBIDDEN: t("suspended"),
+      TOO_MANY_REQUESTS: t("tooMany"),
+      SERVICE_UNAVAILABLE: t("sendUnavailable"),
+    }),
+    [t],
+  );
 }
 
-const HEADINGS: Record<Stage["kind"], { icon: LucideIcon; title: string; hint: string }> = {
-  email: {
-    icon: MailIcon,
-    title: "Masuk ke akunmu",
-    hint: "Pakai email yang kamu isi saat membuat lagu.",
-  },
-  password: {
-    icon: LockKeyholeIcon,
-    title: "Selamat datang kembali",
-    hint: "Masukkan password akunmu.",
-  },
-  code: {
-    icon: MailCheckIcon,
-    title: "Cek emailmu",
-    hint: "Kami mengirim kode 6 digit untuk memastikan ini benar kamu.",
-  },
-  "set-password": {
-    icon: KeyRoundIcon,
-    title: "Buat password",
-    hint: "Lain kali kamu cukup masuk dengan email dan password ini.",
-  },
-  done: { icon: CheckCircle2Icon, title: "Berhasil masuk", hint: "Mengarahkan…" },
+const HEADINGS: Record<
+  Stage["kind"],
+  { icon: LucideIcon; key: "email" | "password" | "code" | "setPassword" | "done" }
+> = {
+  email: { icon: MailIcon, key: "email" },
+  password: { icon: LockKeyholeIcon, key: "password" },
+  code: { icon: MailCheckIcon, key: "code" },
+  "set-password": { icon: KeyRoundIcon, key: "setPassword" },
+  done: { icon: CheckCircle2Icon, key: "done" },
 };
 
 /**
@@ -104,6 +103,7 @@ const HEADINGS: Record<Stage["kind"], { icon: LucideIcon; title: string; hint: s
  * password, or a 6-digit code is emailed (first sign-in) followed by "set password".
  */
 export function LoginView() {
+  const t = useTranslations("auth");
   const router = useRouter();
   const params = useSearchParams();
   const next = safeNext(params.get("next"));
@@ -141,8 +141,10 @@ export function LoginView() {
           <span className="flex size-12 items-center justify-center rounded-2xl bg-linear-to-br from-primary to-highlight text-primary-foreground shadow-lg shadow-primary/25">
             <Icon className="size-6" aria-hidden />
           </span>
-          <h1 className="text-2xl font-bold tracking-tight">{heading.title}</h1>
-          <p className="text-pretty text-muted-foreground">{heading.hint}</p>
+          <h1 className="text-2xl font-bold tracking-tight">
+            {t(`headings.${heading.key}.title`)}
+          </h1>
+          <p className="text-pretty text-muted-foreground">{t(`headings.${heading.key}.hint`)}</p>
         </div>
 
         <div
@@ -180,14 +182,14 @@ export function LoginView() {
           {stage.kind === "done" && (
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
               <Loader2Icon className="size-4 animate-spin" aria-hidden />
-              Masuk sebagai {stage.email}
+              {t("signedInAs", { email: stage.email })}
             </div>
           )}
         </div>
       </div>
       <p className="flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
         <ShieldCheckIcon className="size-3.5" aria-hidden />
-        Kami tidak pernah meminta kode atau passwordmu lewat chat atau telepon.
+        {t("safety")}
       </p>
     </CustomerShell>
   );
@@ -214,6 +216,11 @@ function EmailPasswordForm({
   onChangeEmail,
   onSignedIn,
 }: EmailPasswordFormProps) {
+  const t = useTranslations("auth");
+  const tValidation = useTranslations("validation");
+  const { errorText } = useApiError();
+  const overrides = useAuthErrorOverrides();
+  const emailSchema = React.useMemo(() => createEmailSchema(tValidation), [tValidation]);
   const [showPassword, setShowPassword] = React.useState(false);
   const withPassword = stage.kind === "password";
   const {
@@ -235,14 +242,19 @@ function EmailPasswordForm({
     setServerError(null);
     if (withPassword) {
       if (!password) {
-        setError("password", { message: "Password wajib diisi" });
+        setError("password", { message: tValidation("passwordRequired") });
         return;
       }
       try {
         const me = await authApi.login(stage.email, password);
         onSignedIn(me.email);
       } catch (err) {
-        setServerError(customerMessage(err, "Tidak bisa masuk. Coba lagi."));
+        setServerError(
+          errorText(err, {
+            overrides: { ...overrides, UNAUTHORIZED: t("errors.badLogin") },
+            fallback: t("failed.signIn"),
+          }),
+        );
       }
       return;
     }
@@ -256,10 +268,15 @@ function EmailPasswordForm({
       onCodeSent(sent.email, sent.resend_after_sec);
     } catch (err) {
       if (err instanceof ApiError && err.code === "VALIDATION_ERROR") {
-        setError("email", { message: "Masukkan email yang valid" });
+        setError("email", { message: tValidation("emailValid") });
         return;
       }
-      setServerError(customerMessage(err, "Tidak bisa melanjutkan. Coba lagi."));
+      setServerError(
+        errorText(err, {
+          overrides: { ...overrides, CONFLICT: t("errors.hasPassword") },
+          fallback: t("failed.continue"),
+        }),
+      );
     }
   }
 
@@ -267,7 +284,7 @@ function EmailPasswordForm({
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t("email")}</Label>
           {withPassword && (
             <button
               type="button"
@@ -275,7 +292,7 @@ function EmailPasswordForm({
               className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
             >
               <PencilIcon className="size-3" aria-hidden />
-              Ganti email
+              {t("changeEmail")}
             </button>
           )}
         </div>
@@ -284,7 +301,7 @@ function EmailPasswordForm({
           type="email"
           inputMode="email"
           autoComplete="username"
-          placeholder="nama@email.com"
+          placeholder={t("emailPlaceholder")}
           startAdornment={<MailIcon />}
           readOnly={withPassword}
           className={cn("h-12 rounded-xl", withPassword && "bg-muted/50")}
@@ -297,7 +314,7 @@ function EmailPasswordForm({
 
       {withPassword && (
         <div className="space-y-2 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">{t("password")}</Label>
           <div className="relative">
             <Input
               id="password"
@@ -317,7 +334,7 @@ function EmailPasswordForm({
 
       <FieldError role="alert">{serverError}</FieldError>
 
-      <SubmitButton busy={isSubmitting}>{withPassword ? "Masuk" : "Lanjut"}</SubmitButton>
+      <SubmitButton busy={isSubmitting}>{withPassword ? t("signIn") : t("continue")}</SubmitButton>
     </form>
   );
 }
@@ -332,6 +349,9 @@ interface CodeFormProps {
 }
 
 function CodeForm({ stage, onResent, onVerified, onChangeEmail }: CodeFormProps) {
+  const t = useTranslations("auth");
+  const { errorText, fieldText } = useApiError();
+  const overrides = useAuthErrorOverrides();
   const [code, setCode] = React.useState("");
   const [busy, setBusy] = React.useState(false);
   const [resending, setResending] = React.useState(false);
@@ -348,8 +368,13 @@ function CodeForm({ stage, onResent, onVerified, onChangeEmail }: CodeFormProps)
     } catch (err) {
       setError(
         err instanceof ApiError && err.code === "VALIDATION_ERROR"
-          ? (err.fieldMap.code ?? "Kode salah.")
-          : customerMessage(err, "Kode belum bisa diperiksa. Coba lagi."),
+          ? err.fieldMap.code
+            ? fieldText(err.fieldMap.code, err.fieldReasons.code)
+            : t("failed.wrongCode")
+          : errorText(err, {
+              overrides: { ...overrides, BAD_REQUEST: t("errors.codeExpired") },
+              fallback: t("failed.verify"),
+            }),
       );
       setCode("");
       setBusy(false);
@@ -364,7 +389,12 @@ function CodeForm({ stage, onResent, onVerified, onChangeEmail }: CodeFormProps)
       setCode("");
       onResent(sent.resend_after_sec);
     } catch (err) {
-      setError(customerMessage(err, "Kode belum bisa dikirim ulang. Coba lagi."));
+      setError(
+        errorText(err, {
+          overrides: { ...overrides, CONFLICT: t("errors.hasPassword") },
+          fallback: t("failed.resend"),
+        }),
+      );
     } finally {
       setResending(false);
     }
@@ -381,19 +411,22 @@ function CodeForm({ stage, onResent, onVerified, onChangeEmail }: CodeFormProps)
     >
       <div className="flex items-center justify-between gap-3 rounded-xl bg-muted/60 px-4 py-3 text-sm">
         <span className="min-w-0 truncate">
-          Dikirim ke <span className="font-medium">{stage.email}</span>
+          {t.rich("code.sentTo", {
+            email: stage.email,
+            b: (chunks) => <span className="font-medium">{chunks}</span>,
+          })}
         </span>
         <button
           type="button"
           onClick={onChangeEmail}
           className="shrink-0 text-xs font-medium text-primary hover:underline"
         >
-          Ganti
+          {t("code.change")}
         </button>
       </div>
 
       <div className="space-y-2">
-        <Label>Kode verifikasi</Label>
+        <Label>{t("code.label")}</Label>
         <OtpInput
           value={code}
           onChange={(v) => {
@@ -412,13 +445,13 @@ function CodeForm({ stage, onResent, onVerified, onChangeEmail }: CodeFormProps)
       </div>
 
       <SubmitButton busy={busy} disabled={code.length !== CODE_LENGTH}>
-        Verifikasi
+        {t("code.verify")}
       </SubmitButton>
 
       <p className="text-center text-sm text-muted-foreground">
-        Tidak menerima kode? Cek folder spam, atau{" "}
+        {t("code.noCode")}{" "}
         {secondsLeft > 0 ? (
-          <span className="tabular-nums">kirim ulang dalam {secondsLeft} dtk</span>
+          <span className="tabular-nums">{t("code.resendIn", { seconds: secondsLeft })}</span>
         ) : (
           <button
             type="button"
@@ -426,7 +459,7 @@ function CodeForm({ stage, onResent, onVerified, onChangeEmail }: CodeFormProps)
             disabled={resending}
             className="font-medium text-primary hover:underline disabled:opacity-50"
           >
-            {resending ? "mengirim…" : "kirim ulang kode"}
+            {resending ? t("code.sending") : t("code.resend")}
           </button>
         )}
       </p>
@@ -443,6 +476,14 @@ interface SetPasswordFormProps {
 }
 
 function SetPasswordForm({ stage, onRestart, onSignedIn }: SetPasswordFormProps) {
+  const t = useTranslations("auth");
+  const tValidation = useTranslations("validation");
+  const { errorText, fieldText } = useApiError();
+  const overrides = useAuthErrorOverrides();
+  const newPasswordSchema = React.useMemo(
+    () => createNewPasswordSchema(tValidation),
+    [tValidation],
+  );
   const [show, setShow] = React.useState(false);
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [expired, setExpired] = React.useState(false);
@@ -465,13 +506,24 @@ function SetPasswordForm({ stage, onRestart, onSignedIn }: SetPasswordFormProps)
       onSignedIn(me.email);
     } catch (err) {
       if (err instanceof ApiError && err.code === "VALIDATION_ERROR" && err.fieldMap.password) {
-        setError("password", { message: err.fieldMap.password });
+        setError("password", {
+          message: fieldText(err.fieldMap.password, err.fieldReasons.password),
+        });
         return;
       }
       if (err instanceof ApiError && (err.code === "UNAUTHORIZED" || err.code === "CONFLICT")) {
         setExpired(true);
       }
-      setServerError(customerMessage(err, "Password belum bisa disimpan. Coba lagi."));
+      setServerError(
+        errorText(err, {
+          overrides: {
+            ...overrides,
+            UNAUTHORIZED: t("errors.setupExpired"),
+            CONFLICT: t("errors.hasPassword"),
+          },
+          fallback: t("failed.savePassword"),
+        }),
+      );
     }
   }
 
@@ -480,7 +532,10 @@ function SetPasswordForm({ stage, onRestart, onSignedIn }: SetPasswordFormProps)
       <div className="flex items-center gap-2 rounded-xl bg-primary/5 px-4 py-3 text-sm">
         <CheckCircle2Icon className="size-4 shrink-0 text-primary" aria-hidden />
         <span className="min-w-0 truncate">
-          Email <span className="font-medium">{stage.email}</span> terverifikasi
+          {t.rich("setPassword.verified", {
+            email: stage.email,
+            b: (chunks) => <span className="font-medium">{chunks}</span>,
+          })}
         </span>
       </div>
 
@@ -488,7 +543,7 @@ function SetPasswordForm({ stage, onRestart, onSignedIn }: SetPasswordFormProps)
       <input type="email" value={stage.email} autoComplete="username" readOnly hidden />
 
       <div className="space-y-2">
-        <Label htmlFor="new-password">Password baru</Label>
+        <Label htmlFor="new-password">{t("setPassword.newPassword")}</Label>
         <div className="relative">
           <Input
             id="new-password"
@@ -508,13 +563,13 @@ function SetPasswordForm({ stage, onRestart, onSignedIn }: SetPasswordFormProps)
           <FieldError id="new-password-hint">{errors.password.message}</FieldError>
         ) : (
           <p id="new-password-hint" className="text-xs text-muted-foreground">
-            Minimal {MIN_PASSWORD} karakter. Gabungkan huruf, angka atau simbol.
+            {t("setPassword.hint", { min: MIN_PASSWORD })}
           </p>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="confirm-password">Ulangi password</Label>
+        <Label htmlFor="confirm-password">{t("setPassword.confirm")}</Label>
         <Input
           id="confirm-password"
           type={show ? "text" : "password"}
@@ -538,10 +593,10 @@ function SetPasswordForm({ stage, onRestart, onSignedIn }: SetPasswordFormProps)
           className="h-12 w-full rounded-full"
           onClick={onRestart}
         >
-          Masuk lagi
+          {t("setPassword.signInAgain")}
         </Button>
       ) : (
-        <SubmitButton busy={isSubmitting}>Simpan & masuk</SubmitButton>
+        <SubmitButton busy={isSubmitting}>{t("setPassword.save")}</SubmitButton>
       )}
     </form>
   );
@@ -573,11 +628,12 @@ function SubmitButton({
 }
 
 function PasswordToggle({ shown, onToggle }: { shown: boolean; onToggle: () => void }) {
+  const t = useTranslations("auth");
   return (
     <button
       type="button"
       onClick={onToggle}
-      aria-label={shown ? "Sembunyikan password" : "Tampilkan password"}
+      aria-label={shown ? t("hidePassword") : t("showPassword")}
       aria-pressed={shown}
       className="absolute top-1/2 right-2 flex size-8 -translate-y-1/2 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
     >
@@ -591,12 +647,15 @@ function PasswordToggle({ shown, onToggle }: { shown: boolean; onToggle: () => v
 }
 
 /** Rough strength meter: length plus character variety. */
+const STRENGTH = ["weak", "fair", "strong", "veryStrong"] as const;
+
 function PasswordStrength({ value }: { value: string }) {
+  const t = useTranslations("auth.strength");
   if (!value) return null;
   const variety = [/[a-z]/, /[A-Z]/, /\d/, /[^A-Za-z0-9]/].filter((r) => r.test(value)).length;
   const score =
     value.length < MIN_PASSWORD ? 1 : Math.min(4, variety + (value.length >= 12 ? 1 : 0));
-  const labels = ["", "Lemah", "Cukup", "Kuat", "Sangat kuat"];
+  const strength = STRENGTH[score - 1];
   return (
     <div className="flex items-center gap-2" aria-live="polite">
       <div className="flex flex-1 gap-1" aria-hidden>
@@ -611,7 +670,9 @@ function PasswordStrength({ value }: { value: string }) {
           />
         ))}
       </div>
-      <span className="w-20 text-right text-xs text-muted-foreground">{labels[score]}</span>
+      <span className="w-20 text-right text-xs text-muted-foreground">
+        {strength && t(strength)}
+      </span>
     </div>
   );
 }

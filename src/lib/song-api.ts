@@ -79,16 +79,27 @@ export const songApi = {
   },
 };
 
-/** Customer-facing text for a failed song/job load (API messages are English for 404). */
-export function loadErrorText(err: unknown): { title: string; message: string } {
-  if (err instanceof ApiError && err.code === "NOT_FOUND") {
-    return {
-      title: "Lagu tidak ditemukan",
-      message: "Lagu ini tidak ada atau dibuat dari perangkat lain.",
-    };
+/** Which load error to show for a failed song/job load (`common.loadError.<kind>`). */
+export type LoadErrorKind = "notFound" | "failed";
+
+export function loadErrorKind(err: unknown): LoadErrorKind {
+  return err instanceof ApiError && err.code === "NOT_FOUND" ? "notFound" : "failed";
+}
+
+/** Customer message for a failed job, from its stable `error_code` (`job.failure.<kind>`). */
+export type JobFailureKind = "contentFlagged" | "busy" | "generic";
+
+/** Mirrors backend song.UserMessage (aiprovider.ErrorKind → customer text). */
+export function jobFailureKind(errorCode: string | undefined): JobFailureKind {
+  switch (errorCode) {
+    case "content_flagged":
+      return "contentFlagged";
+    case "rate_limited":
+    case "timeout":
+    case "unavailable":
+    case "invalid_output":
+      return "busy";
+    default:
+      return "generic";
   }
-  return {
-    title: "Terjadi kendala",
-    message: "Lagumu tidak bisa dimuat sekarang. Coba muat ulang halaman sebentar lagi.",
-  };
 }

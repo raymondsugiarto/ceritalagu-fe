@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { SongView } from "./song-view";
 
-export const metadata: Metadata = { title: "Lagumu" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("metadata");
+  return { title: t("song") };
+}
 
 interface SongPageProps {
   params: Promise<{ id: string }>;

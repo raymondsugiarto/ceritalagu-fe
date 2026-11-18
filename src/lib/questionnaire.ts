@@ -1,3 +1,4 @@
+import type { useTranslations } from "next-intl";
 import { z } from "zod";
 import type { OptionOutput, QuestionnaireOptionsOutput } from "@/lib/masterdata-api";
 import type { CreateQuestionnaireInput } from "@/lib/questionnaire-api";
@@ -19,14 +20,19 @@ export interface ChoiceOptions {
   moods: Option[];
 }
 
-const OTHER_OPTION: Option = { code: OTHER, label: "Lainnya" };
-
-/** API options → chips. Recipient and occasion end with "Lainnya" (free text); genre and mood do not. */
-export function toChoiceOptions(out: QuestionnaireOptionsOutput): ChoiceOptions {
+/**
+ * API options → chips. Recipient and occasion end with "Lainnya" / "Other" (free text, label from
+ * `common.other`); genre and mood do not. Master-data names come from the API as-is (plan Phase 2/3).
+ */
+export function toChoiceOptions(
+  out: QuestionnaireOptionsOutput,
+  otherLabel: string,
+): ChoiceOptions {
   const map = (list: OptionOutput[]) => list.map((o) => ({ code: o.code, label: o.name }));
+  const other: Option = { code: OTHER, label: otherLabel };
   return {
-    recipientTypes: [...map(out.recipient_types), OTHER_OPTION],
-    occasions: [...map(out.occasions), OTHER_OPTION],
+    recipientTypes: [...map(out.recipient_types), other],
+    occasions: [...map(out.occasions), other],
     genres: map(out.genres),
     moods: map(out.moods ?? []),
   };
@@ -49,66 +55,76 @@ export function staleChoices(
   return out;
 }
 
-export const VOICES: Option[] = [
-  { code: "male", label: "Pria" },
-  { code: "female", label: "Wanita" },
-  { code: "surprise", label: "Kejutkan Aku" },
-];
+/** Singer voice codes (labels: `common.voices.<code>`). */
+export const VOICE_CODES = ["male", "female", "surprise"] as const;
+export type VoiceCode = (typeof VOICE_CODES)[number];
 
-export const LANGUAGES: Option[] = [
-  { code: "id", label: "Indonesia" },
-  { code: "en", label: "Inggris" },
-];
+/** Song (lyrics) language codes — not the UI locale (labels: `common.songLanguages.<code>`). */
+export const SONG_LANGUAGE_CODES = ["id", "en"] as const;
+export type SongLanguageCode = (typeof SONG_LANGUAGE_CODES)[number];
+
+export function isVoiceCode(code: string): code is VoiceCode {
+  return (VOICE_CODES as readonly string[]).includes(code);
+}
+
+export function isSongLanguageCode(code: string): code is SongLanguageCode {
+  return (SONG_LANGUAGE_CODES as readonly string[]).includes(code);
+}
 
 export function labelOf(options: Option[], code: string): string {
   return options.find((o) => o.code === code)?.label ?? code;
 }
 
-const text = (min: number, max: number) =>
-  z
-    .string()
-    .trim()
-    .min(min, min <= 1 ? "Wajib diisi" : `Minimal ${min} karakter`)
-    .max(max, `Maksimal ${max} karakter`);
+/** Translator for the `validation` namespace (from `useTranslations("validation")`). */
+export type ValidationT = ReturnType<typeof useTranslations<"validation">>;
 
-// Mirrors the backend validate tags (questionnaire/dto.go); the server stays the source of truth.
-export const questionnaireSchema = z
-  .object({
-    recipient_type: z.string().min(1, "Pilih salah satu"),
-    recipient_other: z.string().trim().max(50, "Maksimal 50 karakter"),
-    recipient_name: text(1, 50),
-    recipient_nickname: z.string().trim().max(50, "Maksimal 50 karakter"),
-    occasion: z.string().min(1, "Pilih salah satu"),
-    occasion_other: z.string().trim().max(50, "Maksimal 50 karakter"),
-    genre: z.string().min(1, "Pilih genre"),
-    voice: z.enum(["male", "female", "surprise"], { message: "Pilih suara" }),
-    language: z.enum(["id", "en"]),
-    mood: z.string(),
-    special: text(10, 500),
-    memory: text(10, 800),
-    message: text(10, 500),
-    email: z.string().trim().min(1, "Wajib diisi").max(254).email("Format email belum benar"),
-    phone: z
+/**
+ * The questionnaire schema with messages in the viewer's locale (plan §3.5).
+ * Mirrors the backend validate tags (questionnaire/dto.go); the server stays the source of truth.
+ */
+export function createQuestionnaireSchema(t: ValidationT) {
+  const max = (n: number) => t("maxChars", { max: n });
+  const text = (min: number, maxLength: number) =>
+    z
       .string()
       .trim()
-      .min(1, "Wajib diisi")
-      .max(30, "Maksimal 30 karakter")
-      .regex(/^\+?[0-9\s\-()]{8,}$/, "Nomor HP belum benar (contoh: 0812 3456 7890)"),
-  })
-  .superRefine((v, ctx) => {
-    if (v.recipient_type === OTHER && v.recipient_other.length === 0) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["recipient_other"],
-        message: "Tulis untuk siapa lagu ini",
-      });
-    }
-    if (v.occasion === OTHER && v.occasion_other.length === 0) {
-      ctx.addIssue({ code: "custom", path: ["occasion_other"], message: "Tulis momennya" });
-    }
-  });
+      .min(min, min <= 1 ? t("required") : t("minChars", { min }))
+      .max(maxLength, max(maxLength));
 
-export type QuestionnaireValues = z.infer<typeof questionnaireSchema>;
+  return z
+    .object({
+      recipient_type: z.string().min(1, t("pickOne")),
+      recipient_other: z.string().trim().max(50, max(50)),
+      recipient_name: text(1, 50),
+      recipient_nickname: z.string().trim().max(50, max(50)),
+      occasion: z.string().min(1, t("pickOne")),
+      occasion_other: z.string().trim().max(50, max(50)),
+      genre: z.string().min(1, t("pickGenre")),
+      voice: z.enum(VOICE_CODES, { message: t("pickVoice") }),
+      language: z.enum(SONG_LANGUAGE_CODES),
+      mood: z.string(),
+      special: text(10, 500),
+      memory: text(10, 800),
+      message: text(10, 500),
+      email: z.string().trim().min(1, t("required")).max(254).email(t("emailFormat")),
+      phone: z
+        .string()
+        .trim()
+        .min(1, t("required"))
+        .max(30, max(30))
+        .regex(/^\+?[0-9\s\-()]{8,}$/, t("phoneFormat")),
+    })
+    .superRefine((v, ctx) => {
+      if (v.recipient_type === OTHER && v.recipient_other.length === 0) {
+        ctx.addIssue({ code: "custom", path: ["recipient_other"], message: t("recipientOther") });
+      }
+      if (v.occasion === OTHER && v.occasion_other.length === 0) {
+        ctx.addIssue({ code: "custom", path: ["occasion_other"], message: t("occasionOther") });
+      }
+    });
+}
+
+export type QuestionnaireValues = z.infer<ReturnType<typeof createQuestionnaireSchema>>;
 export type QuestionnaireField = keyof QuestionnaireValues;
 
 export const EMPTY_VALUES: QuestionnaireValues = {
@@ -129,11 +145,14 @@ export const EMPTY_VALUES: QuestionnaireValues = {
   phone: "",
 };
 
+/** Message key of a step: title and hint live in `create.steps.<id>`. */
+export type QuestionnaireStepId =
+  "recipient" | "name" | "occasion" | "music" | "special" | "memory" | "message" | "contact";
+
 /** One step of the song questionnaire (PRD §5.1). */
 export interface QuestionnaireStep {
   step: number;
-  title: string;
-  hint: string;
+  id: QuestionnaireStepId;
   fields: QuestionnaireField[];
 }
 
@@ -141,50 +160,42 @@ export interface QuestionnaireStep {
 export const QUESTIONNAIRE_STEPS: QuestionnaireStep[] = [
   {
     step: 1,
-    title: "Lagu ini untuk siapa?",
-    hint: "Pilih hubunganmu dengannya.",
+    id: "recipient",
     fields: ["recipient_type", "recipient_other"],
   },
   {
     step: 2,
-    title: "Nama dan panggilannya",
-    hint: "Nama ini akan dinyanyikan di lagunya.",
+    id: "name",
     fields: ["recipient_name", "recipient_nickname"],
   },
   {
     step: 3,
-    title: "Apa momennya?",
-    hint: "Momen yang ingin kamu rayakan.",
+    id: "occasion",
     fields: ["occasion", "occasion_other"],
   },
   {
     step: 4,
-    title: "Pilih genre dan suara",
-    hint: "Atur nuansa lagunya.",
+    id: "music",
     fields: ["genre", "voice", "language", "mood"],
   },
   {
     step: 5,
-    title: "Apa yang membuatnya spesial?",
-    hint: "Sifat, kebiasaan, atau hal kecil yang kamu suka darinya.",
+    id: "special",
     fields: ["special"],
   },
   {
     step: 6,
-    title: "Bagikan kenangan favoritmu",
-    hint: "Momen yang paling kamu ingat bersamanya.",
+    id: "memory",
     fields: ["memory"],
   },
   {
     step: 7,
-    title: "Pesan dari hatimu",
-    hint: "Hal yang ingin kamu sampaikan lewat lagu ini.",
+    id: "message",
     fields: ["message"],
   },
   {
     step: 8,
-    title: "Kirim lagunya ke mana?",
-    hint: "Kami kirim link lagumu ke email dan nomor HP ini.",
+    id: "contact",
     fields: ["email", "phone"],
   },
 ];
@@ -258,13 +269,18 @@ export const NEW_SONG_HREF = "/create?baru=1";
 
 /**
  * Starts a fresh draft for a new song with different answers. Email and phone stay, so a returning
- * guest does not type their contact again.
+ * guest does not type their contact again. `language` is the default song language (the UI locale).
  */
-export function startNewDraft(): void {
+export function startNewDraft(language: SongLanguageCode = EMPTY_VALUES.language): void {
   const prev = loadDraft();
   saveDraft({
     step: 1,
-    values: { ...EMPTY_VALUES, email: prev?.values.email ?? "", phone: prev?.values.phone ?? "" },
+    values: {
+      ...EMPTY_VALUES,
+      language,
+      email: prev?.values.email ?? "",
+      phone: prev?.values.phone ?? "",
+    },
   });
 }
 
