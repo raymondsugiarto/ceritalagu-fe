@@ -2,7 +2,18 @@ import { useTranslations } from "next-intl";
 import { ChevronDownIcon } from "lucide-react";
 import { SectionHeading } from "./how-it-works";
 
-const FAQS = ["account", "duration", "dislike", "previewVsFull", "languages"] as const;
+/** Display order. Also feeds the FAQPage JSON-LD on the landing page (src/lib/seo/json-ld.ts). */
+export const FAQS = [
+  "whatIs",
+  "account",
+  "duration",
+  "occasions",
+  "previewVsFull",
+  "payment",
+  "download",
+  "dislike",
+  "languages",
+] as const;
 
 /** Accordion FAQ built on <details>, so it works without JavaScript. */
 export function Faq() {

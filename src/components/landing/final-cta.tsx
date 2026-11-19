@@ -5,8 +5,15 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Equalizer } from "./equalizer";
 
+interface FinalCtaProps {
+  /** Where the button goes; occasion pages pass /create?momen=<code>. */
+  href?: string;
+  /** Button label; defaults to the landing copy. */
+  cta?: string;
+}
+
 /** Closing call-to-action band. */
-export function FinalCta() {
+export function FinalCta({ href = "/create", cta }: FinalCtaProps = {}) {
   const t = useTranslations("landing.finalCta");
   return (
     <section className="px-4 pb-20 md:pb-28">
@@ -25,13 +32,13 @@ export function FinalCta() {
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-pretty opacity-90">{t("body")}</p>
         <Link
-          href="/create"
+          href={href}
           className={cn(
             buttonVariants({ variant: "secondary", size: "lg" }),
             "mt-8 h-12 rounded-full px-8 text-base shadow-lg",
           )}
         >
-          {t("cta")}
+          {cta ?? t("cta")}
           <ArrowRightIcon aria-hidden />
         </Link>
       </div>

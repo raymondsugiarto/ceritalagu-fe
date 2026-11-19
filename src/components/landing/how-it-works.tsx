@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import { HeadphonesIcon, ListChecksIcon, WandSparklesIcon } from "lucide-react";
 
-const STEPS = [
+export const STEPS = [
   { icon: ListChecksIcon, key: "tell" },
   { icon: WandSparklesIcon, key: "create" },
   { icon: HeadphonesIcon, key: "listen" },

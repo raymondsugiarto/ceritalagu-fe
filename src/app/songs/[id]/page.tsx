@@ -4,7 +4,8 @@ import { SongView } from "./song-view";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("metadata");
-  return { title: t("song") };
+  // Personal songs and their lyrics: never in search results.
+  return { title: t("song"), robots: { index: false, follow: false } };
 }
 
 interface SongPageProps {

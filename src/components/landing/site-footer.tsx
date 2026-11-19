@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { ShieldCheckIcon } from "lucide-react";
 import { BrandLogo } from "@/components/brand-logo";
+import { OCCASION_PAGES, occasionPath } from "@/lib/occasions";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -49,9 +50,10 @@ const COLUMNS: { key: "product" | "help" | "legal"; links: { href: string; key: 
 export function SiteFooter() {
   const t = useTranslations("landing.footer");
   const tc = useTranslations("common");
+  const tOcc = useTranslations("occasionPages");
   return (
     <footer className="border-t bg-muted/30">
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-4 py-14 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-4 py-14 md:grid-cols-[1.4fr_repeat(4,1fr)]">
         <div className="col-span-2 max-w-xs space-y-4 md:col-span-1">
           <Link href="/" aria-label={tc("homeAria")} className="inline-flex">
             <BrandLogo />
@@ -82,6 +84,23 @@ export function SiteFooter() {
             </ul>
           </nav>
         ))}
+
+        {/* Occasion landing pages: internal links that help them get crawled and ranked. */}
+        <nav aria-label={tOcc("common.footerColumn")}>
+          <p className="text-sm font-semibold">{tOcc("common.footerColumn")}</p>
+          <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+            {OCCASION_PAGES.map((o) => (
+              <li key={o.slug}>
+                <Link
+                  href={occasionPath(o.slug)}
+                  className="transition-colors hover:text-foreground"
+                >
+                  {tOcc(`items.${o.key}.name`)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
 
       <div className="border-t">

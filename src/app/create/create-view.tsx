@@ -46,6 +46,7 @@ import {
 import { questionnaireApi } from "@/lib/questionnaire-api";
 import { songApi } from "@/lib/song-api";
 import { useQuestionnaireOptions } from "@/hooks/use-questionnaire-options";
+import { OCCASION_QUERY } from "@/lib/occasions";
 import { AccountMenu } from "@/components/customer/account-menu";
 import { CustomerShell } from "@/components/customer/customer-shell";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -93,18 +94,21 @@ export function CreateView() {
 
   // Restore this tab's draft once on mount (sessionStorage is browser-only).
   // "Buat Lagu Baru" (/create?baru=1) starts over from step 1; the flag is then dropped so a refresh resumes.
+  // Occasion landing pages link to /create?momen=<code>: it fills the occasion unless the draft
+  // already has one (an unknown code is cleared by the stale-choice check below).
   React.useEffect(() => {
-    if (new URLSearchParams(window.location.search).has("baru")) {
-      startNewDraft(defaultSongLanguage);
-      router.replace("/create", { scroll: false });
-    }
+    const params = new URLSearchParams(window.location.search);
+    const presetOccasion = params.get(OCCASION_QUERY);
+    if (params.has("baru")) startNewDraft(defaultSongLanguage);
+    if (params.has("baru") || presetOccasion !== null) router.replace("/create", { scroll: false });
     const draft = loadDraft();
     if (draft) {
       reset(draft.values);
       setStep(draft.step);
     }
+    if (presetOccasion && !draft?.values.occasion) setValue("occasion", presetOccasion);
     setRestored(true);
-  }, [reset, router, defaultSongLanguage]);
+  }, [reset, router, defaultSongLanguage, setValue]);
 
   // Save the draft on every change, after restoring so the empty defaults never overwrite it.
   React.useEffect(() => {

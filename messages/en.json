@@ -44,7 +44,7 @@
   "metadata": {
     "defaultTitle": "Cerita Lagu",
     "titleTemplate": "%s · Cerita Lagu",
-    "description": "Create a personal song for someone you love in just a few minutes.",
+    "description": "A personal song made from your story, for someone you love. Answer 7 questions and we write, arrange and sing it in your chosen genre. Free preview, no sign-up.",
     "create": "Create a Song",
     "job": "Creating Your Song",
     "song": "Your Song",
@@ -57,7 +57,11 @@
       "title": "Terms & Conditions",
       "description": "Terms and conditions for using Cerita Lagu."
     },
-    "notFound": "Page not found"
+    "notFound": "Page not found",
+    "homeTitle": "Cerita Lagu · A Personal Song Made from Your Story",
+    "ogAlt": "Cerita Lagu: a personal song made from your story, for someone you love",
+    "createDescription": "Tell us about someone you love in 7 short questions, pick a genre, voice and mood, then listen to a free preview of their song.",
+    "serviceType": "Personalized song creation"
   },
   "landing": {
     "header": {
@@ -74,7 +78,6 @@
       "ctaPrimary": "Create a Song Now",
       "ctaSecondary": "See how it works",
       "promises": {
-        "freePreview": "Free preview up to the chorus",
         "noSignup": "No sign-up",
         "fast": "Ready in minutes"
       },
@@ -166,6 +169,10 @@
       "eyebrow": "FAQ",
       "title": "Frequently asked questions",
       "items": {
+        "whatIs": {
+          "q": "What is Cerita Lagu?",
+          "a": "Cerita Lagu is a personalized song service from Indonesia. You answer 7 questions about someone you love, then we write lyrics from your memories together and sing them in the genre you choose, such as Pop, Ballad, Acoustic, R&B, Jazz, Dangdut or Keroncong."
+        },
         "account": {
           "q": "Do I need to sign up first?",
           "a": "No. You can fill in the questionnaire and listen to the preview without an account. You only need one to save your song and unlock the full version."
@@ -174,13 +181,25 @@
           "q": "How long does it take?",
           "a": "Usually just a few minutes after you send your answers. The page shows your song automatically as soon as it’s ready."
         },
-        "dislike": {
-          "q": "What if I don’t love the result?",
-          "a": "You can regenerate the song from the same answers to get different lyrics and a different arrangement."
+        "occasions": {
+          "q": "Which occasions is it for?",
+          "a": "Almost any: birthdays, anniversaries, weddings, proposals, Mother’s Day, Father’s Day, graduations, Valentine’s Day, apologies, thank-yous, farewells, or just to say “I love you”."
         },
         "previewVsFull": {
           "q": "What’s the difference between the preview and the full song?",
           "a": "The preview plays from the start of the song to the end of the first chorus. The full song includes everything, plus the complete lyrics, ready to download and share."
+        },
+        "payment": {
+          "q": "How much does it cost and how do I pay?",
+          "a": "The preview is always free. The full song’s price is shown in Indonesian Rupiah before you pay, including any voucher discount. You pay once per song, processed securely by DOKU."
+        },
+        "download": {
+          "q": "Can I download the song and give it as a gift?",
+          "a": "Yes. Once payment succeeds, the full song unlocks on its page right away and you can download it from your account, then play it for or send it to someone you love."
+        },
+        "dislike": {
+          "q": "What if I don’t love the result?",
+          "a": "You can regenerate the song from the same answers to get different lyrics and a different arrangement."
         },
         "languages": {
           "q": "Which languages are supported?",
@@ -791,5 +810,427 @@
     "contact_fields_missing": "Name and message are required.",
     "contact_send_failed": "Your message wasn’t sent. Please try again shortly.",
     "too_many_messages": "Too many messages sent. Please try again in a few minutes."
+  },
+  "occasionPages": {
+    "common": {
+      "breadcrumbHome": "Home",
+      "eyebrow": "Personal song",
+      "lyricTitle": "Sample lyrics",
+      "lyricNote": "An illustration. Your lyrics are written from your own story.",
+      "reasonsTitle": "Why a personal song?",
+      "ideasTitle": "Story ideas to include",
+      "ideasBody": "The more specific your story, the more personal the lyrics.",
+      "genresTitle": "Genres that fit",
+      "faqTitle": "{name}: common questions",
+      "othersTitle": "Songs for other moments",
+      "footerColumn": "Occasions",
+      "promises": {
+        "freePreview": "Free preview",
+        "noSignup": "No sign-up",
+        "fast": "Ready in minutes"
+      }
+    },
+    "items": {
+      "birthday": {
+        "name": "Birthday Song",
+        "metaTitle": "Personalized Birthday Song with Their Name & Your Memories",
+        "metaDescription": "Create a birthday song for your partner, mum, best friend or child. Lyrics from your memories, their name in the song, in the genre they love. Free preview.",
+        "h1": "A birthday song that sings their name",
+        "intro": "Everyone gets the same “Happy Birthday”. This year, give them a song that could only be sung for them: their nickname, your story together, and your wishes for the year ahead.",
+        "cta": "Create a Birthday Song",
+        "lyricMeta": "For Dinda · 25th birthday · Upbeat pop",
+        "lyric": [
+          "Twenty-five candles shining bright tonight,",
+          "I still hear you laughing in the old canteen,",
+          "Dinda, may every dream of yours come true,",
+          "and I’ll be here for every chapter that’s new."
+        ],
+        "reasons": [
+          {
+            "title": "More memorable than a gift",
+            "body": "Things get forgotten. A song with their name in it gets played every birthday."
+          },
+          {
+            "title": "For anyone",
+            "body": "Partners, parents, best friends, colleagues, even little kids who love happy songs."
+          },
+          {
+            "title": "Ready in minutes",
+            "body": "No gift yet? The song can be ready today."
+          }
+        ],
+        "ideas": [
+          "Their nickname or a pet name",
+          "A little habit of theirs that always makes you smile",
+          "Your best moment together this year",
+          "Your wishes for the year ahead"
+        ],
+        "genres": "Upbeat pop, acoustic or dangdut for a party mood. Ballad for a parent’s or partner’s birthday.",
+        "faqs": [
+          {
+            "q": "Can the song mention their name?",
+            "a": "Yes. Write their name or nickname in the questionnaire and we put it in the lyrics."
+          },
+          {
+            "q": "Does it work for a child’s birthday?",
+            "a": "Yes. Pick a cheerful mood or the lullaby genre, and tell us what they love."
+          },
+          {
+            "q": "How do I give it to them?",
+            "a": "Once you buy the full song, download it and play it when they blow out the candles, or send it on WhatsApp."
+          }
+        ]
+      },
+      "anniversary": {
+        "name": "Anniversary Song",
+        "metaTitle": "Personalized Anniversary Song from Your Love Story",
+        "metaDescription": "Celebrate your anniversary with a song written from your story: how you met, when you fell in love, and what’s ahead. Choose the genre and voice. Free preview.",
+        "h1": "An anniversary song from your own love story",
+        "intro": "Every couple has a story nobody else has. Turn yours into a song, from the day you met to today.",
+        "cta": "Create an Anniversary Song",
+        "lyricMeta": "For Raka · 5 years together · Romantic ballad",
+        "lyric": [
+          "Five years ago at a rain-soaked stop,",
+          "you shared your umbrella and half of your steps,",
+          "Raka, we grew from the smallest things,",
+          "and I still choose you, every day."
+        ],
+        "reasons": [
+          {
+            "title": "Your story, not someone else’s song",
+            "body": "Love songs on the radio are written for everyone. This one only fits the two of you."
+          },
+          {
+            "title": "For any anniversary",
+            "body": "One month, five years, or a 25th wedding anniversary."
+          },
+          {
+            "title": "A surprise you can replay",
+            "body": "Play it over dinner, set it to a memory video, or send it right at midnight."
+          }
+        ],
+        "ideas": [
+          "Where and how you first met",
+          "The moment you knew they were the one",
+          "A hard time you got through together",
+          "Your promises or dreams for the future"
+        ],
+        "genres": "Ballad and acoustic for a romantic feel, R&B or jazz for a dinner mood.",
+        "faqs": [
+          {
+            "q": "Does it work for a wedding anniversary?",
+            "a": "Yes. Tell us about your marriage, including children or family moments you want mentioned."
+          },
+          {
+            "q": "Can it be in English?",
+            "a": "Yes. Lyrics are available in Indonesian and English."
+          },
+          {
+            "q": "What if it isn’t quite right?",
+            "a": "You can regenerate the song from the same answers to get different lyrics and a different arrangement."
+          }
+        ]
+      },
+      "wedding": {
+        "name": "Wedding Song",
+        "metaTitle": "Personalized Wedding Song for the Couple, a Gift, or the Reception",
+        "metaDescription": "A wedding song written from the couple’s story: a gift for friends, a surprise at the reception, or a song for your own partner. Pick a genre, free preview.",
+        "h1": "A wedding song that tells their story",
+        "intro": "For your partner on your wedding day, or as a gift for friends and family who are getting married. A song about their journey to the aisle.",
+        "cta": "Create a Wedding Song",
+        "lyricMeta": "For Sekar & Bima · Wedding · Keroncong",
+        "lyric": [
+          "From different cities you both set out,",
+          "brought together by prayers that never tired,",
+          "Sekar and Bima, today you are one,",
+          "may your home always be full of laughter."
+        ],
+        "reasons": [
+          {
+            "title": "A gift nobody else will bring",
+            "body": "Other guests bring things. You bring a song that belongs only to them."
+          },
+          {
+            "title": "Bring the reception to life",
+            "body": "Play it for the grand entrance, the first dance, or with their love-story video."
+          },
+          {
+            "title": "From anyone’s point of view",
+            "body": "From one partner to the other, from friends, or from family."
+          }
+        ],
+        "ideas": [
+          "How they first met",
+          "What makes them right for each other",
+          "The proposal or the wedding preparations",
+          "Your wishes for their life together"
+        ],
+        "genres": "Pop and ballad for a modern reception, keroncong or jazz for a warm, classic feel.",
+        "faqs": [
+          {
+            "q": "Can it be played at the reception?",
+            "a": "Yes. Download the full song and give it to the event team or MC."
+          },
+          {
+            "q": "Can it mention both of their names?",
+            "a": "Yes. Write both names in the questionnaire and tell us their story."
+          },
+          {
+            "q": "How long does it take?",
+            "a": "Usually a few minutes after you send your answers, so there is still time right before the big day."
+          }
+        ]
+      },
+      "proposal": {
+        "name": "Proposal Song",
+        "metaTitle": "Personalized Proposal Song: A Romantic Surprise Before You Ask",
+        "metaDescription": "Create a proposal song from your love story to lead into “will you marry me?”. Personal lyrics, your choice of genre, free preview with no sign-up.",
+        "h1": "A proposal song for your biggest moment",
+        "intro": "Let the song set the scene. Tell us your story, and when the last chorus ends, all that’s left is for you to ask.",
+        "cta": "Create a Proposal Song",
+        "lyricMeta": "For Nadia · Proposal · Acoustic",
+        "lyric": [
+          "We once got lost on the road to Dieng,",
+          "but with you, even lost felt like home,",
+          "Nadia, tonight I want to ask you,",
+          "will you be my home forever?"
+        ],
+        "reasons": [
+          {
+            "title": "A surprise they’ll remember for life",
+            "body": "You only propose once. A song about the two of you makes it far more personal."
+          },
+          {
+            "title": "Helps you say what you feel",
+            "body": "Not great with words? Just tell us the story and we turn it into lyrics."
+          },
+          {
+            "title": "Play it anywhere",
+            "body": "Over dinner, on the beach, or on a video call if you’re far apart."
+          }
+        ],
+        "ideas": [
+          "When you realised you wanted to spend your life with them",
+          "A trip or place that means a lot to you both",
+          "What you want to promise them",
+          "The question, in your own words"
+        ],
+        "genres": "Acoustic and ballad for a tender moment. Pop or R&B for something more relaxed.",
+        "faqs": [
+          {
+            "q": "Will my partner find out beforehand?",
+            "a": "Not unless you tell them. You can listen to the preview on your own without an account."
+          },
+          {
+            "q": "Can I choose a male or female singer?",
+            "a": "Yes. Pick a male or female voice, or let us choose."
+          },
+          {
+            "q": "Does it work for a family engagement event?",
+            "a": "Yes. Tell us about the event and pick a fitting mood, such as moving or grateful."
+          }
+        ]
+      },
+      "mothersDay": {
+        "name": "Song for Mum",
+        "metaTitle": "Song for Mum: A Personal Gift for Mother’s Day or Her Birthday",
+        "metaDescription": "Thank your mum with a song made from your childhood memories. For Indonesian Mother’s Day on 22 December, her birthday, or just to say you love her. Free preview.",
+        "h1": "A song for Mum, from memories only you two share",
+        "intro": "Her signature dish, the advice you used to ignore, the prayers that never stopped. Weave it all into a song for Mum, perfect for Mother’s Day on 22 December or any day.",
+        "cta": "Create a Song for Mum",
+        "lyricMeta": "For Mama · Mother’s Day · Moving ballad",
+        "lyric": [
+          "Sour soup on the table when I came home from school,",
+          "your warm hands wiping all my tiredness away,",
+          "Mama, I’m sorry I rarely say thank you,",
+          "this song is for you, from the child still learning."
+        ],
+        "reasons": [
+          {
+            "title": "The thank-you that’s hard to say",
+            "body": "Many of us rarely tell Mum we love her face to face. A song can say it for you."
+          },
+          {
+            "title": "A gift she can replay",
+            "body": "A song she can listen to again and play for the whole family."
+          },
+          {
+            "title": "From the whole family",
+            "body": "Bring together stories from siblings or grandchildren in one song."
+          }
+        ],
+        "ideas": [
+          "Her cooking or a habit you miss most",
+          "Advice from her you still remember",
+          "A sacrifice you only understood as an adult",
+          "A thank-you or apology you never got to say"
+        ],
+        "genres": "Ballad and keroncong for an emotional feel, pop or dangdut for a mum who loves to sing.",
+        "faqs": [
+          {
+            "q": "When is Mother’s Day in Indonesia?",
+            "a": "Indonesian Mother’s Day is on 22 December. Songs are usually ready in minutes, so you can make one any time."
+          },
+          {
+            "q": "Can it remember a mum who has passed away?",
+            "a": "Yes. Choose a moving mood and tell us your memories of her."
+          },
+          {
+            "q": "Can it be for a mother-in-law or grandmother?",
+            "a": "Yes. Choose the recipient in the questionnaire and tell us about your relationship."
+          }
+        ]
+      },
+      "fathersDay": {
+        "name": "Song for Dad",
+        "metaTitle": "Song for Dad: A Personal Gift for Father’s Day or His Birthday",
+        "metaDescription": "Dads rarely talk about feelings, but a song can. Make a song for Dad from your memories, for Father’s Day on 12 November, his birthday or retirement. Free preview.",
+        "h1": "A song for Dad, the hero who rarely talks about himself",
+        "intro": "The old motorbike that took you to school, the corny jokes, the hard work he never complained about. Turn it all into a song for Dad.",
+        "cta": "Create a Song for Dad",
+        "lyricMeta": "For Bapak · Father’s Day · Acoustic",
+        "lyric": [
+          "On the back seat of your old motorbike,",
+          "I learned what it means to come home on time,",
+          "Bapak, your shoulders never said they were tired,",
+          "now it’s my turn to say: thank you, Pak."
+        ],
+        "reasons": [
+          {
+            "title": "For dads who rarely talk feelings",
+            "body": "A song says what feels awkward to say out loud."
+          },
+          {
+            "title": "Fits many moments",
+            "body": "Father’s Day, his birthday, retirement, or your first paycheck."
+          },
+          {
+            "title": "A genre he’ll like",
+            "body": "From keroncong and dangdut to pop and jazz."
+          }
+        ],
+        "ideas": [
+          "A habit or phrase only Dad says",
+          "Something he taught you that you still use",
+          "Times he was always there for you",
+          "Something you want to tell him but haven’t yet"
+        ],
+        "genres": "Acoustic and ballad for a warm feel, keroncong or dangdut for a dad who loves the classics.",
+        "faqs": [
+          {
+            "q": "When is Father’s Day in Indonesia?",
+            "a": "Indonesian National Father’s Day is on 12 November. You can make a song any time, and it is usually ready in minutes."
+          },
+          {
+            "q": "Can it be for a grandfather or father-in-law?",
+            "a": "Yes. Choose the recipient in the questionnaire and tell us your memories."
+          },
+          {
+            "q": "How do I play it for Dad?",
+            "a": "Download the full song and play it on your phone or a speaker, or send it on WhatsApp."
+          }
+        ]
+      },
+      "graduation": {
+        "name": "Graduation Song",
+        "metaTitle": "Personalized Graduation Song: A Gift for Your Child, Partner or Friend",
+        "metaDescription": "Celebrate a graduation with a song about the journey: late nights, endless revisions, and finally the gown. A personal graduation gift, free preview.",
+        "h1": "A graduation song that celebrates the journey",
+        "intro": "Behind the gown are late nights, endless revisions, and the people who kept cheering. Tell us about the journey and we turn it into a graduation song.",
+        "cta": "Create a Graduation Song",
+        "lyricMeta": "For Aldo · Bachelor’s degree · Upbeat pop",
+        "lyric": [
+          "Chapter four once made you want to quit,",
+          "instant coffee and midnight revisions,",
+          "Aldo, today that gown is yours,",
+          "your next step has only just begun."
+        ],
+        "reasons": [
+          {
+            "title": "More meaningful than flowers",
+            "body": "Flowers wilt in a week. A song about their journey can be played any time."
+          },
+          {
+            "title": "For every level",
+            "body": "Kindergarten, school, university, all the way to a master’s or PhD."
+          },
+          {
+            "title": "Great for memory videos",
+            "body": "Use it as the soundtrack for a video of their school or university years."
+          }
+        ],
+        "ideas": [
+          "The hardest challenge during school or university",
+          "Their quirks while working on the final project",
+          "The people who stood by them until graduation",
+          "Your hopes for their next step"
+        ],
+        "genres": "Pop with an upbeat mood for a celebration. Ballad or acoustic for a message from parents.",
+        "faqs": [
+          {
+            "q": "Does it work for a kindergarten graduation?",
+            "a": "Yes. Pick a cheerful mood and tell us the funny or proud moments from school."
+          },
+          {
+            "q": "Can it be from parents to their child?",
+            "a": "Yes. Choose your child as the recipient and tell their story from your point of view."
+          },
+          {
+            "q": "Can I download it for a video?",
+            "a": "Yes. After you buy the full song you can download it and use it in your personal memory video."
+          }
+        ]
+      },
+      "valentine": {
+        "name": "Valentine’s Song",
+        "metaTitle": "Personalized Valentine’s Song for Your Partner",
+        "metaDescription": "A Valentine’s gift that isn’t generic: a love song from your story, with their name, in the genre they love. Ready in minutes, free preview.",
+        "h1": "A Valentine’s song that only fits the two of you",
+        "intro": "Chocolate is gone in a day and flowers wilt in a week. This year, give them a love song written from your own story.",
+        "cta": "Create a Valentine’s Song",
+        "lyricMeta": "For Tara · Valentine’s Day · R&B",
+        "lyric": [
+          "You always order your iced tea with no sugar,",
+          "but your smile is sweeter than it should be,",
+          "Tara, on this day of love,",
+          "I just want to say: I’m falling for you again."
+        ],
+        "reasons": [
+          {
+            "title": "Not a generic gift",
+            "body": "No other couple has the same song."
+          },
+          {
+            "title": "Perfect for long-distance couples",
+            "body": "Send the song from afar so your feelings still arrive."
+          },
+          {
+            "title": "Works last minute",
+            "body": "Forgot the gift? The song is ready in minutes."
+          }
+        ],
+        "ideas": [
+          "A small thing about them that made you fall in love",
+          "Your first date or a funny moment together",
+          "The pet names you use for each other",
+          "Something you want to say but feel shy about"
+        ],
+        "genres": "R&B and pop for a sweet mood, acoustic or ballad for something deeper.",
+        "faqs": [
+          {
+            "q": "Does it work if we just started dating?",
+            "a": "Yes. Tell us how you got close. The song can be light and playful."
+          },
+          {
+            "q": "Can it be in English?",
+            "a": "Yes. Choose English when you fill in the questionnaire."
+          },
+          {
+            "q": "How do I send it?",
+            "a": "Download the full song, then send it on WhatsApp or play it when you meet."
+          }
+        ]
+      }
+    }
   }
 }

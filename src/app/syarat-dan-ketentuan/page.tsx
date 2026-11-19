@@ -10,7 +10,11 @@ import { SITE } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("metadata.terms");
-  return { title: t("title"), description: t("description") };
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: { canonical: "/syarat-dan-ketentuan" },
+  };
 }
 
 /** Section anchors (kept in Indonesian: they are linked from the footer and elsewhere). */

@@ -4,7 +4,11 @@ import { CreateView } from "./create-view";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("metadata");
-  return { title: t("create") };
+  return {
+    title: t("create"),
+    description: t("createDescription"),
+    alternates: { canonical: "/create" },
+  };
 }
 
 export default function CreatePage() {

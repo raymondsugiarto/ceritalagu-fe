@@ -10,7 +10,7 @@ import { ContactForm } from "./contact-form";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("metadata.contact");
-  return { title: t("title"), description: t("description") };
+  return { title: t("title"), description: t("description"), alternates: { canonical: "/kontak" } };
 }
 
 export default function ContactPage() {

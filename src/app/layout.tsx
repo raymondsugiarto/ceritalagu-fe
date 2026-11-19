@@ -5,6 +5,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { SITE } from "@/lib/site";
 
 const firaSans = Fira_Sans({
   subsets: ["latin"],
@@ -16,14 +17,29 @@ const firaSans = Fira_Sans({
 
 export async function generateMetadata(): Promise<Metadata> {
   const [t, locale] = await Promise.all([getTranslations("metadata"), getLocale()]);
+  // No canonical here: it would be inherited by every page. Indexable pages set their own.
   return {
-    title: { default: t("defaultTitle"), template: t("titleTemplate") },
+    metadataBase: new URL(SITE.url),
+    applicationName: SITE.name,
+    title: { default: t("homeTitle"), template: t("titleTemplate") },
     description: t("description"),
+    creator: SITE.name,
+    publisher: SITE.name,
+    category: "music",
+    formatDetection: { telephone: false, email: false, address: false },
     openGraph: {
-      siteName: t("defaultTitle"),
+      siteName: SITE.name,
+      title: t("homeTitle"),
       description: t("description"),
+      url: "/",
       locale: locale === "id" ? "id_ID" : "en_US",
+      alternateLocale: locale === "id" ? ["en_US"] : ["id_ID"],
       type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("homeTitle"),
+      description: t("description"),
     },
   };
 }

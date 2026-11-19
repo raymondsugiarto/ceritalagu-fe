@@ -4,7 +4,7 @@ import { JobView } from "./job-view";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("metadata");
-  return { title: t("job") };
+  return { title: t("job"), robots: { index: false, follow: false } };
 }
 
 interface JobPageProps {

@@ -5,7 +5,7 @@ import { LoginView } from "./login-view";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("metadata");
-  return { title: t("login") };
+  return { title: t("login"), robots: { index: false, follow: true } };
 }
 
 export default function LoginPage() {

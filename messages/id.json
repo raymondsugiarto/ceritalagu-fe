@@ -44,7 +44,7 @@
   "metadata": {
     "defaultTitle": "Cerita Lagu",
     "titleTemplate": "%s · Cerita Lagu",
-    "description": "Buat lagu personal untuk orang tersayang dalam hitungan menit.",
+    "description": "Lagu personal dari ceritamu untuk orang tersayang. Jawab 7 pertanyaan, kami tulis lirik dan nyanyikan dalam genre pilihanmu. Preview gratis, tanpa daftar.",
     "create": "Buat Lagu",
     "job": "Membuat Lagu",
     "song": "Lagumu",
@@ -57,7 +57,11 @@
       "title": "Syarat & Ketentuan",
       "description": "Syarat dan ketentuan penggunaan layanan Cerita Lagu."
     },
-    "notFound": "Halaman tidak ditemukan"
+    "notFound": "Halaman tidak ditemukan",
+    "homeTitle": "Cerita Lagu · Lagu Personal dari Ceritamu untuk Orang Tersayang",
+    "ogAlt": "Cerita Lagu: lagu personal dari ceritamu untuk orang tersayang",
+    "createDescription": "Ceritakan orang tersayangmu lewat 7 pertanyaan singkat, pilih genre, suara, dan mood, lalu dengarkan preview lagunya gratis.",
+    "serviceType": "Pembuatan lagu personal"
   },
   "landing": {
     "header": {
@@ -74,7 +78,6 @@
       "ctaPrimary": "Buat Lagu Sekarang",
       "ctaSecondary": "Lihat cara kerjanya",
       "promises": {
-        "freePreview": "Preview gratis sampai reff",
         "noSignup": "Tanpa daftar",
         "fast": "Siap dalam hitungan menit"
       },
@@ -166,6 +169,10 @@
       "eyebrow": "FAQ",
       "title": "Pertanyaan yang sering ditanyakan",
       "items": {
+        "whatIs": {
+          "q": "Apa itu Cerita Lagu?",
+          "a": "Cerita Lagu adalah layanan pembuatan lagu personal dari Indonesia. Kamu menjawab 7 pertanyaan tentang orang tersayang, lalu kami menulis lirik dari kenangan kalian dan menyanyikannya dalam genre pilihanmu, seperti Pop, Ballad, Akustik, R&B, Jazz, Dangdut, atau Keroncong."
+        },
         "account": {
           "q": "Apakah saya harus daftar akun dulu?",
           "a": "Tidak. Kamu bisa langsung mengisi kuesioner dan mendengarkan preview tanpa akun. Akun hanya dibutuhkan untuk menyimpan dan membuka lagu versi penuh."
@@ -174,13 +181,25 @@
           "q": "Berapa lama lagunya jadi?",
           "a": "Biasanya hanya beberapa menit setelah kamu mengirim jawaban. Halaman akan otomatis menampilkan lagu begitu siap."
         },
-        "dislike": {
-          "q": "Bagaimana kalau saya kurang suka hasilnya?",
-          "a": "Kamu bisa membuat ulang (regenerate) lagu dari jawaban yang sama untuk mendapatkan versi lirik dan aransemen yang berbeda."
+        "occasions": {
+          "q": "Untuk momen apa saja lagu ini cocok?",
+          "a": "Untuk hampir semua momen: ulang tahun, anniversary, pernikahan, lamaran, Hari Ibu, Hari Ayah, wisuda, Valentine, permintaan maaf, ucapan terima kasih, perpisahan, atau sekadar bilang sayang."
         },
         "previewVsFull": {
           "q": "Apa bedanya preview dan lagu penuh?",
           "a": "Preview berisi awal lagu sampai reff pertama selesai. Lagu penuh berisi seluruh lagu beserta lirik lengkap yang bisa diunduh dan dibagikan."
+        },
+        "payment": {
+          "q": "Berapa harganya dan bagaimana cara bayarnya?",
+          "a": "Preview selalu gratis. Harga lagu versi penuh ditampilkan dalam Rupiah sebelum kamu membayar, termasuk potongan voucher jika ada. Pembayaran dilakukan sekali per lagu dan diproses dengan aman oleh DOKU."
+        },
+        "download": {
+          "q": "Apakah lagunya bisa diunduh dan dijadikan hadiah?",
+          "a": "Bisa. Setelah pembayaran berhasil, lagu versi penuh langsung terbuka di halaman lagu dan bisa diunduh lewat akunmu, lalu diputar atau dikirim ke orang tersayang."
+        },
+        "dislike": {
+          "q": "Bagaimana kalau saya kurang suka hasilnya?",
+          "a": "Kamu bisa membuat ulang (regenerate) lagu dari jawaban yang sama untuk mendapatkan versi lirik dan aransemen yang berbeda."
         },
         "languages": {
           "q": "Bahasa apa saja yang didukung?",
@@ -214,7 +233,7 @@
         "privacy": "Data Pribadi"
       },
       "copyright": "© {year} Cerita Lagu. Dibuat dengan ❤️ di Indonesia.",
-      "payment": "Pembayaran aman diproses oleh DOKU"
+      "payment": "Pembayaran aman diproses oleh Sistem Pembayaran Terpercaya"
     }
   },
   "create": {
@@ -791,5 +810,427 @@
     "contact_fields_missing": "Nama dan pesan wajib diisi.",
     "contact_send_failed": "Pesan belum terkirim. Coba lagi sebentar lagi.",
     "too_many_messages": "Terlalu banyak pesan terkirim. Coba lagi beberapa menit lagi."
+  },
+  "occasionPages": {
+    "common": {
+      "breadcrumbHome": "Beranda",
+      "eyebrow": "Lagu personal",
+      "lyricTitle": "Contoh potongan lirik",
+      "lyricNote": "Contoh ilustrasi. Liriknya akan ditulis dari ceritamu sendiri.",
+      "reasonsTitle": "Kenapa lagu personal?",
+      "ideasTitle": "Ide cerita yang bisa kamu masukkan",
+      "ideasBody": "Semakin spesifik ceritamu, semakin personal liriknya.",
+      "genresTitle": "Genre yang cocok",
+      "faqTitle": "Pertanyaan seputar {name}",
+      "othersTitle": "Lagu untuk momen lain",
+      "footerColumn": "Momen",
+      "promises": {
+        "freePreview": "Preview gratis",
+        "noSignup": "Tanpa daftar",
+        "fast": "Siap dalam hitungan menit"
+      }
+    },
+    "items": {
+      "birthday": {
+        "name": "Lagu Ulang Tahun",
+        "metaTitle": "Lagu Ulang Tahun Personal dengan Nama & Kenangan Kalian",
+        "metaDescription": "Buat lagu ulang tahun khusus untuk pacar, ibu, sahabat, atau anak. Lirik dari kenangan kalian, namanya disebut di lagu, genre sesuai seleranya. Preview gratis.",
+        "h1": "Lagu ulang tahun yang menyebut namanya",
+        "intro": "Lagu “Selamat Ulang Tahun” dinyanyikan untuk semua orang. Tahun ini, beri dia lagu yang hanya bisa dinyanyikan untuknya: berisi nama panggilan, cerita kalian, dan doamu untuk umur barunya.",
+        "cta": "Buat Lagu Ulang Tahun",
+        "lyricMeta": "Untuk Dinda · Ulang tahun ke-25 · Pop ceria",
+        "lyric": [
+          "Dua puluh lima lilin menyala malam ini,",
+          "masih kuingat tawamu di kantin dulu,",
+          "Dinda, semoga semua mimpimu terjadi,",
+          "dan aku tetap di sini, di setiap babak barumu."
+        ],
+        "reasons": [
+          {
+            "title": "Lebih berkesan dari kado biasa",
+            "body": "Barang bisa terlupa. Lagu yang menyebut namanya bisa diputar lagi setiap tahun."
+          },
+          {
+            "title": "Cocok untuk siapa saja",
+            "body": "Pasangan, orang tua, sahabat, rekan kerja, sampai anak kecil yang suka lagu ceria."
+          },
+          {
+            "title": "Siap dalam hitungan menit",
+            "body": "Belum sempat menyiapkan kado? Lagunya bisa jadi hari ini juga."
+          }
+        ],
+        "ideas": [
+          "Nama panggilan atau julukan sayangnya",
+          "Kebiasaan kecilnya yang selalu bikin kamu tersenyum",
+          "Momen paling seru kalian tahun ini",
+          "Doa atau harapanmu untuk umur barunya"
+        ],
+        "genres": "Pop ceria, Akustik, atau Dangdut untuk suasana pesta. Ballad untuk ulang tahun orang tua atau pasangan.",
+        "faqs": [
+          {
+            "q": "Apakah namanya bisa disebut di dalam lagu?",
+            "a": "Bisa. Tulis nama atau panggilan sayangnya di kuesioner, dan kami masukkan ke dalam lirik."
+          },
+          {
+            "q": "Bisa untuk ulang tahun anak?",
+            "a": "Bisa. Pilih mood ceria atau genre lagu nina bobo, lalu ceritakan hal-hal yang dia sukai."
+          },
+          {
+            "q": "Bagaimana cara memberikannya?",
+            "a": "Setelah membeli versi penuh, unduh lagunya lalu putar saat tiup lilin atau kirim lewat WhatsApp."
+          }
+        ]
+      },
+      "anniversary": {
+        "name": "Lagu Anniversary",
+        "metaTitle": "Lagu Anniversary Personal untuk Pasangan dari Kisah Cinta Kalian",
+        "metaDescription": "Rayakan anniversary dengan lagu dari kisah kalian: pertama bertemu, momen jatuh cinta, dan janji ke depan. Pilih genre dan suara penyanyi. Preview gratis.",
+        "h1": "Lagu anniversary dari kisah cinta kalian sendiri",
+        "intro": "Setiap pasangan punya cerita yang tidak dimiliki orang lain. Jadikan cerita itu lagu, dari hari pertama bertemu sampai hari ini.",
+        "cta": "Buat Lagu Anniversary",
+        "lyricMeta": "Untuk Raka · 5 tahun bersama · Ballad romantis",
+        "lyric": [
+          "Lima tahun lalu di halte yang basah,",
+          "kau pinjamkan payung dan separuh langkah,",
+          "Raka, kita tumbuh dari hal-hal kecil,",
+          "dan aku masih memilihmu, setiap hari."
+        ],
+        "reasons": [
+          {
+            "title": "Kisah kalian, bukan lagu orang lain",
+            "body": "Lagu cinta di radio ditulis untuk semua orang. Yang ini hanya cocok untuk kalian berdua."
+          },
+          {
+            "title": "Untuk anniversary ke berapa pun",
+            "body": "Bulan pertama, tahun kelima, atau ulang tahun pernikahan ke-25."
+          },
+          {
+            "title": "Kejutan yang bisa diputar ulang",
+            "body": "Putar saat makan malam, jadikan latar video kenangan, atau kirim tepat tengah malam."
+          }
+        ],
+        "ideas": [
+          "Tempat dan cara kalian pertama bertemu",
+          "Momen saat kamu tahu dialah orangnya",
+          "Masa sulit yang berhasil kalian lewati bersama",
+          "Janji atau mimpi kalian ke depan"
+        ],
+        "genres": "Ballad dan Akustik untuk nuansa romantis, R&B atau Jazz untuk suasana makan malam.",
+        "faqs": [
+          {
+            "q": "Bisa untuk anniversary pernikahan?",
+            "a": "Bisa. Ceritakan perjalanan pernikahan kalian, termasuk anak atau momen keluarga yang ingin disebut."
+          },
+          {
+            "q": "Bisa pakai Bahasa Inggris?",
+            "a": "Bisa. Lirik tersedia dalam Bahasa Indonesia dan Bahasa Inggris."
+          },
+          {
+            "q": "Bagaimana kalau hasilnya kurang pas?",
+            "a": "Kamu bisa membuat ulang lagu dari jawaban yang sama untuk mendapat versi lirik dan aransemen yang berbeda."
+          }
+        ]
+      },
+      "wedding": {
+        "name": "Lagu Pernikahan",
+        "metaTitle": "Lagu Pernikahan Personal untuk Pengantin, Kado, atau Resepsi",
+        "metaDescription": "Lagu pernikahan dari kisah pengantin: kado untuk sahabat, kejutan di resepsi, atau lagu untuk pasanganmu sendiri. Pilih genre, dengarkan preview gratis.",
+        "h1": "Lagu pernikahan yang menceritakan kisah mereka",
+        "intro": "Untuk pasanganmu di hari pernikahan, atau sebagai kado untuk sahabat dan saudara yang menikah. Lagu yang menceritakan perjalanan mereka sampai ke pelaminan.",
+        "cta": "Buat Lagu Pernikahan",
+        "lyricMeta": "Untuk Sekar & Bima · Pernikahan · Keroncong",
+        "lyric": [
+          "Dari kota yang berbeda kalian berjalan,",
+          "dipertemukan doa yang tak pernah lelah,",
+          "Sekar dan Bima, hari ini kalian satu,",
+          "semoga rumah kalian selalu penuh tawa."
+        ],
+        "reasons": [
+          {
+            "title": "Kado yang tidak akan dobel",
+            "body": "Tamu lain membawa barang. Kamu membawa lagu yang hanya dimiliki mereka."
+          },
+          {
+            "title": "Hidupkan momen resepsi",
+            "body": "Putar saat pengantin masuk, sesi dansa, atau bersama video perjalanan cinta mereka."
+          },
+          {
+            "title": "Dari sudut pandang siapa pun",
+            "body": "Dari pengantin untuk pasangannya, dari sahabat, atau dari keluarga."
+          }
+        ],
+        "ideas": [
+          "Cerita awal pertemuan mereka",
+          "Hal yang membuat mereka cocok satu sama lain",
+          "Momen lamaran atau persiapan pernikahan",
+          "Doa dan harapan untuk rumah tangga mereka"
+        ],
+        "genres": "Pop dan Ballad untuk resepsi modern, Keroncong atau Jazz untuk nuansa klasik dan hangat.",
+        "faqs": [
+          {
+            "q": "Apakah lagunya bisa diputar di resepsi?",
+            "a": "Bisa. Unduh lagu versi penuh, lalu berikan ke tim acara atau MC untuk diputar."
+          },
+          {
+            "q": "Bisa menyebut nama kedua pengantin?",
+            "a": "Bisa. Tulis nama keduanya di kuesioner dan ceritakan kisah mereka."
+          },
+          {
+            "q": "Berapa lama lagunya jadi?",
+            "a": "Biasanya beberapa menit setelah jawaban dikirim, jadi masih sempat dibuat menjelang hari H."
+          }
+        ]
+      },
+      "proposal": {
+        "name": "Lagu Lamaran",
+        "metaTitle": "Lagu Lamaran Personal: Kejutan Romantis Sebelum Kamu Bertanya",
+        "metaDescription": "Buat lagu lamaran dari kisah cinta kalian untuk mengiringi momen “maukah kamu menikah denganku?”. Lirik personal, genre pilihanmu, preview gratis tanpa daftar.",
+        "h1": "Lagu lamaran untuk momen paling penting kalian",
+        "intro": "Biarkan lagu yang membuka momennya. Ceritakan perjalanan kalian, dan saat reff terakhir selesai, tinggal kamu yang bertanya.",
+        "cta": "Buat Lagu Lamaran",
+        "lyricMeta": "Untuk Nadia · Lamaran · Akustik",
+        "lyric": [
+          "Kita pernah tersesat di jalan menuju Dieng,",
+          "tapi bersamamu, tersesat pun terasa pulang,",
+          "Nadia, malam ini aku ingin bertanya,",
+          "maukah kau jadi rumahku selamanya?"
+        ],
+        "reasons": [
+          {
+            "title": "Kejutan yang dia ingat seumur hidup",
+            "body": "Lamaran hanya sekali. Lagu tentang kalian membuat momennya jauh lebih personal."
+          },
+          {
+            "title": "Membantu menyampaikan perasaan",
+            "body": "Tidak pandai merangkai kata? Ceritakan saja, kami rangkai jadi lirik."
+          },
+          {
+            "title": "Bisa diputar di mana saja",
+            "body": "Saat makan malam, di pantai, atau lewat video call kalau kalian berjauhan."
+          }
+        ],
+        "ideas": [
+          "Kapan kamu sadar ingin menghabiskan hidup dengannya",
+          "Perjalanan atau tempat yang berarti untuk kalian",
+          "Hal yang ingin kamu janjikan kepadanya",
+          "Pertanyaan lamaran dengan kata-katamu sendiri"
+        ],
+        "genres": "Akustik dan Ballad untuk momen yang syahdu. Pop atau R&B kalau ingin suasana lebih santai.",
+        "faqs": [
+          {
+            "q": "Apakah pasangan saya akan tahu sebelumnya?",
+            "a": "Tidak, kecuali kamu memberitahunya. Kamu bisa mendengarkan preview sendiri tanpa membuat akun."
+          },
+          {
+            "q": "Bisa pilih suara penyanyi pria atau wanita?",
+            "a": "Bisa. Pilih vokal pria, wanita, atau biarkan kami yang memilihkan."
+          },
+          {
+            "q": "Bisa untuk acara lamaran keluarga?",
+            "a": "Bisa. Ceritakan konteks acaranya dan pilih mood yang sesuai, misalnya haru atau penuh syukur."
+          }
+        ]
+      },
+      "mothersDay": {
+        "name": "Lagu untuk Ibu",
+        "metaTitle": "Lagu untuk Ibu: Hadiah Hari Ibu & Ulang Tahun Ibu yang Personal",
+        "metaDescription": "Ucapkan terima kasih kepada Ibu lewat lagu dari kenangan masa kecilmu. Untuk Hari Ibu 22 Desember, ulang tahun Ibu, atau sekadar bilang sayang. Preview gratis.",
+        "h1": "Lagu untuk Ibu, dari kenangan yang hanya kalian punya",
+        "intro": "Masakan favoritnya, nasihat yang dulu kamu abaikan, doa yang tidak pernah putus. Rangkai semuanya jadi lagu untuk Ibu, tepat untuk Hari Ibu 22 Desember atau hari apa pun.",
+        "cta": "Buat Lagu untuk Ibu",
+        "lyricMeta": "Untuk Mama · Hari Ibu · Ballad haru",
+        "lyric": [
+          "Sayur asem di meja setiap pulang sekolah,",
+          "tanganmu yang hangat menghapus semua lelah,",
+          "Mama, maaf aku jarang bilang terima kasih,",
+          "lagu ini untukmu, dari anakmu yang masih belajar."
+        ],
+        "reasons": [
+          {
+            "title": "Terima kasih yang sulit diucapkan",
+            "body": "Banyak dari kita jarang bilang sayang ke Ibu secara langsung. Lagu bisa mewakilinya."
+          },
+          {
+            "title": "Hadiah yang bisa diputar berulang kali",
+            "body": "Lagu yang bisa Ibu dengarkan lagi dan perdengarkan ke seluruh keluarga."
+          },
+          {
+            "title": "Bisa dari seluruh keluarga",
+            "body": "Satukan cerita dari kakak, adik, atau cucu dalam satu lagu."
+          }
+        ],
+        "ideas": [
+          "Masakan atau kebiasaan Ibu yang paling kamu rindukan",
+          "Nasihat Ibu yang masih kamu ingat sampai sekarang",
+          "Pengorbanan Ibu yang baru kamu sadari setelah dewasa",
+          "Ucapan terima kasih atau maaf yang belum sempat terucap"
+        ],
+        "genres": "Ballad dan Keroncong untuk nuansa haru, Pop atau Dangdut untuk Ibu yang suka bernyanyi.",
+        "faqs": [
+          {
+            "q": "Kapan Hari Ibu di Indonesia?",
+            "a": "Hari Ibu di Indonesia diperingati setiap 22 Desember. Lagunya biasanya jadi dalam beberapa menit, jadi bisa dibuat kapan saja."
+          },
+          {
+            "q": "Bisa untuk mengenang Ibu yang sudah tiada?",
+            "a": "Bisa. Pilih mood haru dan ceritakan kenangan kalian bersama Ibu."
+          },
+          {
+            "q": "Bisa untuk ibu mertua atau nenek?",
+            "a": "Bisa. Pilih penerimanya di kuesioner dan ceritakan hubungan kalian."
+          }
+        ]
+      },
+      "fathersDay": {
+        "name": "Lagu untuk Ayah",
+        "metaTitle": "Lagu untuk Ayah: Hadiah Hari Ayah & Ulang Tahun Ayah yang Personal",
+        "metaDescription": "Ayah jarang bicara soal perasaan, tapi lagu bisa. Buat lagu untuk Ayah dari kenanganmu, untuk Hari Ayah 12 November, ulang tahun, atau pensiun. Preview gratis.",
+        "h1": "Lagu untuk Ayah, pahlawan yang jarang bercerita",
+        "intro": "Motor tua yang mengantarmu sekolah, lelucon yang garing, kerja keras yang tidak pernah dia keluhkan. Jadikan semuanya lagu untuk Ayah.",
+        "cta": "Buat Lagu untuk Ayah",
+        "lyricMeta": "Untuk Bapak · Hari Ayah · Akustik",
+        "lyric": [
+          "Di jok belakang motor tuamu dulu,",
+          "aku belajar arti pulang tepat waktu,",
+          "Bapak, bahumu tak pernah bilang lelah,",
+          "kini giliranku bilang: terima kasih, Pak."
+        ],
+        "reasons": [
+          {
+            "title": "Untuk Ayah yang jarang bicara perasaan",
+            "body": "Lagu menyampaikan hal yang canggung diucapkan langsung."
+          },
+          {
+            "title": "Pas untuk banyak momen",
+            "body": "Hari Ayah, ulang tahun, pensiun, atau saat kamu menerima gaji pertama."
+          },
+          {
+            "title": "Genre sesuai seleranya",
+            "body": "Dari Keroncong dan Dangdut sampai Pop dan Jazz."
+          }
+        ],
+        "ideas": [
+          "Kebiasaan atau kalimat khas Ayah",
+          "Hal yang Ayah ajarkan dan masih kamu pakai",
+          "Momen saat Ayah selalu ada untukmu",
+          "Hal yang ingin kamu sampaikan tapi belum sempat"
+        ],
+        "genres": "Akustik dan Ballad untuk nuansa hangat, Keroncong atau Dangdut untuk Ayah yang suka lagu lawas.",
+        "faqs": [
+          {
+            "q": "Kapan Hari Ayah di Indonesia?",
+            "a": "Hari Ayah Nasional diperingati setiap 12 November. Lagunya bisa dibuat kapan saja dan biasanya jadi dalam beberapa menit."
+          },
+          {
+            "q": "Bisa untuk kakek atau ayah mertua?",
+            "a": "Bisa. Pilih penerimanya di kuesioner dan ceritakan kenangan kalian."
+          },
+          {
+            "q": "Bagaimana cara memutarnya untuk Ayah?",
+            "a": "Unduh lagu versi penuh, lalu putar langsung lewat ponsel atau speaker, atau kirim lewat WhatsApp."
+          }
+        ]
+      },
+      "graduation": {
+        "name": "Lagu Wisuda",
+        "metaTitle": "Lagu Wisuda Personal: Kado Kelulusan untuk Anak, Pacar, atau Sahabat",
+        "metaDescription": "Rayakan kelulusan dengan lagu dari perjuangannya: begadang, revisi tanpa akhir, sampai memakai toga. Kado wisuda yang personal, preview gratis.",
+        "h1": "Lagu wisuda untuk merayakan perjuangannya",
+        "intro": "Di balik toga ada malam-malam begadang, revisi yang tidak ada habisnya, dan orang-orang yang terus mendukung. Ceritakan perjuangannya, kami jadikan lagu kelulusan.",
+        "cta": "Buat Lagu Wisuda",
+        "lyricMeta": "Untuk Aldo · Wisuda S1 · Pop semangat",
+        "lyric": [
+          "Bab empat yang dulu bikin kamu menyerah,",
+          "kopi sachet dan revisi tengah malam,",
+          "Aldo, hari ini toga itu milikmu,",
+          "langkah barumu baru saja dimulai."
+        ],
+        "reasons": [
+          {
+            "title": "Lebih bermakna dari buket bunga",
+            "body": "Bunga layu dalam seminggu. Lagu tentang perjuangannya bisa diputar kapan saja."
+          },
+          {
+            "title": "Untuk semua jenjang",
+            "body": "TK, SD, SMA, kuliah, sampai S2 dan S3."
+          },
+          {
+            "title": "Cocok untuk video kenangan",
+            "body": "Jadikan latar video perjalanan sekolah atau kuliahnya."
+          }
+        ],
+        "ideas": [
+          "Tantangan terberat selama sekolah atau kuliah",
+          "Kebiasaan uniknya saat mengerjakan tugas akhir",
+          "Orang-orang yang menemaninya sampai lulus",
+          "Harapan untuk langkah berikutnya"
+        ],
+        "genres": "Pop dengan mood penuh semangat untuk perayaan. Ballad atau Akustik untuk ucapan dari orang tua.",
+        "faqs": [
+          {
+            "q": "Bisa untuk wisuda anak TK?",
+            "a": "Bisa. Pilih mood ceria dan ceritakan hal lucu atau membanggakan selama dia sekolah."
+          },
+          {
+            "q": "Bisa dari orang tua untuk anak?",
+            "a": "Bisa. Pilih anak sebagai penerima dan ceritakan perjuangannya dari sudut pandangmu."
+          },
+          {
+            "q": "Bisa diunduh untuk video?",
+            "a": "Bisa. Setelah membeli versi penuh, lagu bisa diunduh dan dipakai sebagai latar video kenangan pribadi."
+          }
+        ]
+      },
+      "valentine": {
+        "name": "Lagu Valentine",
+        "metaTitle": "Lagu Valentine Personal untuk Pacar atau Pasangan",
+        "metaDescription": "Kado Valentine yang tidak pasaran: lagu cinta dari cerita kalian, menyebut namanya, dalam genre yang dia suka. Siap dalam hitungan menit, preview gratis.",
+        "h1": "Lagu Valentine yang hanya cocok untuk kalian berdua",
+        "intro": "Cokelat habis dalam sehari dan bunga layu dalam seminggu. Tahun ini, beri dia lagu cinta yang ditulis dari kisah kalian sendiri.",
+        "cta": "Buat Lagu Valentine",
+        "lyricMeta": "Untuk Tara · Valentine · R&B",
+        "lyric": [
+          "Kamu yang selalu pesan es teh tanpa gula,",
+          "tapi senyummu manisnya berlebihan,",
+          "Tara, di hari kasih sayang ini,",
+          "aku cuma mau bilang: aku jatuh cinta lagi."
+        ],
+        "reasons": [
+          {
+            "title": "Bukan kado pasaran",
+            "body": "Tidak ada pasangan lain yang punya lagu yang sama."
+          },
+          {
+            "title": "Pas untuk pasangan LDR",
+            "body": "Kirim lagunya dari jauh, biar perasaanmu tetap sampai."
+          },
+          {
+            "title": "Bisa dibuat menit terakhir",
+            "body": "Lupa menyiapkan kado? Lagunya jadi dalam beberapa menit."
+          }
+        ],
+        "ideas": [
+          "Hal kecil darinya yang membuatmu jatuh cinta",
+          "Kencan pertama atau momen lucu kalian",
+          "Panggilan sayang di antara kalian",
+          "Hal yang ingin kamu katakan tapi malu mengucapkannya"
+        ],
+        "genres": "R&B dan Pop untuk suasana manis, Akustik atau Ballad untuk ungkapan yang lebih dalam.",
+        "faqs": [
+          {
+            "q": "Bisa untuk pasangan yang baru jadian?",
+            "a": "Bisa. Ceritakan awal kedekatan kalian. Lagunya bisa dibuat ringan dan lucu."
+          },
+          {
+            "q": "Bisa dalam Bahasa Inggris?",
+            "a": "Bisa. Pilih Bahasa Inggris saat mengisi kuesioner."
+          },
+          {
+            "q": "Bagaimana cara mengirimnya?",
+            "a": "Unduh lagu versi penuh, lalu kirim lewat WhatsApp atau putar langsung saat kalian bertemu."
+          }
+        ]
+      }
+    }
   }
 }

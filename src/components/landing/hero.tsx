@@ -13,7 +13,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Equalizer } from "./equalizer";
 
-const PROMISES = ["freePreview", "noSignup", "fast"] as const;
+const PROMISES = ["noSignup", "fast"] as const;
 
 /** Above-the-fold: headline, CTAs and a mock song player. */
 export function Hero() {
