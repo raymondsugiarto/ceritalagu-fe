@@ -7,6 +7,7 @@ import {
   ChevronRightIcon,
   DownloadIcon,
   FileTextIcon,
+  MailIcon,
   Loader2Icon,
   MusicIcon,
   RefreshCwIcon,
@@ -36,6 +37,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { AnswersDialog } from "./answers-dialog";
+import { SendEmailDialog } from "./send-email-dialog";
 
 const PAGE_SIZE = 20;
 
@@ -226,6 +228,7 @@ function StatTile({
 function SongsTable({ state }: { state: ListState }) {
   const [open, setOpen] = React.useState<string | null>(null);
   const [answersOf, setAnswersOf] = React.useState<AdminSongOutput | null>(null);
+  const [emailOf, setEmailOf] = React.useState<AdminSongOutput | null>(null);
 
   if (state.kind === "loading") {
     return (
@@ -260,6 +263,7 @@ function SongsTable({ state }: { state: ListState }) {
   return (
     <>
       <AnswersDialog song={answersOf} onOpenChange={(o) => !o && setAnswersOf(null)} />
+      <SendEmailDialog song={emailOf} onOpenChange={(o) => !o && setEmailOf(null)} />
       <Table>
         <TableHeader>
           <TableRow>
@@ -312,7 +316,7 @@ function SongsTable({ state }: { state: ListState }) {
                   <TableCell className="text-muted-foreground">
                     {formatDateTime(s.created_at)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="whitespace-nowrap">
                     <Button
                       variant="ghost"
                       size="icon"
@@ -324,6 +328,18 @@ function SongsTable({ state }: { state: ListState }) {
                       }}
                     >
                       <FileTextIcon aria-hidden />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      title="Kirim email"
+                      aria-label={`Kirim email untuk ${s.title || "lagu ini"}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEmailOf(s);
+                      }}
+                    >
+                      <MailIcon aria-hidden />
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -369,6 +385,7 @@ function SongDetail({ song }: { song: AdminSongOutput }) {
           </div>
           <audio controls preload="none" src={song.audio_url} className="w-full" />
         </div>
+        <AlternateTake song={song} />
         <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
           <dt className="text-muted-foreground">Song ID</dt>
           <dd className="font-mono text-xs break-all">{song.id}</dd>
@@ -404,6 +421,45 @@ function SongDetail({ song }: { song: AdminSongOutput }) {
           {song.lyrics || "—"}
         </pre>
       </div>
+    </div>
+  );
+}
+
+/** Second take of the same request, kept as the spare for "Buat Ulang". */
+function AlternateTake({ song }: { song: AdminSongOutput }) {
+  const alt = song.alternate;
+  if (!alt) {
+    return <p className="text-xs text-muted-foreground">Tidak ada take ke-2 untuk lagu ini.</p>;
+  }
+  const used = Boolean(alt.used_by_job_id);
+  return (
+    <div className="space-y-1 rounded-md border border-dashed p-3">
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-muted-foreground">
+          Take ke-2 ({formatSeconds(alt.duration_sec)}){" "}
+          <span
+            className={cn(
+              "ml-1 inline-flex rounded-full px-2 py-0.5 text-xs font-medium",
+              used ? "bg-muted text-muted-foreground" : "bg-primary/10 text-primary",
+            )}
+          >
+            {used ? "Sudah dipakai Buat Ulang" : "Cadangan Buat Ulang"}
+          </span>
+        </p>
+        <a
+          href={`${alt.audio_url}&download=1`}
+          className={buttonVariants({ variant: "outline", size: "sm" })}
+        >
+          <DownloadIcon aria-hidden />
+          MP3
+        </a>
+      </div>
+      <audio controls preload="none" src={alt.audio_url} className="w-full" />
+      {used && alt.used_song_id && (
+        <p className="text-xs text-muted-foreground">
+          Jadi lagu <span className="font-mono break-all">{alt.used_song_id}</span>
+        </p>
+      )}
     </div>
   );
 }

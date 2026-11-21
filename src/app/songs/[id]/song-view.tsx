@@ -12,6 +12,7 @@ import {
   PencilIcon,
   PlusIcon,
   RotateCcwIcon,
+  XIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -66,6 +67,7 @@ export function SongView({ songId, orderId }: SongViewProps) {
   const [payment, setPayment] = React.useState<PaymentState>(
     orderId ? { kind: "checking" } : { kind: "idle" },
   );
+  const [bannerDismissed, setBannerDismissed] = React.useState(false);
   const [reloadKey, setReloadKey] = React.useState(0);
   const [pollKey, setPollKey] = React.useState(0);
   const { state: options } = useQuestionnaireOptions();
@@ -214,6 +216,29 @@ export function SongView({ songId, orderId }: SongViewProps) {
 
   return (
     <CustomerShell>
+      {payment.kind === "paid" && song.is_unlocked && !bannerDismissed && (
+        <div
+          role="status"
+          className="relative mb-6 flex items-center gap-4 overflow-hidden rounded-3xl border border-success/30 bg-linear-to-r from-success/15 via-success/10 to-primary/10 p-4 pr-12 shadow-sm motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-2 sm:p-5 sm:pr-14 lg:mb-8"
+        >
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-success text-white shadow-md shadow-success/30 sm:size-12">
+            <CheckCircle2Icon className="size-6" aria-hidden />
+          </span>
+          <div className="min-w-0">
+            <p className="font-semibold text-foreground sm:text-lg">{t("paidBanner.title")}</p>
+            <p className="mt-0.5 text-sm text-muted-foreground">{t("paidBanner.body")}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setBannerDismissed(true)}
+            aria-label={t("paidBanner.dismiss")}
+            className="absolute top-3 right-3 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
+          >
+            <XIcon className="size-4" aria-hidden />
+          </button>
+        </div>
+      )}
+
       <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-10">
         <div className="space-y-6 lg:sticky lg:top-24">
           <SongPlayer
@@ -225,13 +250,6 @@ export function SongView({ songId, orderId }: SongViewProps) {
             fullDurationSec={song.duration_sec}
             downloadUrl={song.audio_url ? `${song.audio_url}?download=1` : undefined}
           />
-
-          {payment.kind === "paid" && song.is_unlocked && (
-            <div className="flex items-center gap-2 rounded-2xl border border-success/30 bg-success/10 p-4 text-sm text-success">
-              <CheckCircle2Icon className="size-5 shrink-0" aria-hidden />
-              {t("paidBanner")}
-            </div>
-          )}
 
           {!song.is_unlocked && payment.kind === "checking" && (
             <div className="flex items-center gap-3 rounded-2xl border bg-card p-4 text-sm shadow-sm">

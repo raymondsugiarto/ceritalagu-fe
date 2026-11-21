@@ -481,7 +481,11 @@
     "paymentSuccessToast": "Payment successful! Your full song is unlocked.",
     "paymentCheckFailed": "We couldn’t check your payment status.",
     "newSong": "Create a new song",
-    "paidBanner": "Payment successful. Enjoy your full song!",
+    "paidBanner": {
+      "title": "Payment successful!",
+      "body": "Your full song is unlocked. Enjoy it and share it with someone you love.",
+      "dismiss": "Dismiss"
+    },
     "waitingDoku": "Waiting for payment confirmation from DOKU…",
     "unpaid": {
       "pending": "Your payment isn’t confirmed yet. If you’ve already paid, wait a moment and check again.",
@@ -807,6 +811,7 @@
     "invalid_choice": "That choice isn’t valid.",
     "invalid_format": "This isn’t in the right format.",
     "option_unavailable": "This option is no longer available. Please pick another.",
+    "input_not_allowed": "This contains something we can’t process. Just tell us about them and your memories.",
     "contact_fields_missing": "Name and message are required.",
     "contact_send_failed": "Your message wasn’t sent. Please try again shortly.",
     "too_many_messages": "Too many messages sent. Please try again in a few minutes."

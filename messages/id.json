@@ -481,7 +481,11 @@
     "paymentSuccessToast": "Pembayaran berhasil! Lagu lengkapmu sudah terbuka.",
     "paymentCheckFailed": "Status pembayaran tidak bisa dicek.",
     "newSong": "Buat lagu baru",
-    "paidBanner": "Pembayaran berhasil. Selamat menikmati lagu lengkapmu!",
+    "paidBanner": {
+      "title": "Pembayaran berhasil!",
+      "body": "Lagu lengkapmu sudah terbuka. Selamat menikmati dan bagikan ke orang tersayang.",
+      "dismiss": "Tutup"
+    },
     "waitingDoku": "Menunggu konfirmasi pembayaran dari DOKU…",
     "unpaid": {
       "pending": "Pembayaranmu belum terkonfirmasi. Kalau sudah bayar, tunggu sebentar lalu cek lagi.",
@@ -807,6 +811,7 @@
     "invalid_choice": "Pilihan ini tidak valid.",
     "invalid_format": "Format isian belum benar.",
     "option_unavailable": "Pilihan ini sudah tidak tersedia.",
+    "input_not_allowed": "Isian ini berisi hal yang tidak bisa kami proses. Ceritakan saja tentang dia dan kenanganmu, ya.",
     "contact_fields_missing": "Nama dan pesan wajib diisi.",
     "contact_send_failed": "Pesan belum terkirim. Coba lagi sebentar lagi.",
     "too_many_messages": "Terlalu banyak pesan terkirim. Coba lagi beberapa menit lagi."

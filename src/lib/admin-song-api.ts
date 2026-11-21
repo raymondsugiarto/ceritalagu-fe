@@ -32,7 +32,24 @@ export interface AdminSongOutput {
   preview_url: string;
   /** Admin full-song stream (no purchase check). Append "&download=1" to save it. */
   audio_url: string;
+  /** Second take of the same music request (Suno returns two); null when there is none. */
+  alternate: AdminAlternateOutput | null;
   created_at: string;
+}
+
+/** Spare take kept for "Buat Ulang". Mirrors backend AdminAlternateOutput. */
+export interface AdminAlternateOutput {
+  id: string;
+  duration_sec: number;
+  preview_duration_sec: number;
+  /** Set once a "Buat Ulang" turned this take into a song. */
+  used_by_job_id?: string;
+  /** The song it became, when used. */
+  used_song_id?: string;
+  /** Admin preview stream of the take. */
+  preview_url: string;
+  /** Admin full stream of the take. Append "&download=1" to save it. */
+  audio_url: string;
 }
 
 export interface SongStatsOutput {
@@ -66,6 +83,25 @@ export interface AdminSongAnswersOutput {
   submitted_at: string | null;
 }
 
+/** Which customer email the admin sends. Mirrors backend notification.EmailKind. */
+export type SongEmailKind = "song_ready" | "payment_receipt";
+
+export interface SendSongEmailInput {
+  kind: SongEmailKind;
+  /** Test inbox; empty sends to the customer. */
+  to?: string;
+}
+
+/** Mirrors backend notification.SendEmailOutput. */
+export interface SendSongEmailOutput {
+  kind: SongEmailKind;
+  to: string;
+  template_id?: number;
+  attached: boolean;
+  /** Sent to the override address instead of the customer. */
+  test: boolean;
+}
+
 const ROOT = "/admin/songs";
 
 export const adminSongApi = {
@@ -77,6 +113,12 @@ export const adminSongApi = {
 
   async stats(signal?: AbortSignal): Promise<SongStatsOutput> {
     return unwrap(await api.get<SongStatsOutput>(`${ROOT}/stats`, { signal }));
+  },
+
+  async sendEmail(id: string, input: SendSongEmailInput): Promise<SendSongEmailOutput> {
+    return unwrap(
+      await api.post<SendSongEmailOutput>(`${ROOT}/${encodeURIComponent(id)}/email`, input),
+    );
   },
 
   async answers(id: string, signal?: AbortSignal): Promise<AdminSongAnswersOutput> {
