@@ -131,7 +131,37 @@
     "samples": {
       "eyebrow": "Sample songs",
       "title": "Listen to songs we’ve made",
-      "description": "Every song is written from a different story. Press play and feel it for yourself."
+      "description": "Every song is written from a different story. Press play and feel it for yourself.",
+      "sampleLabel": "Sample song",
+      "play": "Play {title}",
+      "pause": "Pause {title}",
+      "seek": "Position in {title}",
+      "seekValue": "{time} of {duration}",
+      "unknownDuration": "--:--",
+      "noAudio": "Your browser doesn’t support the audio player.",
+      "playError": "Audio could not be played. Try again.",
+      "loadError": "Sample songs couldn’t be loaded.",
+      "retry": "Try again"
+    },
+    "testimonials": {
+      "eyebrow": "Story inspiration",
+      "title": "Every song has a story",
+      "description": "Fictional example reviews showing moments that could be celebrated through song; these are not real customer experiences.",
+      "fictional": "Fictional illustration, not a customer review",
+      "items": {
+        "birthday": {
+          "quote": "I want to give a birthday gift that feels close and personal, with memories that only the two of us share.",
+          "occasion": "Illustration · Birthday gift"
+        },
+        "anniversary": {
+          "quote": "The story of our journey could be a different way to celebrate our anniversary and remember our moments together.",
+          "occasion": "Illustration · Anniversary"
+        },
+        "family": {
+          "quote": "There is so much I want to say to my family. A song could be a sweet way to express it.",
+          "occasion": "Illustration · For family"
+        }
+      }
     },
     "features": {
       "eyebrow": "Why Cerita Lagu",

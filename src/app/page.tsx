@@ -9,6 +9,7 @@ import { OccasionMarquee } from "@/components/landing/occasion-marquee";
 import { Samples } from "@/components/landing/samples";
 import { SiteFooter } from "@/components/landing/site-footer";
 import { SiteHeader } from "@/components/landing/site-header";
+import { Testimonials } from "@/components/landing/testimonials";
 import { landingJsonLd, serializeJsonLd } from "@/lib/seo/json-ld";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
@@ -45,6 +46,7 @@ export default async function LandingPage() {
         <HowItWorks />
         <Samples />
         <Features />
+        <Testimonials />
         <Faq />
         <FinalCta />
       </main>

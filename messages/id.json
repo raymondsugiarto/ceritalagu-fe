@@ -131,7 +131,37 @@
     "samples": {
       "eyebrow": "Contoh lagu",
       "title": "Dengarkan lagu yang sudah kami buat",
-      "description": "Setiap lagu ditulis dari cerita yang berbeda. Putar dan rasakan sendiri."
+      "description": "Setiap lagu ditulis dari cerita yang berbeda. Putar dan rasakan sendiri.",
+      "sampleLabel": "Contoh lagu",
+      "play": "Putar {title}",
+      "pause": "Jeda {title}",
+      "seek": "Posisi lagu {title}",
+      "seekValue": "{time} dari {duration}",
+      "unknownDuration": "--:--",
+      "noAudio": "Browsermu tidak mendukung pemutar audio.",
+      "playError": "Audio tidak dapat diputar. Coba lagi.",
+      "loadError": "Contoh lagu belum bisa dimuat.",
+      "retry": "Coba lagi"
+    },
+    "testimonials": {
+      "eyebrow": "Inspirasi cerita",
+      "title": "Setiap lagu punya cerita",
+      "description": "Contoh ulasan fiktif untuk menggambarkan momen yang bisa dirayakan lewat lagu; bukan pengalaman pelanggan nyata.",
+      "fictional": "Ilustrasi fiktif, bukan ulasan pelanggan",
+      "items": {
+        "birthday": {
+          "quote": "Aku ingin memberi hadiah ulang tahun yang terasa dekat dan personal, dengan kenangan yang hanya kami berdua tahu.",
+          "occasion": "Ilustrasi · Hadiah ulang tahun"
+        },
+        "anniversary": {
+          "quote": "Cerita perjalanan kami bisa jadi cara yang berbeda untuk merayakan anniversary dan mengingat momen bersama.",
+          "occasion": "Ilustrasi · Anniversary"
+        },
+        "family": {
+          "quote": "Ada banyak hal yang ingin kusampaikan untuk keluarga. Lagu bisa menjadi cara manis untuk mengungkapkannya.",
+          "occasion": "Ilustrasi · Untuk keluarga"
+        }
+      }
     },
     "features": {
       "eyebrow": "Kenapa Cerita Lagu",

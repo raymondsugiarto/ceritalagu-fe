@@ -3,7 +3,7 @@
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Loader2Icon, LogOutIcon } from "lucide-react";
-import { AppSidebar } from "@/components/admin/app-sidebar";
+import { AppSidebar, MobileAdminNavigation } from "@/components/admin/app-sidebar";
 import { useAdminAuth } from "@/components/admin/admin-auth-provider";
 import { Button } from "@/components/ui/button";
 
@@ -47,23 +47,32 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen w-full bg-muted/30">
       <AppSidebar />
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-end gap-3 border-b bg-card px-4 py-2 md:px-6">
-          <span className="text-sm text-muted-foreground">
-            {state.admin.name} · {state.admin.role === "super_admin" ? "Super admin" : "Operator"}
-          </span>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={async () => {
-              await signOut();
-              router.replace(LOGIN_PATH);
-            }}
-          >
-            <LogOutIcon aria-hidden />
-            Keluar
-          </Button>
+        <header className="sticky top-0 z-40 flex min-h-16 items-center justify-between gap-3 border-b bg-card/95 px-4 backdrop-blur md:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <MobileAdminNavigation />
+            <p className="truncate font-semibold lg:hidden">Cerita Lagu</p>
+          </div>
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="min-w-0 text-right">
+              <p className="truncate text-sm font-medium">{state.admin.name}</p>
+              <p className="hidden text-xs text-muted-foreground sm:block">
+                {state.admin.role === "super_admin" ? "Super admin" : "Operator"}
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Keluar dari admin"
+              onClick={async () => {
+                await signOut();
+                router.replace(LOGIN_PATH);
+              }}
+            >
+              <LogOutIcon aria-hidden />
+            </Button>
+          </div>
         </header>
-        <main className="min-w-0 flex-1 p-4 md:p-6 lg:p-8">{children}</main>
+        <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
       </div>
     </div>
   );
