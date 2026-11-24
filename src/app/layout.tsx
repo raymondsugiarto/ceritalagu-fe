@@ -3,6 +3,7 @@ import { Fira_Sans } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import "./globals.css";
+import { GoogleTagManager } from "@/components/analytics/google-tag-manager";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { SITE } from "@/lib/site";
@@ -59,6 +60,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           <NextIntlClientProvider>
             {children}
             <Toaster />
+            <GoogleTagManager />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

@@ -15,6 +15,11 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@10 --activate
 ARG API_PROXY_TARGET=http://music-api:8080
 ENV API_PROXY_TARGET=${API_PROXY_TARGET}
+# NEXT_PUBLIC_* values are inlined into the client bundle by `next build`, so they must be present
+# here (build time), not as runtime env vars in the container. Empty means "use the default in
+# src/lib/analytics.ts".
+ARG NEXT_PUBLIC_GTM_ID=
+ENV NEXT_PUBLIC_GTM_ID=${NEXT_PUBLIC_GTM_ID}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production

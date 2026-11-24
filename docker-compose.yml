@@ -4,6 +4,8 @@ services:
       context: .
       args:
         API_PROXY_TARGET: http://api:8080
+        # Inlined at build time; empty falls back to the default in src/lib/analytics.ts.
+        NEXT_PUBLIC_GTM_ID: ${NEXT_PUBLIC_GTM_ID:-}
     ports:
       - "127.0.0.1:3001:8020"
     restart: unless-stopped
