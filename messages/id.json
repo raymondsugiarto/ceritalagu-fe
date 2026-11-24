@@ -130,7 +130,7 @@
     },
     "promo": {
       "title": "Diskon {discount} untuk lagu pertamamu",
-      "description": "Harga full lagu jadi {price}. Pakai kode di halaman pembayaran.",
+      "description": "Pakai kode di halaman pembayaran.",
       "copy": "Salin",
       "copyCode": "Salin kode voucher {code}",
       "copied": "Kode voucher disalin",

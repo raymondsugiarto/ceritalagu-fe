@@ -130,7 +130,7 @@
     },
     "promo": {
       "title": "Get {discount} off your first song",
-      "description": "The full song drops to {price}. Use the code at checkout.",
+      "description": "Use the code at checkout.",
       "copy": "Copy",
       "copyCode": "Copy voucher code {code}",
       "copied": "Voucher code copied",

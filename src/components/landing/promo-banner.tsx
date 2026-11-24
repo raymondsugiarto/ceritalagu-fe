@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { ArrowRightIcon, TicketPercentIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
-import { IDR_FORMAT, paymentApi, type PromoOutput } from "@/lib/payment-api";
+import { paymentApi, type PromoOutput } from "@/lib/payment-api";
 import { Button } from "@/components/ui/button";
 
 /** Where the advertised code is kept so the checkout page can offer it. */
@@ -39,7 +39,6 @@ export function readPromoCode(): string | null {
  */
 export function PromoBanner() {
   const t = useTranslations("landing.promo");
-  const format = useFormatter();
   const [promo, setPromo] = React.useState<PromoOutput | null>(null);
   const [dismissed, setDismissed] = React.useState(false);
 
@@ -58,7 +57,7 @@ export function PromoBanner() {
 
   if (!promo || dismissed) return null;
 
-  const formatIDR = (amount: number) => format.number(amount, IDR_FORMAT);
+  const percent = Math.round((promo.discount_amount / promo.sale_price) * 100);
   const code = promo.code;
 
   function copyCode() {
@@ -81,10 +80,10 @@ export function PromoBanner() {
           </span>
           <div className="min-w-0">
             <p id="promo-banner-title" className="text-sm font-semibold">
-              {t("title", { discount: formatIDR(promo.discount_amount) })}
+              {t("title", { discount: `${percent}%` })}
             </p>
             <p className="mt-0.5 text-sm text-muted-foreground">
-              {t("description", { price: formatIDR(promo.total) })}
+              {t("description")}
             </p>
           </div>
         </div>
