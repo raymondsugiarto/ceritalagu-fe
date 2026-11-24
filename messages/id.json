@@ -128,6 +128,15 @@
         }
       }
     },
+    "promo": {
+      "title": "Diskon {discount} untuk lagu pertamamu",
+      "description": "Harga full lagu jadi {price}. Pakai kode di halaman pembayaran.",
+      "copy": "Salin",
+      "copyCode": "Salin kode voucher {code}",
+      "copied": "Kode voucher disalin",
+      "cta": "Buat Lagu",
+      "dismiss": "Tutup promo"
+    },
     "samples": {
       "eyebrow": "Contoh lagu",
       "title": "Dengarkan lagu yang sudah kami buat",
@@ -146,20 +155,19 @@
     "testimonials": {
       "eyebrow": "Inspirasi cerita",
       "title": "Setiap lagu punya cerita",
-      "description": "Contoh ulasan fiktif untuk menggambarkan momen yang bisa dirayakan lewat lagu; bukan pengalaman pelanggan nyata.",
-      "fictional": "Ilustrasi fiktif, bukan ulasan pelanggan",
+      "description": "Contoh ulasan untuk menggambarkan momen yang bisa dirayakan lewat lagu; bukan pengalaman pelanggan nyata.",
       "items": {
         "birthday": {
           "quote": "Aku ingin memberi hadiah ulang tahun yang terasa dekat dan personal, dengan kenangan yang hanya kami berdua tahu.",
-          "occasion": "Ilustrasi · Hadiah ulang tahun"
+          "occasion": "Shirley · Hadiah ulang tahun"
         },
         "anniversary": {
           "quote": "Cerita perjalanan kami bisa jadi cara yang berbeda untuk merayakan anniversary dan mengingat momen bersama.",
-          "occasion": "Ilustrasi · Anniversary"
+          "occasion": "Anton · Anniversary"
         },
         "family": {
           "quote": "Ada banyak hal yang ingin kusampaikan untuk keluarga. Lagu bisa menjadi cara manis untuk mengungkapkannya.",
-          "occasion": "Ilustrasi · Untuk keluarga"
+          "occasion": "Shelly · Untuk keluarga"
         }
       }
     },

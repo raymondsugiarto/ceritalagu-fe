@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { FieldError } from "@/components/ui/field-error";
 import { Input } from "@/components/ui/input";
+import { readPromoCode } from "@/components/landing/promo-banner";
 import { useApiError } from "@/hooks/use-api-error";
 import { IDR_FORMAT, paymentApi, type PricingOutput, type QuoteOutput } from "@/lib/payment-api";
 
@@ -32,6 +33,26 @@ export function UnlockPanel({ songId, pricing }: UnlockPanelProps) {
   const sale = applied?.sale_price ?? pricing?.sale_price ?? pricing?.unlock_price;
   const total = applied?.total ?? sale;
   const disabled = checkingOut || pricing?.enabled === false;
+
+  // A code advertised on the landing banner is applied right away, so the customer sees the
+  // discounted total before paying. An expired code simply leaves the price as it is.
+  React.useEffect(() => {
+    const promoted = readPromoCode();
+    if (!promoted) return;
+    setCode(promoted);
+    const ctrl = new AbortController();
+    paymentApi
+      .quote(songId, promoted)
+      .then((q) => {
+        if (ctrl.signal.aborted) return;
+        setApplied(q);
+        setCode(q.voucher_code ?? promoted);
+      })
+      .catch(() => {
+        // The promo expired or ran out: fall back to the plain price, no error on screen.
+      });
+    return () => ctrl.abort();
+  }, [songId]);
 
   async function applyVoucher(e: React.FormEvent) {
     e.preventDefault();

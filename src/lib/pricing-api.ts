@@ -25,6 +25,8 @@ export interface VoucherOutput {
   remaining: number;
   expires_at: string;
   is_active: boolean;
+  /** Promoted on the landing page banner. */
+  is_public: boolean;
   status: VoucherStatus;
   created_at: string;
   updated_at: string;
@@ -37,6 +39,8 @@ export interface CreateVoucherInput {
   /** ISO 8601. */
   expires_at: string;
   is_active?: boolean;
+  /** Show this voucher on the landing page banner. */
+  is_public?: boolean;
 }
 
 /** Only set fields change; the code is fixed after creation. */

@@ -14,6 +14,20 @@ export interface PricingOutput {
   currency: string;
   /** false until DOKU is configured on the server. */
   enabled: boolean;
+  /** The voucher promoted on the landing banner; absent when there is none to use. */
+  promo?: PromoOutput;
+}
+
+/** The voucher the landing page advertises, with the discount it really gives. */
+export interface PromoOutput {
+  code: string;
+  discount_amount: number;
+  /** What the customer pays with this voucher. */
+  total: number;
+  normal_price: number;
+  sale_price: number;
+  currency: string;
+  expires_at: string;
 }
 
 /** POST /songs/:id/voucher-check: what a checkout would charge. */
@@ -58,11 +72,15 @@ export const paymentApi = {
   },
 
   /** Checks a voucher code against the song's price; no order is created. */
-  async quote(songId: string, voucherCode: string): Promise<QuoteOutput> {
+  async quote(songId: string, voucherCode: string, signal?: AbortSignal): Promise<QuoteOutput> {
     return unwrap(
-      await api.post<QuoteOutput>(`/songs/${encodeURIComponent(songId)}/voucher-check`, {
-        voucher_code: voucherCode,
-      }),
+      await api.post<QuoteOutput>(
+        `/songs/${encodeURIComponent(songId)}/voucher-check`,
+        {
+          voucher_code: voucherCode,
+        },
+        { signal },
+      ),
     );
   },
 

@@ -31,7 +31,6 @@ export function Testimonials() {
               </blockquote>
               <div className="mt-6 border-t pt-4">
                 <p className="text-sm font-semibold">{t(`items.${example}.occasion`)}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{t("fictional")}</p>
               </div>
             </li>
           ))}

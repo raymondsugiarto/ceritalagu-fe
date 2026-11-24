@@ -202,7 +202,16 @@ export function VouchersView() {
                       key={v.id}
                       className={cn(v.status !== "active" && "text-muted-foreground")}
                     >
-                      <TableCell className="font-mono font-medium">{v.code}</TableCell>
+                      <TableCell className="font-mono font-medium">
+                        <span className="flex items-center gap-2">
+                          {v.code}
+                          {v.is_public && (
+                            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                              Promo
+                            </span>
+                          )}
+                        </span>
+                      </TableCell>
                       <TableCell className="text-right tabular-nums">
                         {formatIDR(v.discount_amount)}
                       </TableCell>

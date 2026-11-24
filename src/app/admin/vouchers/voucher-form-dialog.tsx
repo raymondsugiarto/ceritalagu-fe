@@ -33,6 +33,7 @@ const schema = z.object({
   quota: z.string().regex(/^[1-9]\d*$/, "Minimal 1"),
   expires_at: z.string().min(1, "Isi tanggal kedaluwarsa"),
   is_active: z.boolean(),
+  is_public: z.boolean(),
 });
 type FormIn = z.input<typeof schema>;
 type Values = z.output<typeof schema>;
@@ -88,6 +89,7 @@ export function VoucherFormDialog({
       quota: voucher ? String(voucher.quota) : "",
       expires_at: toLocalInput(voucher?.expires_at ?? inAMonth.toISOString()),
       is_active: voucher?.is_active ?? true,
+      is_public: voucher?.is_public ?? false,
     });
   }, [open, voucher, reset]);
 
@@ -101,6 +103,7 @@ export function VoucherFormDialog({
       quota: Number(v.quota),
       expires_at: new Date(v.expires_at).toISOString(),
       is_active: v.is_active,
+      is_public: v.is_public,
     };
     try {
       const saved = isEdit
@@ -202,6 +205,21 @@ export function VoucherFormDialog({
           <label className="flex items-center gap-2 text-sm">
             <input type="checkbox" className="size-4 accent-primary" {...register("is_active")} />
             Aktif (bisa dipakai customer)
+          </label>
+
+          <label className="flex items-start gap-2 text-sm">
+            <input
+              type="checkbox"
+              className="mt-0.5 size-4 accent-primary"
+              {...register("is_public")}
+            />
+            <span>
+              Tampilkan di banner landing page
+              <span className="block text-xs text-muted-foreground">
+                Kode ini diiklankan ke pengunjung. Hanya satu voucher yang paling menguntungkan yang
+                tampil; voucher lain tetap bisa dipakai di checkout.
+              </span>
+            </span>
           </label>
 
           <FieldError role="alert">{serverError}</FieldError>
