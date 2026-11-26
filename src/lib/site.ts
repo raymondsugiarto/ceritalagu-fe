@@ -2,6 +2,10 @@
 export const SITE = {
   /** Official brand name (not translated). */
   name: "Cerita Lagu",
+  /** Spellings people type into search; tells Google they all mean this brand. */
+  alternateNames: ["CeritaLagu", "ceritalagu.com"],
+  /** Official social profiles (JSON-LD sameAs): links the brand entity across sites. */
+  socials: ["https://www.instagram.com/ceritalaguofficial/"],
   /**
    * Public origin, no trailing slash. Absolute URLs in metadata, sitemap, robots, llms.txt and
    * JSON-LD are built from it, so set NEXT_PUBLIC_SITE_URL on staging (it is inlined at build time).
